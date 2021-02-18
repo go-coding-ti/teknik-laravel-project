@@ -32,24 +32,24 @@ class Dosen extends Model
         return $this->belongsTo(Pendidikan::class, 'id_pendidikan');
     }
 
-    public function pangkatfungsional(){
-        return $this->belongsTo(MasterKepangkatanFungsional::class, 'id_pangkat_fungsional');
+    public function tmtpangkat(){
+        return $this->hasMany(TmtKepangkatanFungsional::class, 'id_pangkat_fungsional');
     }
 
-    public function pangkatpns(){
-        return $this->HasOneThrough(MasterPangkatPns::class, MasterKepangkatanFungsional::class);
-    }
-
-    public function golongan(){
-        return $this->HasOneThrough(MasterGolongan::class, MasterKepangkatanFungsional::class);
+    public function pangkat(){
+        return $this->belongsToMany(MasterPangkatPns::class, 'tmt_kepangkaktan_fungsional', 'nip', 'id_pangkat_pns')->withPivot('id_tmt_kepangkatan_fungsional');
     }
 
     public function kepegawainan(){
         return $this->belongsTo(MasterStatusKepegawaian::class, 'id_status_kepegawaian');
     }
 
+    public function tmtjabatan(){
+        return $this->hasMany(TmtJabatanFungsional::class,'tmt_jabatan_fungsional' , 'nip' );
+    }
+
     public function jabatan(){
-        return $this->belongsTo(MasterJabatanFungsional::class, 'id_jabatan_fungsional');
+        return $this->belongsToMany(MasterJabatanFungsional::class, 'tmt_jabatan_fungsional', 'nip', 'id_jabatan_fungsional')->withPivot('id_tmt_jabatan_fungsional');
     }
 
 }
