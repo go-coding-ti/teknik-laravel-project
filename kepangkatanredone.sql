@@ -62,7 +62,6 @@ DROP TABLE IF EXISTS `master_jabatan_fungsional`;
 CREATE TABLE `master_jabatan_fungsional` (
   `id_jabatan_fungsional` int(11) NOT NULL AUTO_INCREMENT,
   `jabatan_fungsional` enum('Asisten Ahli','Lektor','Lektor Kepala','Guru Besar') DEFAULT NULL,
-  `tmt_jabatan_fungsional` date DEFAULT NULL,
   PRIMARY KEY (`id_jabatan_fungsional`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -164,7 +163,6 @@ CREATE TABLE `tb_dosen` (
   `id_pendidikan` int(11) DEFAULT NULL,
   `id_kepangkatan_fungsional` int(11) DEFAULT NULL,
   `id_status_kepegawaian` int(11) DEFAULT NULL,
-  `id_jabatan_fungsional` int(11) DEFAULT NULL,
   `nama` varchar(50) DEFAULT NULL,
   `gelar_depan` varchar(6) DEFAULT NULL,
   `gelar_belakang` varchar(6) DEFAULT NULL,
@@ -192,8 +190,6 @@ CREATE TABLE `tb_dosen` (
   KEY `id_kepangkatan_fungsional` (`id_kepangkatan_fungsional`),
   KEY `id_status_kepegawaian` (`id_status_kepegawaian`),
   KEY `id_prodi` (`id_prodi`),
-  KEY `id_jabatan_fungsional` (`id_jabatan_fungsional`),
-  CONSTRAINT `tb_dosen_ibfk_1` FOREIGN KEY (`id_jabatan_fungsional`) REFERENCES `master_jabatan_fungsional` (`id_jabatan_fungsional`),
   CONSTRAINT `tb_dosen_ibfk_2` FOREIGN KEY (`id_status_kepegawaian`) REFERENCES `master_status_kepegawaian` (`id_status_kepegawaian`),
   CONSTRAINT `tb_dosen_ibfk_3` FOREIGN KEY (`id_kepangkatan_fungsional`) REFERENCES `master_kepangkatan_fungsional` (`id_kepangkatan_fungsional`),
   CONSTRAINT `tb_dosen_ibfk_4` FOREIGN KEY (`id_pendidikan`) REFERENCES `master_pendidikan` (`id_pendidikan`),
@@ -202,6 +198,24 @@ CREATE TABLE `tb_dosen` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `tb_dosen` */
+
+/*Table structure for table `tmt_jabatan_fungsional` */
+
+DROP TABLE IF EXISTS `tmt_jabatan_fungsional`;
+
+CREATE TABLE `tmt_jabatan_fungsional` (
+  `id_tmt_jabatan_fungsional` int(11) NOT NULL AUTO_INCREMENT,
+  `id_jabatan_fungsional` int(11) DEFAULT NULL,
+  `nip` int(11) DEFAULT NULL,
+  `tmt_jabatan_fungsional` date DEFAULT NULL,
+  PRIMARY KEY (`id_tmt_jabatan_fungsional`),
+  KEY `id_jabatan_fungsional` (`id_jabatan_fungsional`),
+  KEY `nip` (`nip`),
+  CONSTRAINT `tmt_jabatan_fungsional_ibfk_1` FOREIGN KEY (`id_jabatan_fungsional`) REFERENCES `master_jabatan_fungsional` (`id_jabatan_fungsional`),
+  CONSTRAINT `tmt_jabatan_fungsional_ibfk_2` FOREIGN KEY (`nip`) REFERENCES `tb_dosen` (`nip`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `tmt_jabatan_fungsional` */
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
