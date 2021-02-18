@@ -19,7 +19,7 @@ class MasterKepangkatanFungsional extends Model
         return $this->belongsTo(MasterGolongan::class, 'id_golongan');
     }
 
-    public function pangkat(){
+    public function pangkatpns(){
         return $this->belongsTo(MasterPangkatPns::class, 'id_pangkat_pns');
     }
 }

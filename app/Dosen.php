@@ -33,7 +33,23 @@ class Dosen extends Model
     }
 
     public function pangkatfungsional(){
-        return $this->belongsTo(MasterKepangkatanFungsional::class);
+        return $this->belongsTo(MasterKepangkatanFungsional::class, 'id_pangkat_fungsional');
+    }
+
+    public function pangkatpns(){
+        return $this->HasOneThrough(MasterPangkatPns::class, MasterKepangkatanFungsional::class);
+    }
+
+    public function golongan(){
+        return $this->HasOneThrough(MasterGolongan::class, MasterKepangkatanFungsional::class);
+    }
+
+    public function kepegawainan(){
+        return $this->belongsTo(MasterStatusKepegawaian::class, 'id_status_kepegawaian');
+    }
+
+    public function jabatan(){
+        return $this->belongsTo(MasterJabatanFungsional::class, 'id_jabatan_fungsional');
     }
 
 }
