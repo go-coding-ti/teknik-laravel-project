@@ -16,18 +16,6 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`kepangkatan_db` /*!40100 DEFAULT CHARAC
 
 USE `kepangkatan_db`;
 
-/*Table structure for table `jenis_master_id_pendidik` */
-
-DROP TABLE IF EXISTS `jenis_master_id_pendidik`;
-
-CREATE TABLE `jenis_master_id_pendidik` (
-  `id_jenis_pendidik` tinyint(6) NOT NULL,
-  `jenis_id` enum('nupn','nidk','nidn') DEFAULT NULL,
-  PRIMARY KEY (`id_jenis_pendidik`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-/*Data for the table `jenis_master_id_pendidik` */
-
 /*Table structure for table `master_fakultas` */
 
 DROP TABLE IF EXISTS `master_fakultas`;
@@ -58,10 +46,11 @@ DROP TABLE IF EXISTS `master_id_pendidik`;
 
 CREATE TABLE `master_id_pendidik` (
   `id_pendidik` int(11) NOT NULL,
-  `id_jenis` tinyint(4) DEFAULT NULL,
+  `nip` int(11) DEFAULT NULL,
+  `jenis_id` enum('NIDN','NIDK','NUP') DEFAULT NULL,
   PRIMARY KEY (`id_pendidik`),
-  KEY `id_jenis` (`id_jenis`),
-  CONSTRAINT `master_id_pendidik_ibfk_1` FOREIGN KEY (`id_jenis`) REFERENCES `jenis_master_id_pendidik` (`id_jenis_pendidik`)
+  KEY `nip` (`nip`),
+  CONSTRAINT `master_id_pendidik_ibfk_1` FOREIGN KEY (`nip`) REFERENCES `tb_dosen` (`nip`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `master_id_pendidik` */
@@ -84,12 +73,16 @@ CREATE TABLE `master_jabatan_fungsional` (
 DROP TABLE IF EXISTS `master_kepangkatan_fungsional`;
 
 CREATE TABLE `master_kepangkatan_fungsional` (
-  `id_kepangkatan_funsional` int(11) DEFAULT NULL,
+  `id_kepangkatan_fungsional` int(11) NOT NULL,
   `id_pangkat_pns` int(11) DEFAULT NULL,
+  `id_golongan` int(11) DEFAULT NULL,
   `tmt_pangkat/golongan` date DEFAULT NULL,
   `unit` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id_kepangkatan_fungsional`),
   KEY `id_pangkat_pns` (`id_pangkat_pns`),
-  CONSTRAINT `master_kepangkatan_fungsional_ibfk_1` FOREIGN KEY (`id_pangkat_pns`) REFERENCES `master_pangkat_pns` (`id_pangkat_pns`)
+  KEY `id_golongan` (`id_golongan`),
+  CONSTRAINT `master_kepangkatan_fungsional_ibfk_1` FOREIGN KEY (`id_pangkat_pns`) REFERENCES `master_pangkat_pns` (`id_pangkat_pns`),
+  CONSTRAINT `master_kepangkatan_fungsional_ibfk_2` FOREIGN KEY (`id_golongan`) REFERENCES `master_golongan` (`id_golongan`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `master_kepangkatan_fungsional` */
@@ -100,11 +93,8 @@ DROP TABLE IF EXISTS `master_pangkat_pns`;
 
 CREATE TABLE `master_pangkat_pns` (
   `id_pangkat_pns` int(11) NOT NULL,
-  `id_jabatan_fungsional` int(11) DEFAULT NULL,
   `pangkat` enum('Penata Muda','Penata Muda Tk. I','Penata','Penata Tk. I','Pembina','Pembina Tk. I','Pembina Utama Muda','Pembina Utama Madya','Pembina Utama') DEFAULT NULL,
-  PRIMARY KEY (`id_pangkat_pns`),
-  KEY `id_jabatan_fungsional` (`id_jabatan_fungsional`),
-  CONSTRAINT `master_pangkat_pns_ibfk_1` FOREIGN KEY (`id_jabatan_fungsional`) REFERENCES `master_jabatan_fungsional` (`id_jabatan_fungsional`)
+  PRIMARY KEY (`id_pangkat_pns`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `master_pangkat_pns` */
@@ -169,19 +159,18 @@ DROP TABLE IF EXISTS `tb_dosen`;
 
 CREATE TABLE `tb_dosen` (
   `nip` int(11) NOT NULL,
-  `id_pendidik` int(11) DEFAULT NULL,
   `id_status_dosen` tinyint(1) DEFAULT NULL,
   `id_prodi` tinyint(4) DEFAULT NULL,
   `id_pendidikan` int(11) DEFAULT NULL,
   `id_kepangkatan_fungsional` int(11) DEFAULT NULL,
-  `id_golongan` int(11) DEFAULT NULL,
   `id_status_kepegawaian` int(11) DEFAULT NULL,
+  `id_jabatan_fungsional` int(11) DEFAULT NULL,
   `nama` varchar(50) DEFAULT NULL,
   `gelar_depan` varchar(6) DEFAULT NULL,
   `gelar_belakang` varchar(6) DEFAULT NULL,
   `jenis_kelamin` enum('Pria','Wanita') DEFAULT NULL,
   `tempat_lahir` varchar(50) DEFAULT NULL,
-  `tanggal` date DEFAULT NULL,
+  `tanggal_lahir` date DEFAULT NULL,
   `alamat_domisili` varchar(50) DEFAULT NULL,
   `alamat_rumah` varchar(50) DEFAULT NULL,
   `telp_rumah` varchar(13) DEFAULT NULL,
@@ -198,20 +187,18 @@ CREATE TABLE `tb_dosen` (
   `status_keaktifan` enum('tugas di instansi lain','Tugas belajar','Tidak Ada Data','Keluar','Pensiun duda/janda','Pensiun','Pemberhentian Tanpa Hak Pensiun','Pemberhentian Jabatan Akademik','Pemberhentian Dengan Hormat Tidak Atas Permintaan Sendiri','Masa Persiapan Pensiun (MPP)','Ijin Belajar','Cuti','Almarhum','Aktif') DEFAULT NULL,
   `tmt_keaktifan` date DEFAULT NULL,
   PRIMARY KEY (`nip`),
-  KEY `id_pendidik` (`id_pendidik`),
   KEY `id_pendidikan` (`id_pendidikan`),
   KEY `id_status_dosen` (`id_status_dosen`),
   KEY `id_kepangkatan_fungsional` (`id_kepangkatan_fungsional`),
   KEY `id_status_kepegawaian` (`id_status_kepegawaian`),
-  KEY `id_golongan` (`id_golongan`),
   KEY `id_prodi` (`id_prodi`),
-  CONSTRAINT `tb_dosen_ibfk_1` FOREIGN KEY (`id_pendidik`) REFERENCES `master_id_pendidik` (`id_pendidik`),
+  KEY `id_jabatan_fungsional` (`id_jabatan_fungsional`),
   CONSTRAINT `tb_dosen_ibfk_2` FOREIGN KEY (`id_pendidikan`) REFERENCES `master_pendidikan` (`id_pendidikan`),
   CONSTRAINT `tb_dosen_ibfk_3` FOREIGN KEY (`id_status_dosen`) REFERENCES `master_status_dosen` (`id_status_dosen`),
-  CONSTRAINT `tb_dosen_ibfk_4` FOREIGN KEY (`id_kepangkatan_fungsional`) REFERENCES `master_kepangkatan_fungsional` (`id_pangkat_pns`),
   CONSTRAINT `tb_dosen_ibfk_5` FOREIGN KEY (`id_status_kepegawaian`) REFERENCES `master_status_kepegawaian` (`id_status_kepegawaian`),
-  CONSTRAINT `tb_dosen_ibfk_6` FOREIGN KEY (`id_golongan`) REFERENCES `master_golongan` (`id_golongan`),
-  CONSTRAINT `tb_dosen_ibfk_7` FOREIGN KEY (`id_prodi`) REFERENCES `master_prodi` (`id_prodi`)
+  CONSTRAINT `tb_dosen_ibfk_7` FOREIGN KEY (`id_prodi`) REFERENCES `master_prodi` (`id_prodi`),
+  CONSTRAINT `tb_dosen_ibfk_8` FOREIGN KEY (`id_kepangkatan_fungsional`) REFERENCES `master_kepangkatan_fungsional` (`id_kepangkatan_fungsional`),
+  CONSTRAINT `tb_dosen_ibfk_9` FOREIGN KEY (`id_jabatan_fungsional`) REFERENCES `master_jabatan_fungsional` (`id_jabatan_fungsional`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `tb_dosen` */
