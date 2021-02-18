@@ -2,9 +2,9 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/admin">
+        <a style="height:50px !important;" class="sidebar-brand d-flex align-items-center justify-content-center" href="/admin">
           <div class="sidebar-brand-icon">
-            <img style="height: 30px;" src="{{asset('assets/admin/img/unud.png')}}">
+            <img style="height: 37px;" src="{{asset('assets/admin/img/unud.png')}}">
           </div>
           <div style="font-size: 20px" class="sidebar-brand-text mx-3">SIM Dosen</div>
         </a>
@@ -13,10 +13,10 @@
         <hr class="sidebar-divider my-0">
         <div class="sidebar-brand d-flex align-items-center justify-content-center" href="/admin">
           <div class="sidebar-brand-icon">
-            <img class="border" style="height:40px;width:30px;" src="{{asset('assets/admin/img/4x6.jpg')}}">
+            <img class="border" style="height:60px;width:50px;" src="{{asset('assets/admin/img/4x6.jpg')}}">
           </div>
           <div style="font-size: 10px !important;margin-left:10px;" class="sidebar-brand-text my-3">
-            I Wayan Wahyu Ivan Mahendra Jaya, S.Kom, M.T.
+            I Wayan Wahyu Ivan Mahendra Jaya, S.Kom., M.T.
           </div>
         </div>
         <!-- Divider -->
