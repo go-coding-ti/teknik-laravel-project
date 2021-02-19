@@ -26,7 +26,7 @@
         <li class="nav-item active">
           <a class="nav-link" href="/admin">
             <i class="fas fa-fw fa-user"></i>
-            <span>Profile Dosen</span></a>
+            <span>Master Data Dosen</span></a>
         </li>
   
         <!-- Divider -->

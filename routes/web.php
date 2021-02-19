@@ -13,10 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('admin.homeadmin');
-});
+Route::get('/', 'admin\HomeController@Home')->name('admin-home');
 
 Route::prefix('admin')->group(function () {
-    
+    Route::get('/{id}/delete', 'ValidatorController@destroy')->name('admin-delete');
+    Route::get('/create', 'ValidatorController@index')->name('admin-create');
 });

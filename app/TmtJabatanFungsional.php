@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class TmtJabatanFungsional extends Model
 {
     //
-    protected $table = 'master_jabatan_fungsional';
+    protected $table = 'tmt_jabatan_fungsional';
 
     protected $fillable = ['id_jabatan_fungsional', 'nip', 'tmt_jabatan_fungsional'];
 
