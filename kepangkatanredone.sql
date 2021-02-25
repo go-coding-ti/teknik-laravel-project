@@ -24,21 +24,13 @@ CREATE TABLE `master_fakultas` (
   `id_fakultas` tinyint(4) NOT NULL AUTO_INCREMENT,
   `fakultas` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id_fakultas`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `master_fakultas` */
 
-/*Table structure for table `master_golongan` */
-
-DROP TABLE IF EXISTS `master_golongan`;
-
-CREATE TABLE `master_golongan` (
-  `id_golongan` int(11) NOT NULL AUTO_INCREMENT,
-  `golongan` varchar(15) DEFAULT NULL,
-  PRIMARY KEY (`id_golongan`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-/*Data for the table `master_golongan` */
+insert  into `master_fakultas`(`id_fakultas`,`fakultas`) values 
+(1,'Fakultas Teknik'),
+(2,'Fakultas Kedokteran');
 
 /*Table structure for table `master_id_pendidik` */
 
@@ -48,10 +40,11 @@ CREATE TABLE `master_id_pendidik` (
   `id_pendidik` int(11) NOT NULL AUTO_INCREMENT,
   `nip` int(11) DEFAULT NULL,
   `jenis_id` enum('NIDN','NIDK','NUP') DEFAULT NULL,
+  `nidn/nidk/nup` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id_pendidik`),
   KEY `nip` (`nip`),
   CONSTRAINT `master_id_pendidik_ibfk_1` FOREIGN KEY (`nip`) REFERENCES `tb_dosen` (`nip`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `master_id_pendidik` */
 
@@ -63,28 +56,33 @@ CREATE TABLE `master_jabatan_fungsional` (
   `id_jabatan_fungsional` int(11) NOT NULL AUTO_INCREMENT,
   `jabatan_fungsional` enum('Asisten Ahli','Lektor','Lektor Kepala','Guru Besar') DEFAULT NULL,
   PRIMARY KEY (`id_jabatan_fungsional`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `master_jabatan_fungsional` */
 
-/*Table structure for table `master_kepangkatan_fungsional` */
+insert  into `master_jabatan_fungsional`(`id_jabatan_fungsional`,`jabatan_fungsional`) values 
+(1,'Asisten Ahli'),
+(2,'Guru Besar'),
+(3,'Lektor'),
+(4,'Lektor Kepala');
 
-DROP TABLE IF EXISTS `master_kepangkatan_fungsional`;
+/*Table structure for table `master_keaktifan` */
 
-CREATE TABLE `master_kepangkatan_fungsional` (
-  `id_kepangkatan_fungsional` int(11) NOT NULL AUTO_INCREMENT,
-  `id_pangkat_pns` int(11) DEFAULT NULL,
-  `id_golongan` int(11) DEFAULT NULL,
-  `tmt_pangkat/golongan` date DEFAULT NULL,
-  `unit` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id_kepangkatan_fungsional`),
-  KEY `id_pangkat_pns` (`id_pangkat_pns`),
-  KEY `id_golongan` (`id_golongan`),
-  CONSTRAINT `master_kepangkatan_fungsional_ibfk_1` FOREIGN KEY (`id_pangkat_pns`) REFERENCES `master_pangkat_pns` (`id_pangkat_pns`),
-  CONSTRAINT `master_kepangkatan_fungsional_ibfk_2` FOREIGN KEY (`id_golongan`) REFERENCES `master_golongan` (`id_golongan`)
+DROP TABLE IF EXISTS `master_keaktifan`;
+
+CREATE TABLE `master_keaktifan` (
+  `id_keaktifan` int(11) NOT NULL AUTO_INCREMENT,
+  `nip` int(11) DEFAULT NULL,
+  `id_status_keaktifan` int(11) DEFAULT NULL,
+  `tmt_keaktifan` date DEFAULT NULL,
+  PRIMARY KEY (`id_keaktifan`),
+  KEY `id_status_keaktifan` (`id_status_keaktifan`),
+  KEY `nip` (`nip`),
+  CONSTRAINT `master_keaktifan_ibfk_1` FOREIGN KEY (`id_status_keaktifan`) REFERENCES `master_status_keaktifan` (`id_status_keaktifan`),
+  CONSTRAINT `master_keaktifan_ibfk_2` FOREIGN KEY (`nip`) REFERENCES `tb_dosen` (`nip`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-/*Data for the table `master_kepangkatan_fungsional` */
+/*Data for the table `master_keaktifan` */
 
 /*Table structure for table `master_pangkat_pns` */
 
@@ -92,11 +90,26 @@ DROP TABLE IF EXISTS `master_pangkat_pns`;
 
 CREATE TABLE `master_pangkat_pns` (
   `id_pangkat_pns` int(11) NOT NULL AUTO_INCREMENT,
-  `pangkat` enum('Penata Muda','Penata Muda Tk. I','Penata','Penata Tk. I','Pembina','Pembina Tk. I','Pembina Utama Muda','Pembina Utama Madya','Pembina Utama') DEFAULT NULL,
+  `pangkat` enum('Penata Muda','Penata Muda Tk. I','Penata','Penata Tk. I','Pembina','Pembina Tk. I','Pembina Utama Muda','Pembina Utama Madya','Pembina Utama','CPNS - 3A','CPNS - 3B','CPNS Belum Memiliki Pangkat') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `golongan` enum('Gol. III/a','Gol. III/b','Gol. III/c','Gol. III/d','Gol. IV/a','Gol. IV/b','Gol. IV/c','Gol. IV/d','Gol. IV/e') DEFAULT NULL,
   PRIMARY KEY (`id_pangkat_pns`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `master_pangkat_pns` */
+
+insert  into `master_pangkat_pns`(`id_pangkat_pns`,`pangkat`,`golongan`) values 
+(1,'Pembina','Gol. IV/a'),
+(2,'Pembina Tk. I','Gol. IV/b'),
+(3,'Pembina Utama','Gol. IV/e'),
+(4,'Pembina Utama Madya','Gol. IV/d'),
+(5,'Pembina Utama Muda','Gol. IV/c'),
+(6,'Penata','Gol. III/c'),
+(7,'Penata Muda','Gol. III/a'),
+(8,'Penata Muda Tk. I','Gol. III/b'),
+(9,'Penata Tk. I','Gol. III/d'),
+(10,'CPNS - 3A',NULL),
+(11,'CPNS - 3B',NULL),
+(12,'CPNS Belum Memiliki Pangkat',NULL);
 
 /*Table structure for table `master_pendidikan` */
 
@@ -109,9 +122,12 @@ CREATE TABLE `master_pendidikan` (
   `bidang_ilmu` varchar(30) DEFAULT NULL,
   `tanggal_selesai_studi` date DEFAULT NULL,
   PRIMARY KEY (`id_pendidikan`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `master_pendidikan` */
+
+insert  into `master_pendidikan`(`id_pendidikan`,`jenjang_pendidikan_terakhir`,`nama_institusi`,`bidang_ilmu`,`tanggal_selesai_studi`) values 
+(1,'SMA','SMA 123 Merdeka','IPA','2021-02-19');
 
 /*Table structure for table `master_prodi` */
 
@@ -124,9 +140,12 @@ CREATE TABLE `master_prodi` (
   PRIMARY KEY (`id_prodi`),
   KEY `id_fakultas` (`id_fakultas`),
   CONSTRAINT `master_prodi_ibfk_1` FOREIGN KEY (`id_fakultas`) REFERENCES `master_fakultas` (`id_fakultas`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `master_prodi` */
+
+insert  into `master_prodi`(`id_prodi`,`id_fakultas`,`prodi`) values 
+(1,1,'TI');
 
 /*Table structure for table `master_status_dosen` */
 
@@ -136,9 +155,43 @@ CREATE TABLE `master_status_dosen` (
   `id_status_dosen` tinyint(1) NOT NULL AUTO_INCREMENT,
   `status_dosen` enum('dosen biasa','profesor','dosen dengan tugas tambahan rektor s/d ketjur','profesor dengan tugas tambahan rektor s/d ketjur') DEFAULT NULL,
   PRIMARY KEY (`id_status_dosen`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `master_status_dosen` */
+
+insert  into `master_status_dosen`(`id_status_dosen`,`status_dosen`) values 
+(1,'dosen biasa'),
+(2,'dosen dengan tugas tambahan rektor s/d ketjur'),
+(3,'profesor'),
+(4,'profesor dengan tugas tambahan rektor s/d ketjur');
+
+/*Table structure for table `master_status_keaktifan` */
+
+DROP TABLE IF EXISTS `master_status_keaktifan`;
+
+CREATE TABLE `master_status_keaktifan` (
+  `id_status_keaktifan` int(11) NOT NULL AUTO_INCREMENT,
+  `status_keaktifan` enum('Tugas di Instansi Lain','Tugas Belajar','Tidak Ada Data','Keluar','Pensiun Duda/Janda','Pensiun','Pemberhentian Tanpa Hak Pensiun','Pemberhentian Jabatan Akademik','Pemberhentian dengan Hormat Tidak Atas Permintaann Sendiri','Masa Persiapan Pensiun (MPP)','Ijin Belajar','Cuti','Almarhum','Aktif') DEFAULT NULL,
+  PRIMARY KEY (`id_status_keaktifan`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `master_status_keaktifan` */
+
+insert  into `master_status_keaktifan`(`id_status_keaktifan`,`status_keaktifan`) values 
+(1,'Aktif'),
+(2,'Almarhum'),
+(3,'Cuti'),
+(4,'Ijin Belajar'),
+(5,'Keluar'),
+(6,'Masa Persiapan Pensiun (MPP)'),
+(7,'Pemberhentian dengan Hormat Tidak Atas Permintaann Sendiri'),
+(8,'Pemberhentian Jabatan Akademik'),
+(9,'Pemberhentian Tanpa Hak Pensiun'),
+(10,'Pensiun'),
+(11,'Pensiun Duda/Janda'),
+(12,'Tidak Ada Data'),
+(13,'Tugas Belajar'),
+(14,'Tugas di Instansi Lain');
 
 /*Table structure for table `master_status_kepegawaian` */
 
@@ -148,9 +201,17 @@ CREATE TABLE `master_status_kepegawaian` (
   `id_status_kepegawaian` int(11) NOT NULL AUTO_INCREMENT,
   `status_kepegawaian` enum('Emeritus','Tetap BLU','Tetap','Luar Non PNS','Luar','Kontrak') DEFAULT NULL,
   PRIMARY KEY (`id_status_kepegawaian`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `master_status_kepegawaian` */
+
+insert  into `master_status_kepegawaian`(`id_status_kepegawaian`,`status_kepegawaian`) values 
+(1,'Emeritus'),
+(2,'Kontrak'),
+(3,'Luar'),
+(4,'Luar Non PNS'),
+(5,'Tetap'),
+(6,'Tetap BLU');
 
 /*Table structure for table `tb_dosen` */
 
@@ -161,7 +222,6 @@ CREATE TABLE `tb_dosen` (
   `id_status_dosen` tinyint(1) DEFAULT NULL,
   `id_prodi` tinyint(4) DEFAULT NULL,
   `id_pendidikan` int(11) DEFAULT NULL,
-  `id_kepangkatan_fungsional` int(11) DEFAULT NULL,
   `id_status_kepegawaian` int(11) DEFAULT NULL,
   `nama` varchar(50) DEFAULT NULL,
   `gelar_depan` varchar(6) DEFAULT NULL,
@@ -182,22 +242,23 @@ CREATE TABLE `tb_dosen` (
   `file_karis/karsu` varchar(50) DEFAULT NULL,
   `no_ktp` varchar(16) DEFAULT NULL,
   `file_ktp` varchar(50) DEFAULT NULL,
-  `status_keaktifan` enum('tugas di instansi lain','Tugas belajar','Tidak Ada Data','Keluar','Pensiun duda/janda','Pensiun','Pemberhentian Tanpa Hak Pensiun','Pemberhentian Jabatan Akademik','Pemberhentian Dengan Hormat Tidak Atas Permintaan Sendiri','Masa Persiapan Pensiun (MPP)','Ijin Belajar','Cuti','Almarhum','Aktif') DEFAULT NULL,
-  `tmt_keaktifan` date DEFAULT NULL,
+  `chat_id` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`nip`),
   KEY `id_pendidikan` (`id_pendidikan`),
   KEY `id_status_dosen` (`id_status_dosen`),
-  KEY `id_kepangkatan_fungsional` (`id_kepangkatan_fungsional`),
   KEY `id_status_kepegawaian` (`id_status_kepegawaian`),
   KEY `id_prodi` (`id_prodi`),
   CONSTRAINT `tb_dosen_ibfk_2` FOREIGN KEY (`id_status_kepegawaian`) REFERENCES `master_status_kepegawaian` (`id_status_kepegawaian`),
-  CONSTRAINT `tb_dosen_ibfk_3` FOREIGN KEY (`id_kepangkatan_fungsional`) REFERENCES `master_kepangkatan_fungsional` (`id_kepangkatan_fungsional`),
   CONSTRAINT `tb_dosen_ibfk_4` FOREIGN KEY (`id_pendidikan`) REFERENCES `master_pendidikan` (`id_pendidikan`),
   CONSTRAINT `tb_dosen_ibfk_5` FOREIGN KEY (`id_prodi`) REFERENCES `master_prodi` (`id_prodi`),
   CONSTRAINT `tb_dosen_ibfk_6` FOREIGN KEY (`id_status_dosen`) REFERENCES `master_status_dosen` (`id_status_dosen`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `tb_dosen` */
+
+insert  into `tb_dosen`(`nip`,`id_status_dosen`,`id_prodi`,`id_pendidikan`,`id_status_kepegawaian`,`nama`,`gelar_depan`,`gelar_belakang`,`jenis_kelamin`,`tempat_lahir`,`tanggal_lahir`,`alamat_domisili`,`alamat_rumah`,`telp_rumah`,`no_hp`,`email_aktif`,`no_karpeg`,`file_karpeg`,`no_npwp`,`file_npwp`,`no_karis/karsu`,`file_karis/karsu`,`no_ktp`,`file_ktp`,`chat_id`) values 
+(4,NULL,NULL,NULL,NULL,'tes','123','456',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),
+(5,NULL,NULL,NULL,NULL,'set','312','123',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 
 /*Table structure for table `tmt_jabatan_fungsional` */
 
@@ -216,6 +277,25 @@ CREATE TABLE `tmt_jabatan_fungsional` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `tmt_jabatan_fungsional` */
+
+/*Table structure for table `tmt_kepangkatan_fungsional` */
+
+DROP TABLE IF EXISTS `tmt_kepangkatan_fungsional`;
+
+CREATE TABLE `tmt_kepangkatan_fungsional` (
+  `id_tmt_kepangkatan_fungsional` int(11) NOT NULL AUTO_INCREMENT,
+  `id_pangkat_pns` int(11) DEFAULT NULL,
+  `nip` int(11) DEFAULT NULL,
+  `tmt_pangkat/golongan` date DEFAULT NULL,
+  `unit` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id_tmt_kepangkatan_fungsional`),
+  KEY `id_pangkat_pns` (`id_pangkat_pns`),
+  KEY `nip` (`nip`),
+  CONSTRAINT `tmt_kepangkatan_fungsional_ibfk_1` FOREIGN KEY (`id_pangkat_pns`) REFERENCES `master_pangkat_pns` (`id_pangkat_pns`),
+  CONSTRAINT `tmt_kepangkatan_fungsional_ibfk_3` FOREIGN KEY (`nip`) REFERENCES `tb_dosen` (`nip`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `tmt_kepangkatan_fungsional` */
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

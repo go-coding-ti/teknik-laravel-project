@@ -7,6 +7,13 @@ use App\Dosen;
 use App\MasterIdPendidik;
 use App\TmtJabatanFungsional;
 use App\TmtKepangkatanFungsional;
+use App\MasterStatusDosen;
+use App\MasterJabatanFungsional;
+use App\MasterPangkatPns;
+use App\MasterPendidikan;
+use App\Prodi;
+use App\Fakultas;
+use App\MasterStatusKeaktifan;
 
 class ValidatorController extends Controller
 {
@@ -17,7 +24,12 @@ class ValidatorController extends Controller
      */
     public function index()
     {
-        return view('admin.formdosen');
+        $statusaktif = MasterStatusKeaktifan::all();
+        $statusDosen = MasterStatusDosen::all();
+        $pangkatDosen = MasterPangkatPns::all();
+        $jabatanDosen = MasterJabatanFungsional::all();
+        $unit = Fakultas::all();
+        return view('admin.formdosen', compact('statusDosen', 'pangkatDosen', 'jabatanDosen', 'unit', 'statusaktif'));
     }
 
     /**

@@ -37,7 +37,7 @@ class Dosen extends Model
     }
 
     public function pangkat(){
-        return $this->belongsToMany(MasterPangkatPns::class, 'tmt_kepangkaktan_fungsional', 'nip', 'id_pangkat_pns')->withPivot('id_tmt_kepangkatan_fungsional');
+        return $this->belongsToMany('App\MasterPangkatPns', 'tmt_kepangkaktan_fungsional', 'nip', 'id_pangkat_pns')->withPivot('id_tmt_kepangkatan_fungsional');
     }
 
     public function kepegawainan(){
@@ -45,11 +45,15 @@ class Dosen extends Model
     }
 
     public function tmtjabatan(){
-        return $this->hasMany(TmtJabatanFungsional::class,'tmt_jabatan_fungsional' , 'nip' );
+        return $this->hasMany('App\TmtJabatanFungsional','tmt_jabatan_fungsional' , 'nip' );
     }
 
     public function jabatan(){
-        return $this->belongsToMany(MasterJabatanFungsional::class, 'tmt_jabatan_fungsional', 'nip', 'id_jabatan_fungsional')->withPivot('id_tmt_jabatan_fungsional');
+        return $this->belongsToMany('App\MasterJabatanFungsional', 'tmt_jabatan_fungsional', 'nip', 'id_jabatan_fungsional')->withPivot('id_tmt_jabatan_fungsional');
+    }
+
+    public function keaktifan(){
+        return $this->hasMany('App\MasterKeaktifan', 'nip', 'id_keaktifan');
     }
 
 }
