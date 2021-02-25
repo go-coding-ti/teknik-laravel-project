@@ -14,6 +14,7 @@ use App\MasterPendidikan;
 use App\Prodi;
 use App\Fakultas;
 use App\MasterStatusKeaktifan;
+use App\MasterKeaktifan;
 
 class ValidatorController extends Controller
 {
@@ -50,7 +51,35 @@ class ValidatorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $dosen = new Dosen;
+        $dosen->nip = $request->nip;
+        $dosen->nama = $request->nama;
+        $dosen->gelar_depan = $request->gelardepan;
+        $dosen->gelar_belakang = $request->gelarbelakang;
+        $dosen->jenis_kelamin = $request->jeniskelamin;
+        $dosen->tempat_lahir = $request->tempatlahir;
+        $dosen->tanggal_lahir = $request->tanggallahir;
+        $dosen->alamat_domisili = $request->alamatdomisili;
+        $dosen->alamat_rumah = $request->alamatrumah;
+        $dosen->telp_rumah = $request->telprumah;
+        $dosen->no_hp = $request->nohp;
+        $dosen->email_aktif = $request->email;
+        $dosen->no_karpeg = $request->nokarpeg;
+        $dosen->file_karpeg = $request->filekarpeg;
+        $dosen->no_npwp = $request->nonpwp;
+        $dosen->file_npwp = $request->filenpwp;
+        $dosen->no_karis_karsu = $request->nokaris;
+        $dosen->file_karis_karsu = $request->filekaris;
+        $dosen->no_ktp = $request->noktp;
+        $dosen->file_ktp = $request->filektp;
+        $dosen->save();
+
+        $aktif = new MasterKeaktifan;
+        $aktif->nip = $request->nip;
+        $aktif->id_status_keaktifan = $request->statusaktif;
+        $aktif->tmt_keaktifan = $request->tmtaktif;
+        $aktif->save();
+        return redirect()->route('admin-home');
     }
 
     /**
@@ -95,10 +124,12 @@ class ValidatorController extends Controller
      */
     public function destroy($id)
     {
+        $statusDosen = MasterKeaktifan::where('nip', '=', $id);
         $idpendidik = MasterIdPendidik::where('nip', '=', $id);
         $tmtjabatan = TmtJabatanFungsional::where('nip', '=', $id);
         $tmtpangkat = TmtKepangkatanFungsional::where('nip', '=', $id);
         $dosen = Dosen::where('nip', '=', $id);
+        $statusDosen->delete();
         $idpendidik->delete();
         $tmtjabatan->delete();
         $tmtpangkat->delete();

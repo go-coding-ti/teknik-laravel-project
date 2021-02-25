@@ -17,6 +17,7 @@ Route::get('/', 'admin\HomeController@Home')->name('admin-home');
 
 Route::prefix('admin')->group(function () {
     Route::get('/', 'admin\HomeController@Home')->name('admin-home');
-    Route::get('/{id}/delete', 'ValidatorController@destroy')->name('admin-delete');
-    Route::get('/create', 'ValidatorController@index')->name('admin-create');
+    Route::get('/{id}/delete', 'ValidatorController@destroy')->name('dosen-delete');
+    Route::get('/create', 'ValidatorController@index')->name('dosen-createpage');
+    Route::post('/store', 'ValidatorController@store')->name('dosen-store');
 });
