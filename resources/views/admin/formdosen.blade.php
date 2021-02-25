@@ -30,8 +30,8 @@
                         
                         </div>
                         <div class="col">
-                            <img src="" class="mb-3" style="height:120px;width:100px;" id="propic">
-                            <input type="file" class="form-control-file" name="file">
+                            <img src="" class="mb-3" style="border:solid #000 5px;height:120px;width:100px;" id="propic">
+                            <input type="file" class="form-control-file" id="profile_image" name="profile_image">
                         </div>
                     </div>
                     <div class="row">
@@ -209,5 +209,22 @@
             </form>
         </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+  function readURL(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    
+    reader.onload = function(e) {
+      $('#propic').attr('src', e.target.result);
+    }
+    
+    reader.readAsDataURL(input.files[0]); // convert to base64 string
+  }
+}
 
+$("#profile_image").change(function() {
+  readURL(this);
+});
+</script>
 @endsection

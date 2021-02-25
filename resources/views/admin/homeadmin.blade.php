@@ -32,17 +32,6 @@
                       <th>Action</th>
                     </tr>
                   </thead>
-                  <tfoot>
-                  <tr>
-                      <th>NIP</th>
-                      <th>Nama</th>
-                      <th>Jenis Kelamin</th>
-                      <th>No HP</th>
-                      <th>Status Keaktifan</th>
-                      <th>Tmt Keaktifan</th>
-                      <th>Action</th>
-                    </tr>
-                  </tfoot>
                   <tbody>
                   @foreach ($data as $i => $dosen)
                     <tr>

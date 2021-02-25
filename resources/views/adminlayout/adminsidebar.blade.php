@@ -37,7 +37,7 @@
           Interface
         </div>-->
   
-        <!-- Nav Item - Pages Collapse Menu -->
+        <!-- Nav Item - Pages Collapse Menu 
         <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-fw fa-graduation-cap"></i>
@@ -50,13 +50,13 @@
               <a class="collapse-item" href="cards.html">Cards</a>
             </div>
           </div>
-        </li>
+        </li> -->
   
         <!-- Nav Item - Utilities Collapse Menu -->
         <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
             <i class="fas fa-fw fa-briefcase"></i>
-            <span>Beban Kerja Dosen</span>
+            <span>Data Karya Ilmiah</span>
           </a>
           <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
@@ -81,7 +81,7 @@
         <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseRemu" aria-expanded="true" aria-controls="collapseRemu">
             <i class="fas fa-fw fa-money-check"></i>
-            <span>Remunerasi</span>
+            <span>Pengabdian Masyarakat</span>
           </a>
           <div id="collapseRemu" class="collapse" aria-labelledby="headingRemu" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
@@ -110,7 +110,7 @@
             <i class="fas fa-fw fa-table"></i>
             <span>Tables</span></a>
         </li>-->
-        <li class="nav-item">
+        <!--<li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSkp" aria-expanded="true" aria-controls="collapseSkp">
             <i class="fas fa-fw fa-folder"></i>
             <span>SKP</span>
@@ -124,12 +124,12 @@
               <a class="collapse-item" href="utilities-other.html">Other</a>
             </div>
           </div>
-        </li>
+        </li>-->
 
         <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKI" aria-expanded="true" aria-controls="collapseKI">
             <i class="fas fa-fw fa-list"></i>
-            <span>Karya Ilmiah</span>
+            <span>Kompetensi</span>
           </a>
           <div id="collapseKI" class="collapse" aria-labelledby="headingKI" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
