@@ -23,16 +23,19 @@
                             <label for="nidn" class="font-weight-bold text-dark">NIDN/NIDK/NUP</label>
                             <input type="text" class="form-control" id="nidn" name="nidn" placeholder="">
                         </div>
-                        <div class="col col-4">
+                        <div class="col col-4 ">
                             <label for="nip" class="font-weight-bold text-dark">NIP</label>
                             <input type="text" class="form-control" id="nip" name="nip" placeholder="Last name">
                         </div>
                         <div class="col col-sm-1">
                         
                         </div>
-                        <div class="col">
-                            <img src="" class="mb-3" style="border:solid #000 5px;height:120px;width:100px;" id="propic">
-                            <input type="file" class="form-control-file" id="profile_image" name="profile_image">
+                        <div class="col col-2 ">
+                        <img src="" class="mb-3" style="border:solid #000 5px;height:120px;width:100px;" id="propic">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="profile_image" name="profile_image">
+                                <label for="profile_image" class="custom-file-label">.jpg/.png</label>
+                            </div>
                         </div>
                     </div>
                     <div class="row">

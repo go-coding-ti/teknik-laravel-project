@@ -79,6 +79,9 @@ class ValidatorController extends Controller
         $aktif->id_status_keaktifan = $request->statusaktif;
         $aktif->tmt_keaktifan = $request->tmtaktif;
         $aktif->save();
+
+        $request->hasFile('');
+
         return redirect()->route('admin-home');
     }
 
