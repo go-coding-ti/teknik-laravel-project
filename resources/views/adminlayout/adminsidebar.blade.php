@@ -60,11 +60,8 @@
           </a>
           <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">Custom Utilities:</h6>
-              <a class="collapse-item" href="utilities-color.html">Colors</a>
-              <a class="collapse-item" href="utilities-border.html">Borders</a>
-              <a class="collapse-item" href="utilities-animation.html">Animations</a>
-              <a class="collapse-item" href="utilities-other.html">Other</a>
+              <a class="collapse-item" href="{{route('penelitian-list')}}">Penelitian</a>
+              <a class="collapse-item" href="utilities-border.html">Pengabdian</a>
             </div>
           </div>
         </li>
@@ -78,7 +75,7 @@
         </div>-->
   
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseRemu" aria-expanded="true" aria-controls="collapseRemu">
             <i class="fas fa-fw fa-money-check"></i>
             <span>Pengabdian Masyarakat</span>
@@ -95,7 +92,7 @@
               <a class="collapse-item" href="blank.html">Blank Page</a>
             </div>
           </div>
-        </li>
+        </li> -->
   
         <!-- Nav Item - Charts -->
         <!--<li class="nav-item">
