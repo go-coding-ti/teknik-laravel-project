@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class PenelitianController extends Controller
+class KompetensiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,8 +14,7 @@ class PenelitianController extends Controller
      */
     public function index()
     {
-        //
-        return view('admin.penelitian');
+        return view('admin.kompetensi');
     }
 
     /**

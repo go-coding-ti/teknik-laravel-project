@@ -20,7 +20,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/{id}/delete', 'admin\ValidatorController@destroy')->name('dosen-delete');
     Route::get('/create', 'admin\ValidatorController@index')->name('dosen-createpage');
     Route::post('/store', 'admin\ValidatorController@store')->name('dosen-store');
-    Route::get('/penelitian', 'PenelitianController@index')->name('penelitian-list');
-    Route::get('/pengabdian', 'PenelitianController@index')->name('pengabdian-list');
-    Route::get('/kompetensi', 'PenelitianController@index')->name('unknown');
+    Route::get('/penelitian', 'admin\PenelitianController@index')->name('penelitian-list');
+    Route::get('/pengabdian', 'admin\PengabdianController@index')->name('pengabdian-list');
+    Route::get('/kompetensi', 'admin\KompetensiController@index')->name('kompetensi-list');
 });

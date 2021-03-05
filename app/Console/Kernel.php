@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('command:notif')->cron('1 0 0 * *');
+        $schedule->command('command:notif')->everyMinute();
     }
 
     /**
