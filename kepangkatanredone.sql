@@ -16,6 +16,36 @@ CREATE DATABASE /*!32312 IF NOT EXISTS*/`kepangkatan_db` /*!40100 DEFAULT CHARAC
 
 USE `kepangkatan_db`;
 
+/*Table structure for table `detail_kategori_penelitian` */
+
+DROP TABLE IF EXISTS `detail_kategori_penelitian`;
+
+CREATE TABLE `detail_kategori_penelitian` (
+  `id_detail_kategori_penelitian` int(11) NOT NULL AUTO_INCREMENT,
+  `id_kategori_penelitian` int(11) DEFAULT NULL,
+  `detail_kategori_penelitian` text,
+  PRIMARY KEY (`id_detail_kategori_penelitian`),
+  KEY `id_kategori_penelitian` (`id_kategori_penelitian`),
+  CONSTRAINT `detail_kategori_penelitian_ibfk_1` FOREIGN KEY (`id_kategori_penelitian`) REFERENCES `master_kategori_penelitian` (`id_kategori_penelitian`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `detail_kategori_penelitian` */
+
+/*Table structure for table `detail_kategori_pengabdian` */
+
+DROP TABLE IF EXISTS `detail_kategori_pengabdian`;
+
+CREATE TABLE `detail_kategori_pengabdian` (
+  `id_detail_kategori_pengabdian` int(11) NOT NULL AUTO_INCREMENT,
+  `id_kategori_pengabdian` int(11) DEFAULT NULL,
+  `detail_kategori_pengabdian` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id_detail_kategori_pengabdian`),
+  KEY `id_kategori_pengabdian` (`id_kategori_pengabdian`),
+  CONSTRAINT `detail_kategori_pengabdian_ibfk_1` FOREIGN KEY (`id_kategori_pengabdian`) REFERENCES `master_kategori_pengabdian` (`id_kategori_pengabdian`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `detail_kategori_pengabdian` */
+
 /*Table structure for table `master_fakultas` */
 
 DROP TABLE IF EXISTS `master_fakultas`;
@@ -66,17 +96,42 @@ insert  into `master_jabatan_fungsional`(`id_jabatan_fungsional`,`jabatan_fungsi
 (3,'Lektor'),
 (4,'Lektor Kepala');
 
-/*Table structure for table `master_kategori penelitian` */
+/*Table structure for table `master_kategori_penelitian` */
 
-DROP TABLE IF EXISTS `master_kategori penelitian`;
+DROP TABLE IF EXISTS `master_kategori_penelitian`;
 
-CREATE TABLE `master_kategori penelitian` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `master_kategori_penelitian` (
+  `id_kategori_penelitian` int(11) NOT NULL AUTO_INCREMENT,
   `kategori_penelitian` enum('Hasil penelitian atau hasil pemikiran yang dipublikasikan dalam bentuk buku (ber-ISSN/ISBN)','Hasil penelitian atau hasil pemikiran dalam buku yang  dipublikasikan dan berisi berbagai tulisan dari berbagai penulis (book chapter) (ber ISBN)','Hasil penelitian atau hasil pemikiran yang dipublikasikan','Hasil penelitian atau hasil pemikiran yang didesiminasikan','Menerjemahkan/menyadur buku ilmiah yang diterbitkan (ber ISBN)','Mengedit/menyunting karya ilmiah dalam bentuk buku yang diterbitkan (ber ISBN)','Membuat rancangan dan karya teknologi yang dipatenkan atau seni yang terdaftar di HaKI secara nasional atau internasional','Membuat rancangan dan karya teknologi yang tidak dipatenkan; rancangan dan karya seni monumental yang tidak terdaftar di HaKI tetapi telah dipresentasikan pada forum yang teragenda','Membuat rancangan dan karya seni yang tidak mendapatkan HaKI','Tahapan penelitian LPPM (Penelitian LPPM PNPB/KEMENRISTEK DIKTI/LUAR)','Hasil penelitian atau pemikiran atau kerjasama industri yang tidak dipublikasikan (tersimpan dalam perpustakaan) yang dilakukan secara melembaga') DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id_kategori_penelitian`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `master_kategori_penelitian` */
+
+insert  into `master_kategori_penelitian`(`id_kategori_penelitian`,`kategori_penelitian`) values 
+(1,'Hasil penelitian atau hasil pemikiran dalam buku yang  dipublikasikan dan berisi berbagai tulisan dari berbagai penulis (book chapter) (ber ISBN)'),
+(2,'Hasil penelitian atau hasil pemikiran yang didesiminasikan'),
+(3,'Hasil penelitian atau hasil pemikiran yang dipublikasikan'),
+(4,'Hasil penelitian atau hasil pemikiran yang dipublikasikan dalam bentuk buku (ber-ISSN/ISBN)'),
+(5,'Hasil penelitian atau pemikiran atau kerjasama industri yang tidak dipublikasikan (tersimpan dalam perpustakaan) yang dilakukan secara melembaga'),
+(6,'Membuat rancangan dan karya seni yang tidak mendapatkan HaKI'),
+(7,'Membuat rancangan dan karya teknologi yang dipatenkan atau seni yang terdaftar di HaKI secara nasional atau internasional'),
+(8,'Membuat rancangan dan karya teknologi yang tidak dipatenkan; rancangan dan karya seni monumental yang tidak terdaftar di HaKI tetapi telah dipresentasikan pada forum yang teragenda'),
+(9,'Menerjemahkan/menyadur buku ilmiah yang diterbitkan (ber ISBN)'),
+(10,'Mengedit/menyunting karya ilmiah dalam bentuk buku yang diterbitkan (ber ISBN)'),
+(11,'Tahapan penelitian LPPM (Penelitian LPPM PNPB/KEMENRISTEK DIKTI/LUAR)');
+
+/*Table structure for table `master_kategori_pengabdian` */
+
+DROP TABLE IF EXISTS `master_kategori_pengabdian`;
+
+CREATE TABLE `master_kategori_pengabdian` (
+  `id_kategori_pengabdian` int(11) NOT NULL AUTO_INCREMENT,
+  `kategori_pengabdian` text,
+  PRIMARY KEY (`id_kategori_pengabdian`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-/*Data for the table `master_kategori penelitian` */
+/*Data for the table `master_kategori_pengabdian` */
 
 /*Table structure for table `master_keaktifan` */
 
@@ -151,13 +206,56 @@ insert  into `master_pendidikan`(`id_pendidikan`,`jenjang_pendidikan_terakhir`,`
 DROP TABLE IF EXISTS `master_penelitian`;
 
 CREATE TABLE `master_penelitian` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_penelitian` int(11) NOT NULL AUTO_INCREMENT,
+  `id_kategori_penelitian` int(11) DEFAULT NULL,
   `jenis_penelitian` enum('test') DEFAULT NULL,
   `judul` text,
-  PRIMARY KEY (`id`)
+  `penerbit` text,
+  `edisi` text,
+  `ISBN` int(11) DEFAULT NULL,
+  `jumlah_halaman` int(11) DEFAULT NULL,
+  `bulan_publikasi` int(11) DEFAULT NULL,
+  `tahun_publikasi` int(11) DEFAULT NULL,
+  `keterangan` text,
+  `file_sk_tugas` text,
+  `file_bukti_kerja` text,
+  `status_validitas` enum('Valid','Tidak Valid','Belum Valid') DEFAULT NULL,
+  PRIMARY KEY (`id_penelitian`),
+  KEY `id_kategori_penelitian` (`id_kategori_penelitian`),
+  CONSTRAINT `master_penelitian_ibfk_1` FOREIGN KEY (`id_kategori_penelitian`) REFERENCES `master_kategori_penelitian` (`id_kategori_penelitian`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 /*Data for the table `master_penelitian` */
+
+/*Table structure for table `master_pengabdian` */
+
+DROP TABLE IF EXISTS `master_pengabdian`;
+
+CREATE TABLE `master_pengabdian` (
+  `id_pengabdian` int(11) NOT NULL AUTO_INCREMENT,
+  `id_kategori_pengabdian` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id_pengabdian`),
+  KEY `id_kategori_pengabdian` (`id_kategori_pengabdian`),
+  CONSTRAINT `master_pengabdian_ibfk_1` FOREIGN KEY (`id_kategori_pengabdian`) REFERENCES `master_kategori_pengabdian` (`id_kategori_pengabdian`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `master_pengabdian` */
+
+/*Table structure for table `master_penulis` */
+
+DROP TABLE IF EXISTS `master_penulis`;
+
+CREATE TABLE `master_penulis` (
+  `id_penulis` int(11) NOT NULL AUTO_INCREMENT,
+  `id_penelitian` int(11) DEFAULT NULL,
+  `nama_penulis` varchar(50) DEFAULT NULL,
+  `role` enum('Dosen','LUAR','Mahasiswa') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  PRIMARY KEY (`id_penulis`),
+  KEY `id_penelitian` (`id_penelitian`),
+  CONSTRAINT `master_penulis_ibfk_1` FOREIGN KEY (`id_penelitian`) REFERENCES `master_penelitian` (`id_penelitian`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+/*Data for the table `master_penulis` */
 
 /*Table structure for table `master_prodi` */
 
