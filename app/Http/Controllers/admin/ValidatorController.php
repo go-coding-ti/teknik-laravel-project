@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin;
 
+use App\http\controllers\controller;
 use Illuminate\Http\Request;
 use App\Dosen;
 use App\MasterIdPendidik;

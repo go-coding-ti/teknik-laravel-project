@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\KategoriPenelitian;
 
 class PenelitianController extends Controller
 {
@@ -14,7 +15,8 @@ class PenelitianController extends Controller
      */
     public function index()
     {
-        return view('admin.penelitian');
+        $kategori = KategoriPenelitian::all();
+        return view('admin.penelitian', compact('kategori'));
     }
 
     /**
