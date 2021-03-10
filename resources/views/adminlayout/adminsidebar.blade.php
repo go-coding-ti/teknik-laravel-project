@@ -122,8 +122,12 @@
             </div>
           </div>
         </li>-->
-
         <li class="nav-item">
+          <a class="nav-link" href="{{Route('kompetensi-list')}}">
+            <i class="fas fa-fw fa-list"></i>
+            <span>Kompetensi</span></a>
+        </li>
+        {{-- <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseKI" aria-expanded="true" aria-controls="collapseKI">
             <i class="fas fa-fw fa-list"></i>
             <span>Kompetensi</span>
@@ -137,7 +141,7 @@
               <a class="collapse-item" href="utilities-other.html">Other</a>
             </div>
           </div>
-        </li>
+        </li> --}}
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
   
