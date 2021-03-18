@@ -16,6 +16,8 @@ class PenelitianController extends Controller
     public function index()
     {
         $kategori = KategoriPenelitian::all();
+        // $id = $kategori->id_kategori_penelitian;
+        // dd($kategori->id_kategori_penelitian);
         return view('admin.penelitian', compact('kategori'));
     }
 

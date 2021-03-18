@@ -23,7 +23,7 @@
         <hr style="margin-top: 20px" class="sidebar-divider my-0">
   
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item active">
+        <li class="nav-item">
           <a class="nav-link" href="/admin">
             <i class="fas fa-fw fa-user"></i>
             <span>Master Data Dosen</span></a>

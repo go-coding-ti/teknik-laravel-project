@@ -10,6 +10,8 @@
   <meta name="author" content="">
 
   <title>SIM Dosen</title>
+  <!-- Linked Bootstrap lib -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" integrity="sha512-xmGTNt20S0t62wHLmQec2DauG9T+owP9e6VU8GigI0anN7OXLip9i7IwEhelasml2osdxX71XcYm6BQunTQeQg==" crossorigin="anonymous" />
 
   <!-- Custom fonts for this template-->
   <link href="{{ asset('assets/admin/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
@@ -17,8 +19,10 @@
 
   <!-- Custom styles for this template-->
   <link href="{{ asset('assets/admin/css/sb-admin-2.min.css')}}" rel="stylesheet">
-
   <link href="{{ asset('assets/admin/vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+  <link href="{{ asset('assets/admin/vendor/datatables/searchPanes.bootstrap4.min.css')}}" rel="stylesheet">
+  <link href="{{ asset('assets/admin/vendor/datatables/select.bootstrap4.min.css')}}" rel="stylesheet">
+  <link href="{{ asset('assets/admin/vendor/datatables/buttons.dataTables.min.css')}}" rel="stylesheet">
 
 </head>
 
@@ -102,7 +106,14 @@
   <script src="{{ asset('assets/admin/vendor/datatables/jquery.dataTables.min.js')}}"></script>
   <script src="{{ asset('assets/admin/vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
   <script src="{{ asset('assets/admin/js/demo/datatables-demo.js')}}"></script>
-
+  <!-- Bootstrap tags input -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.js" integrity="sha512-VvWznBcyBJK71YKEKDMpZ0pCVxjNuKwApp4zLF3ul+CiflQi6aIJR+aZCP/qWsoFBA28avL5T5HA+RE+zrGQYg==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput-angular.min.js" integrity="sha512-KT0oYlhnDf0XQfjuCS/QIw4sjTHdkefv8rOJY5HHdNEZ6AmOh1DW/ZdSqpipe+2AEXym5D0khNu95Mtmw9VNKg==" crossorigin="anonymous"></script>
+  <!-- Data tables search panes -->
+  <script src="{{ asset('assets/admin/vendor/datatables/dataTables.searchPanes.min.js')}}"></script>
+  <script src="{{ asset('assets/admin/vendor/datatables/searchPanes.bootstrap4.min.js')}}"></script>
+  <script src="{{ asset('assets/admin/vendor/datatables/dataTables.select.min.js')}}"></script>
+  <script src="{{ asset('assets/admin/vendor/datatables/dataTables.buttons.min.js')}}"></script>
 </body>
 
 </html>
