@@ -18,6 +18,7 @@ Route::get('/', 'admin\HomeController@Home')->name('admin-home');
 Route::prefix('admin')->group(function () {
     Route::get('/', 'admin\HomeController@Home')->name('admin-home');
     Route::get('/{id}/delete', 'admin\ValidatorController@destroy')->name('dosen-delete');
+    Route::get('/detail/dosen/{id}', 'admin\ValidatorController@detailDosen')->name('dosen-detail');
     Route::get('/create', 'admin\ValidatorController@index')->name('dosen-createpage');
     Route::post('/store', 'admin\ValidatorController@store')->name('dosen-store');
     Route::get('/penelitian', 'admin\PenelitianController@index')->name('penelitian-list');

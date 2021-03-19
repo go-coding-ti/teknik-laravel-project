@@ -114,6 +114,36 @@
   <script src="{{ asset('assets/admin/vendor/datatables/searchPanes.bootstrap4.min.js')}}"></script>
   <script src="{{ asset('assets/admin/vendor/datatables/dataTables.select.min.js')}}"></script>
   <script src="{{ asset('assets/admin/vendor/datatables/dataTables.buttons.min.js')}}"></script>
+  <div class="modal fade bd-example-modal-lg" id="modal-global">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="fa fa-3x fa-refresh fa-spin"></i>
+                    <div>Please wait...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
 </body>
+<script>
+  $('.modal-global').click(function(event) {
+  event.preventDefault();
 
+  var url = $(this).attr('href');
+
+  $("#modal-global").modal('show');
+
+  $.ajax({
+      url: url,
+      type: 'GET',
+      dataType: 'html',
+  })
+  .done(function(response) {
+      $("#modal-global").find('.modal-body').html(response);
+  });
+
+});
+</script>
 </html>

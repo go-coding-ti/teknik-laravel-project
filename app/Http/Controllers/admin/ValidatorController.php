@@ -53,7 +53,57 @@ class ValidatorController extends Controller
      */
     public function store(Request $request)
     {
+        $images = null;
+        $karpeg = null;
+        $npwp = null;
+        $karis = null;
+        $ktp = null;
         $dosen = new Dosen;
+        if($request->file('profile_image')){
+            //simpan file
+            $file = $request->file('profile_image');
+            $images = time()."_".$file->getClientOriginalName();
+            $dosen->foto = $images;
+
+            $foto_upload = 'img';
+            $file->move($foto_upload,$images);
+        }
+        if($request->file('filekarpeg')){
+            //simpan file
+            $file = $request->file('filekarpeg');
+            $karpeg = time()."_".$file->getClientOriginalName();
+            $dosen->file_karpeg = $karpeg;
+
+            $karpeg_upload = 'karpeg';
+            $file->move($karpeg_upload,$karpeg);
+        }
+        if($request->file('filenpwp')){
+            //simpan file
+            $file = $request->file('filenpwp');
+            $npwp = time()."_".$file->getClientOriginalName();
+            $dosen->file_npwp = $npwp;
+
+            $npwp_upload = 'npwp';
+            $file->move($npwp_upload,$npwp);
+        }
+        if($request->file('filekaris')){
+            //simpan file
+            $file = $request->file('filekaris');
+            $karis = time()."_".$file->getClientOriginalName();
+            $dosen->file_karis_karsu = $karis;
+
+            $karis_upload = 'karis';
+            $file->move($karis_upload,$karis);
+        }
+        if($request->file('filektp')){
+            //simpan file
+            $file = $request->file('filektp');
+            $ktp = time()."_".$file->getClientOriginalName();
+            $dosen->file_ktp = $ktp;
+
+            $ktp_upload = 'ktp';
+            $file->move($ktp_upload,$ktp);
+        }
         $dosen->nip = $request->nip;
         $dosen->nama = $request->nama;
         $dosen->gelar_depan = $request->gelardepan;
@@ -67,13 +117,9 @@ class ValidatorController extends Controller
         $dosen->no_hp = $request->nohp;
         $dosen->email_aktif = $request->email;
         $dosen->no_karpeg = $request->nokarpeg;
-        $dosen->file_karpeg = $request->filekarpeg;
         $dosen->no_npwp = $request->nonpwp;
-        $dosen->file_npwp = $request->filenpwp;
         $dosen->no_karis_karsu = $request->nokaris;
-        $dosen->file_karis_karsu = $request->filekaris;
         $dosen->no_ktp = $request->noktp;
-        $dosen->file_ktp = $request->filektp;
         $dosen->save();
 
         $aktif = new MasterKeaktifan;
@@ -81,8 +127,6 @@ class ValidatorController extends Controller
         $aktif->id_status_keaktifan = $request->statusaktif;
         $aktif->tmt_keaktifan = $request->tmtaktif;
         $aktif->save();
-
-        $request->hasFile('');
 
         return redirect()->route('admin-home');
     }
@@ -142,4 +186,40 @@ class ValidatorController extends Controller
         
         return redirect()->route('admin-home');
     }
+
+    public function detailDosen($id){
+    $dosen = Dosen::where('nip','=',$id)->first();
+
+    return "
+    <table class='table table-borderless'>
+    <tbody>
+        <tr>
+            <td>NIP</td>
+            <td>{$dosen->nip}</td>
+        </tr>
+        <tr>
+            <td>Nama</td>
+            <td>{$dosen->nama}</td>
+        </tr>
+        <tr>
+            <td>NIP</td>
+            <td>{$dosen->nip}</td>
+        </tr>
+        <tr>
+            <td>NIP</td>
+            <td>{$dosen->nip}</td>
+        </tr>
+        <tr>
+            <td>NIP</td>
+            <td>{$dosen->nip}</td>
+        </tr>
+        <tr>
+            <td>NIP</td>
+            <td>{$dosen->nip}</td>
+        </tr>
+    </tbody>
+</table>
+                
+    ";    
+}
 }

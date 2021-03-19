@@ -35,7 +35,11 @@
                       <td>{{$dosen->no_hp}}</td>
                       <td>{{$dosen->status_keaktifan}}</td>
                       <td>{{$dosen->tmt_keaktifan}}</td>
-                      <td><a style="margin-right:7px" class="btn btn-info btn-sm" ><i class="fas fa-pencil-alt"></i></a><a class="btn btn-danger btn-sm" href="/admin/{{$dosen->nip}}/delete" onclick="return confirm('Apakah Anda Yakin ?')"><i class="fas fa-trash"></i></a></td>
+                      <td>
+                        <a style="margin-right:7px" class="btn btn-info btn-sm" ><i class="fas fa-pencil-alt"></i></a>
+                        <a class="btn btn-danger btn-sm" href="/admin/{{$dosen->nip}}/delete" onclick="return confirm('Apakah Anda Yakin ?')"><i class="fas fa-trash"></i></a>
+                        <a href="/admin/detail/dosen/{{$dosen->nip}}" class="btn btn-warning modal-global"><i class="fas fa-eye"></i></a>
+                      </td>
                     </tr>
                   @endforeach
                   </tbody>

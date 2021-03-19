@@ -10,7 +10,7 @@ class Dosen extends Model
     protected $table = 'tb_dosen';
 
     protected $fillable = ['nama', 'gelar', 'gelar_depan', 'gelar_belakang', 'jenis_kelamin', 'tempat_lahir'
-    , 'tanggal_lahir', 'alamat_domisili', 'alamat_rumah', 'telp_rumah', 'no_hp', 'email_aktif', 'no_karpeg',  'file_karpeg'
+    , 'tanggal_lahir', 'alamat_domisili', 'alamat_rumah', 'telp_rumah', 'no_hp', 'email_aktif','foto', 'no_karpeg',  'file_karpeg'
     , 'no_npwp', 'file_npwp', 'no_karis/karsu', 'file_karis/karsu', 'no_ktp', 'file_ktp', 'status_keaktifan', 'tmt_keaktifan'];
 
     public function masteridpendidik(){
