@@ -14,6 +14,7 @@
             <div class="card-body">
               <div class="table-responsive">
               <a class= "btn btn-success text-white" href="{{route('dosen-createpage')}}"><i class="fas fa-plus"></i> Tambah Data Dosen</a>
+              <a class= "btn btn-primary text-white" id="toggle" ><i class="fas fa-download"></i> Import Data Penelitian</a>
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>

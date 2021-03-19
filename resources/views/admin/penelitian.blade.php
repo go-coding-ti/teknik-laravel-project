@@ -30,7 +30,8 @@
             </div>
             <div class="card-body">
               <div class="table-responsive">
-                <a class= "btn btn-success text-white" id="toggle" ><i class="fas fa-plus"></i> Advanced Search</a>
+                <a class= "btn btn-warning text-white" id="toggle" ><i class="fas fa-search"></i> Advanced Search</a>
+                <a class= "btn btn-primary text-white" id="toggle" ><i class="fas fa-download"></i> Import Data Penelitian</a>
                   <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
                     <thead>
                       <tr>
