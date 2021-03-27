@@ -8,7 +8,7 @@ class TmtKepangkatanFungsional extends Model
 {
     //
     protected $table = 'tmt_kepangkatan_fungsional';
-
+    protected $primaryKey = 'id_tmt_kepangkatan_fungsional';
     protected $fillable = ['id_pangkat_pns', 'nip', 'tmt_pangkat/golongan', 'unit'];
 
     public function dosen(){

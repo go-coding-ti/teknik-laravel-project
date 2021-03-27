@@ -8,11 +8,16 @@ use App\Dosen;
 
 class HomeController extends Controller
 {
-    public function home(){
-
-
-        $data = Dosen::get();
-        // dd(isset($data));
-        return view('admin.homeadmin', compact('data'));
+    public function home(Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/admin/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $check = $request->session()->get('admin.id');
+            $user = $request->session()->get('admin.data');
+            $profiledata = Dosen::where('nip','=', $user["nip"])->first();
+            $data = Dosen::get();
+            // dd($profiledata);
+            return view('admin.homeadmin', compact('data','profiledata'));
+        }
     }
 }

@@ -32,7 +32,7 @@
         <li class="nav-item">
           <a class="nav-link" href="/admin">
             <i class="fas fa-fw fa-user"></i>
-            <span>Management Data Dosen</span></a>
+            <span>Data Diri</span></a>
         </li>
   
         <!-- Divider -->

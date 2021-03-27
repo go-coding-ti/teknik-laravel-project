@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Dosen extends Model
 {
-    //
+    
     protected $table = 'tb_dosen';
 
     protected $fillable = ['nama', 'gelar', 'gelar_depan', 'gelar_belakang', 'jenis_kelamin', 'tempat_lahir'
@@ -33,11 +33,11 @@ class Dosen extends Model
     }
 
     public function tmtpangkat(){
-        return $this->hasMany(TmtKepangkatanFungsional::class, 'id_pangkat_fungsional');
+        return $this->hasMany(TmtKepangkatanFungsional::class, 'id_tmt_kepangkatan_fungsional');
     }
 
     public function pangkat(){
-        return $this->belongsToMany('App\MasterPangkatPns', 'tmt_kepangkaktan_fungsional', 'nip', 'id_pangkat_pns')->withPivot('id_tmt_kepangkatan_fungsional');
+        return $this->belongsToMany(MasterPangkatPns::class, 'tmt_kepangkatan_fungsional', 'id_pangkat_pns','nip');
     }
 
     public function kepegawainan(){

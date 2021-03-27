@@ -31,7 +31,7 @@
   <!-- Page Wrapper -->
   <div id="wrapper">
 
-    @include('adminlayout.adminsidebar')
+    @include('userlayout.usersidebar')
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -39,7 +39,7 @@
       <!-- Main Content -->
       <div id="content">
 
-    @include('adminlayout.adminnavbar')
+    @include('userlayout.usernavbar')
 
         @yield('content')    
 

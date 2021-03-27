@@ -1,4 +1,4 @@
-@extends('adminlayout.layout')
+@extends('userlayout.layout')
 @section('content')
 <div class="modal fade" id="modal-global">
   <div class="modal-dialog">
