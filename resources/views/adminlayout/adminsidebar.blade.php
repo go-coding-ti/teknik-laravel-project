@@ -11,8 +11,8 @@
         
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
-        <div class="sidebar-brand d-flex align-items-center justify-content-center" href="/admin">
-          <div class="sidebar-brand-icon">
+        <div class="sidebar-brand d-flex align-items-center justify-content-right" href="/admin">
+          <div style="margin-left: 10px;" class="sidebar-brand-icon">
             <img class="border" style="height:60px;width:50px;" src="{{asset('assets/admin/img/4x6.jpg')}}">
           </div>
           <div style="font-size: 10px !important;margin-left:10px;" class="sidebar-brand-text my-3">

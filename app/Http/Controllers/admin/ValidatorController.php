@@ -28,7 +28,7 @@ class ValidatorController extends Controller
     public function index(Request $request)
     {
         if(!$request->session()->has('admin')){
-            return redirect('/admin/login')->with('expired','Session Telah Berakhir');
+            return redirect('/login')->with('expired','Session Telah Berakhir');
         }else{
             $check = $request->session()->get('admin.id');
             $user = $request->session()->get('admin.data');
@@ -247,7 +247,7 @@ class ValidatorController extends Controller
 
     public function detailDosen($id, Request $request){
         if(!$request->session()->has('admin')){
-            return redirect('/admin/login')->with('expired','Session Telah Berakhir');
+            return redirect('/login')->with('expired','Session Telah Berakhir');
         }else{
             $check = $request->session()->get('admin.id');
             $user = $request->session()->get('admin.data');

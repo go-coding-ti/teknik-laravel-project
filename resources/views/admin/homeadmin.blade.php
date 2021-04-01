@@ -8,6 +8,9 @@
                   <i class="fa fa-3x fa-refresh fa-spin"></i>
                   <div>
                     <h4>Pilih Salah Satu</h4>
+                    <div class="row">
+                      <input type="file" class="form-control-file" id="excel" name="excel">
+                    </div>
                     <a class= "btn btn-primary text-white" id="toggle" ><i class="fas fa-download"></i> Import Data Dosen</a>
                     <a class= "btn btn-info text-white" id="toggle" ><i class="fas fa-upload"></i> Export Data Dosen</a>
                   </div>
@@ -30,8 +33,8 @@
             <div class="card-body">
               <div class="table-responsive">
               <a class= "btn btn-success text-white" href="{{route('dosen-createpage')}}"><i class="fas fa-plus"></i> Tambah Data Dosen</a>
-              <a data-toggle="modal" data-target="#modal-global" class= "btn btn-primary text-white" id="toggle" ><i class="fas fa-download"></i> Import & Export Data Dosen</a>
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+              <a data-toggle="modal" data-target="#modal-global" class= "btn btn-primary text-white" id="toggle" ><i class="fas fa-download"></i> Import & Export Data Dosen</a>  
+              <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
                       <th>NIP</th>
