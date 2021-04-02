@@ -37,8 +37,8 @@
                       </tr>
                     </thead>
                     <tbody>
-                        @if($data != NULL)
-                            @foreach($data as $d)
+                        @if($datapenelitian != NULL)
+                            @foreach($datapenelitian as $d)
                             <tr>
                                     <td><input value="{{$d['nama']}}"></input></td>
                                     <td><input value="{{$d['judul']}}"></input></td>
