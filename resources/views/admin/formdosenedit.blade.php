@@ -10,10 +10,10 @@
                             <h3 class="m-0 font-weight-bold text-primary">Data Dosen</h3>
                         </div>
                         <div class="col col-1">
-                            <button type="submit" class="btn btn-success">Submit</button>
+                            <button type="submit" class="btn btn-success">Update</button>
                         </div>
                         <div class="col col-1">
-                            <a href="{{route('admin-home')}}" class="btn btn-danger">cancel</a>
+                            <a href="{{route('admin-home')}}" class="btn btn-danger">Cancel</a>
                         </div>
                     </div>
                 </div>
@@ -21,11 +21,11 @@
                     <div class="row align-items-center">
                         <div class="col col-4">
                             <label for="nidn" class="font-weight-bold text-dark">NIDN/NIDK/NUP</label>
-                            <input type="text" class="form-control" id="nidn" name="nidn" placeholder="">
+                            <input type="text" class="form-control" id="nidn" name="nidn" placeholder="NIDN/NIDK/NUP" value="{{$dosen->nip}}">
                         </div>
                         <div class="col col-4 ">
                             <label for="nip" class="font-weight-bold text-dark">NIP</label>
-                            <input type="text" class="form-control" id="nip" name="nip" placeholder="Last name">
+                            <input type="text" class="form-control" id="nip" name="nip" placeholder="NIP">
                         </div>
                         <div class="col col-sm-1">
                         
@@ -41,15 +41,15 @@
                     <div class="row">
                         <div class="col">
                             <label for="gelardepan" class="font-weight-bold text-dark">Gelar Depan</label>
-                            <input type="text" class="form-control" id="gelardepan" name="gelardepan" placeholder="">
+                            <input type="text" class="form-control" id="gelardepan" name="gelardepan" placeholder="Gelar Depan">
                         </div>
                         <div class="col">
                             <label for="InputName" class="font-weight-bold text-dark">Nama Lengkap</label>
-                            <input type="text" class="form-control" id="InputName" name="nama" placeholder="">
+                            <input type="text" class="form-control" id="InputName" name="nama" placeholder="Nama Lengkap">
                         </div>
                         <div class="col">
                             <label for="gelarbelakang" class="font-weight-bold text-dark">Gelar Belakang</label>
-                            <input type="text" class="form-control" id="gelarbelakang" name="gelarbelakang" placeholder="">
+                            <input type="text" class="form-control" id="gelarbelakang" name="gelarbelakang" placeholder="Gelar Belakang">
                         </div>
                     </div>
                     <div class="row">
@@ -57,50 +57,50 @@
                             <label for="StatusDosen" class="font-weight-bold text-dark">Status Dosen</label>
                             <select class="form-control" name="statusdosen" id="statusdosen">
                                 @foreach ($statusDosen as $status)
-                                    <option value="{{$status->id_status_dosen}}">{{$status->status_dosen}}</option>
+                                    <option value="{{$status->id_status_dosen}}" {{ ($dosen->id_status_dosen == $status->id_status_dosen) ? 'selected' : '' }}>{{$status->status_dosen}}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col">
                             <label for="InputTempatLahir" class="font-weight-bold text-dark">Tempat Lahir</label>
-                            <input type="text" class="form-control" id="InputTempatLahir" name="tempatlahir" placeholder="">
+                            <input type="text" class="form-control" id="InputTempatLahir" name="tempatlahir" placeholder="Tempat Lahir">
                         </div>
                         <div class="col">
                             <label for="InputTanggalLahir" class="font-weight-bold text-dark">Tanggal Lahir</label>
-                            <input type="date" class="form-control" id="InputTanggalLahir" name="tanggallahir" placeholder="">
+                            <input type="date" class="form-control" id="InputTanggalLahir" name="tanggallahir" placeholder="Tanggal Lahir">
                         </div>
                         <div class="col col-lg-2">
                             <label for="JenisKelamin" class="font-weight-bold text-dark">Jenis Kelamin</label>
                             <select class="form-control" id="JenisKelamin" name="jeniskelamin">
-                                <option value="Pria">Pria</option>
-                                <option value="Wanita">Wanita</option>
+                                <option value="Pria" {{ ($dosen->jenis_kelamin == "Pria") ? 'selected' : '' }}>Pria</option>
+                                <option value="Wanita" {{ ($dosen->jenis_kelamin == "Wanita") ? 'selected' : '' }}>Wanita</option>
                             </select>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
                             <label for="InputAlamatDomisili" class="font-weight-bold text-dark">Alamat Domisili (Tinggal Sekarang)</label>
-                            <input type="text" class="form-control" id="InputAlamatDomisili" name="alamatdomisili"  placeholder="">
+                            <input type="text" class="form-control" id="InputAlamatDomisili" name="alamatdomisili"  placeholder="Alamat Domisili (Tinggal Sekarang)">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
                             <label for="InputAlamatRumah" class="font-weight-bold text-dark">Alamat Rumah (Sesuai KK/KTP)</label>
-                            <input type="text" class="form-control" id="InputAlamatRumah" name="alamatrumah" placeholder="">
+                            <input type="text" class="form-control" id="InputAlamatRumah" name="alamatrumah" placeholder="Alamat Rumah (Sesuai KK/KTP)">
                         </div>
                     </div>
                     <div class="row">
                         <div class='col'>
                             <label for="InputTelpRumah" class="font-weight-bold text-dark">Telp Rumah</label>
-                            <input type="text" class="form-control" id="InputTelpRumahRumah" name="telprumah" placeholder="">
+                            <input type="text" class="form-control" id="InputTelpRumahRumah" name="telprumah" placeholder="Telp Rumah">
                         </div>
                         <div class='col'>
                             <label for="InputNoHp" class="font-weight-bold text-dark">No HP</label>
-                            <input type="text" class="form-control" id="InputNoHp" name="nohp" placeholder="">
+                            <input type="text" class="form-control" id="InputNoHp" name="nohp" placeholder="No HP">
                         </div>
                         <div class='col'>
                             <label for="InputEmail" class="font-weight-bold text-dark">Email Aktif</label>
-                            <input type="email" class="form-control" id="InputEmail" name="email" placeholder="">
+                            <input type="email" class="form-control" id="InputEmail" name="email" placeholder="Email Aktif">
                         </div>
                     </div>
                 </div>
@@ -117,7 +117,7 @@
                             <label for="PangkatGolongan" class="font-weight-bold text-dark">Pangkat/Golongan Terakhir</label>
                             <select class="form-control" id="PngkatGolongan" name="pangkatgolongan">
                                 @foreach($pangkatDosen as $p)
-                                    <option value="{{$p->id_pangkat_pns}}">{{$p->pangkat}}</option>
+                                    <option value="{{$p->id_pangkat_pns}}" {{ ($dosen->id_pangkat_pns == $p->id_pangkat_pns) ? 'selected' : '' }}>{{$p->pangkat}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -133,7 +133,7 @@
                     <div class="row">
                         <div class="col">
                             <label for="TmtPangkatGolongan" class="font-weight-bold text-dark">TMT Pangkat/Golongan Terakhir</label>
-                            <input type="date" class="form-control" id="TmtPangkatGolongan" name="tmtpangkatgolongan">
+                            <input type="date" class="form-control" id="TmtPangkatGolongan" name="tmtpangkatgolongan"  placeholder="TMT Pangkat/Golongan Terakhir">
                         </div>
                         <div class="col">
                             <label for="TmtJabatan" class="font-weight-bold text-dark">TMT Jabatan Terakhir</label>
@@ -162,37 +162,41 @@
                     <div class="row">
                         <div class="col">
                             <label for="NoKarpeg" class="font-weight-bold text-dark">No Karpeg</label>
-                            <input type="text" class="form-control" id="NoKarpeg" name="nokarpeg">
+                            <input type="text" class="form-control" id="NoKarpeg" name="nokarpeg" placeholder="No Karpeg">
                         </div>
                         <div class="col">
                             <label for="FileKarpeg" class="font-weight-bold text-dark">File Karpeg</label>
                             <input type="file" class="form-control-file" id="FileKarpeg" name="filekarpeg">
+                            <a href="#"><i class="fas fa-download"></i> Download file</a>
                         </div>
                         <div class="col">
                             <label for="NoNpwp" class="font-weight-bold text-dark">No NPWP</label>
-                            <input type="text" class="form-control" id="NoNpwp" name="nonpwp">
+                            <input type="text" class="form-control" id="NoNpwp" name="nonpwp" placeholder="No NPWP">
                         </div>
                         <div class="col">
                             <label for="FileNpwp" class="font-weight-bold text-dark">File NPWP</label>
                             <input type="file" class="form-control-file" name="filenpwp">
+                            <a href="#"><i class="fas fa-download"></i> Download file</a>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
                             <label for="NoKaris" class="font-weight-bold text-dark">No Karis/Karsu</label>
-                            <input type="text" class="form-control" id="Nokaris" name="nokaris">
+                            <input type="text" class="form-control" id="Nokaris" name="nokaris" placeholder="No Karis/Karsu">
                         </div>
                         <div class="col">
                             <label for="FileKaris" class="font-weight-bold text-dark">File Karis/Karsu</label>
                             <input type="file" class="form-control-file" id="FileKaris" name="filekaris">
+                            <a href="#"><i class="fas fa-download"></i> Download file</a>
                         </div>
                         <div class="col">
                             <label for="NoKtp" class="font-weight-bold text-dark">No KTP</label>
-                            <input type="text" class="form-control" id="NoKtp" name="noktp">
+                            <input type="text" class="form-control" id="NoKtp" name="noktp" placeholder="No KTP">
                         </div>
                         <div class="col">
                             <label for="FileKtp" class="font-weight-bold text-dark">File KTP</label>
                             <input type="file" class="form-control-file" id="FileKTP" name="filektp">
+                            <a href="#"><i class="fas fa-download"></i> Download file</a>
                         </div>
                     </div>
                     <div class="row">

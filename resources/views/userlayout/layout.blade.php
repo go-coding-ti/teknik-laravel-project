@@ -10,8 +10,6 @@
   <meta name="author" content="">
 
   <title>SIM Dosen</title>
-  <link rel="shortcut icon" href="{{asset('img/favicon.ico')}}" type="image/x-icon">
-  <link rel="icon" href="{{asset('img/favicon.ico')}}" type="image/x-icon">
   <!-- Linked Bootstrap lib -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css" integrity="sha512-xmGTNt20S0t62wHLmQec2DauG9T+owP9e6VU8GigI0anN7OXLip9i7IwEhelasml2osdxX71XcYm6BQunTQeQg==" crossorigin="anonymous" />
 
@@ -33,7 +31,7 @@
   <!-- Page Wrapper -->
   <div id="wrapper">
 
-    @include('adminlayout.adminsidebar')
+    @include('userlayout.usersidebar')
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -41,7 +39,7 @@
       <!-- Main Content -->
       <div id="content">
 
-    @include('adminlayout.adminnavbar')
+    @include('userlayout.usernavbar')
 
         @yield('content')    
 

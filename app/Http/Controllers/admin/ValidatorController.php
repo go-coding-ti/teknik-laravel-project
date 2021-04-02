@@ -25,14 +25,22 @@ class ValidatorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $statusaktif = MasterStatusKeaktifan::all();
-        $statusDosen = MasterStatusDosen::all();
-        $pangkatDosen = MasterPangkatPns::all();
-        $jabatanDosen = MasterJabatanFungsional::all();
-        $unit = Fakultas::all();
-        return view('admin.formdosen', compact('statusDosen', 'pangkatDosen', 'jabatanDosen', 'unit', 'statusaktif'));
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $check = $request->session()->get('admin.id');
+            $user = $request->session()->get('admin.data');
+            $profiledata = Dosen::where('nip','=', $user["nip"])->first();
+
+            $statusaktif = MasterStatusKeaktifan::all();
+            $statusDosen = MasterStatusDosen::all();
+            $pangkatDosen = MasterPangkatPns::all();
+            $jabatanDosen = MasterJabatanFungsional::all();
+            $unit = Fakultas::all();
+            return view('admin.formdosen', compact('statusDosen', 'pangkatDosen', 'jabatanDosen', 'unit', 'statusaktif','profiledata'));
+        }
     }
 
     /**
@@ -53,6 +61,44 @@ class ValidatorController extends Controller
      */
     public function store(Request $request)
     {
+        $messages = [
+            'required' => 'Kolom :attribute Wajib Diisi!',
+            'unique' => 'Kolom :attribute Tidak Boleh Sama!',
+		];
+
+        $this->validate($request, [
+            'nidn' => 'required',
+            'nip' => 'required|unique:tb_dosen',
+            'profile_image' => 'required',
+            'gelardepan' => 'required',
+            'nama' => 'required',
+            'gelarbelakang' => 'required',
+            'statusdosen' => 'required',
+            'tempatlahir' => 'required',
+            'tanggallahir' => 'required',
+            'jeniskelamin' => 'required',
+            'alamatdomisili' => 'required',
+            'alamatrumah' => 'required',
+            'telprumah' => 'required',
+            'nohp' => 'required',
+            'email' => 'required|email',
+            'pangkatgolongan' => 'required',
+            'jabatanakademik' => 'required',
+            'tmtpangkatgologan' => 'required',
+            'tmtjabatan' => 'required',
+            'unit' => 'required',
+            'nokarpeg' => 'required',
+            'filekarpeg' => 'required|mimes: pdf|max:8000',
+            'nonpwp' => 'required',
+            'filenpwp' => 'required|mimes: pdf|max:8000',
+            'nokaris' => 'required',
+            'filekaris' => 'required|mimes: pdf|max:8000',
+            'noktp' => 'required',
+            'filektp' => 'required|mimes: pdf|max:8000',
+            'statusaktif' => 'required',
+            'tmtaktif' => 'required',
+        ],$messages);
+        
         $images = null;
         $karpeg = null;
         $npwp = null;
@@ -128,6 +174,18 @@ class ValidatorController extends Controller
         $aktif->tmt_keaktifan = $request->tmtaktif;
         $aktif->save();
 
+        $fungsi = new TmtKepangkatanFungsional;
+        $fungsi->nip = $request->nip;
+        $fungsi->id_pangkat_pns = $request->pangkatgolongan;
+        $fungsi->unit->$request->unit;
+        $fungsi->save();
+
+        $jabat = new TmtJabatanFungsional;
+        $jabat->id_jabatanfungsional = $request->jabatanakademik;
+        $jabat->nip = $request->nip;
+        $jabat->tmt_jabatan_fungsional = $request->tmtjabatan;
+        $jabat->save();
+
         return redirect()->route('admin-home');
     }
 
@@ -187,39 +245,21 @@ class ValidatorController extends Controller
         return redirect()->route('admin-home');
     }
 
-    public function detailDosen($id){
-    $dosen = Dosen::where('nip','=',$id)->first();
+    public function detailDosen($id, Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $check = $request->session()->get('admin.id');
+            $user = $request->session()->get('admin.data');
+            $profiledata = Dosen::where('nip','=', $user["nip"])->first();
 
-    return "
-    <table class='table table-borderless'>
-    <tbody>
-        <tr>
-            <td>NIP</td>
-            <td>{$dosen->nip}</td>
-        </tr>
-        <tr>
-            <td>Nama</td>
-            <td>{$dosen->nama}</td>
-        </tr>
-        <tr>
-            <td>NIP</td>
-            <td>{$dosen->nip}</td>
-        </tr>
-        <tr>
-            <td>NIP</td>
-            <td>{$dosen->nip}</td>
-        </tr>
-        <tr>
-            <td>NIP</td>
-            <td>{$dosen->nip}</td>
-        </tr>
-        <tr>
-            <td>NIP</td>
-            <td>{$dosen->nip}</td>
-        </tr>
-    </tbody>
-</table>
-                
-    ";    
-}
+            $dosen = Dosen::where('nip','=',$id)->with('tmtpangkat')->first();
+            $statusaktif = MasterStatusKeaktifan::all();
+            $statusDosen = MasterStatusDosen::all();
+            $pangkatDosen = MasterPangkatPns::all();
+            $jabatanDosen = MasterJabatanFungsional::all();
+            $unit = Fakultas::all();
+            return view('admin.formdosenedit',compact('dosen','statusDosen', 'pangkatDosen', 'jabatanDosen', 'unit', 'statusaktif','profiledata'));
+        }    
+    }
 }
