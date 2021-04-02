@@ -1,17 +1,15 @@
 @extends('adminlayout.layout')
 @section('content')
 <div class="modal fade" id="modal-global">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
           <div class="modal-body">
               <div class="text-center">
                   <i class="fa fa-3x fa-refresh fa-spin"></i>
                   <div>
                     <h4>Pilih Salah Satu</h4>
-                    <div class="row">
-                      <input type="file" class="form-control-file" id="excel" name="excel">
-                    </div>
-                    <a class= "btn btn-primary text-white" id="toggle" ><i class="fas fa-download"></i> Import Data Dosen</a>
+                    <br>
+                    <a href="/admin/import/dosen" class= "btn btn-primary text-white" id="toggle" ><i class="fas fa-download"></i> Import Data Dosen</a>
                     <a class= "btn btn-info text-white" id="toggle" ><i class="fas fa-upload"></i> Export Data Dosen</a>
                   </div>
               </div>
