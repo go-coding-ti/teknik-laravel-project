@@ -12,12 +12,14 @@ use App\Pegawai;
 class AuthController extends Controller
 {
     public function loginpage(Request $request){
-        if(!$request->session()->has('admin')||!$request->session()->has('dosen')){
-            return view('auth.login');
-        }elseif($request->session()->has('admin')){
+        $cekad = $request->session()->get('admin.data');
+        $cekdos = $request->session()->get('dosen.data');
+        if(!is_null($cekdos)){
+            return redirect('/dashboard');
+        }elseif(!is_null($cekad)){
             return redirect('/admin/dashboard');
         }else{
-            return redirect('/dashboard');
+            return view('auth.login');
         }
     }
 
@@ -25,7 +27,7 @@ class AuthController extends Controller
         $username = $request->username;
         $password = $request->password;
 
-        if(!$request->session()->has('admin')&&!$request->session()->has('dosen')){
+        if(!$request->session()->has('admin')||!$request->session()->has('dosen')){
             $iddosen = Dosen::select('nip')->where('nip','=',$username)->first();
             $idpegawai = Pegawai::select('nip')->where('nip','=',$username)->first();
             $validdosen = Dosen::where('nip','=',$username)->first();
@@ -50,10 +52,12 @@ class AuthController extends Controller
                 return redirect('/login')->with('alert','Username Salah!');
             }
         }else{
-            if($request->session()->has('admin')){
-                return redirect('/admin/dashboard');
-            }elseif($request->session()->has('dosen')){
+            $cekad = $request->session()->get('admin.data');
+            $cekdos = $request->session()->get('dosen.data');
+            if(!is_null($cekdos)){
                 return redirect('/dashboard');
+            }elseif(!is_null($cekad)){
+                return redirect('/admin/dashboard');
             }
         }
     }

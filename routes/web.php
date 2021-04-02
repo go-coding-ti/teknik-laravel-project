@@ -27,6 +27,8 @@ Route::prefix('admin')->group(function () {
     Route::get('/penelitian', 'admin\PenelitianController@index')->name('penelitian-list');
     Route::get('/pengabdian', 'admin\PengabdianController@index')->name('pengabdian-list');
     Route::get('/kompetensi', 'admin\KompetensiController@index')->name('kompetensi-list');
+    Route::get('/import/dosen','admin\ValidatorController@importDosen')->name('admin-import-dosen');
+    Route::post('/import/dosen/submit','admin\ValidatorController@storeImportDosen')->name('import-dosen');
 });
 
 Route::prefix('user')->group(function () {

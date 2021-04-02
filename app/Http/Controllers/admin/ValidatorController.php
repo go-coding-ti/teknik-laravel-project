@@ -6,6 +6,8 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Dosen;
+use App\Import;
+use App\Pegawai;
 use App\MasterIdPendidik;
 use App\TmtJabatanFungsional;
 use App\TmtKepangkatanFungsional;
@@ -17,6 +19,8 @@ use App\Prodi;
 use App\Fakultas;
 use App\MasterStatusKeaktifan;
 use App\MasterKeaktifan;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\DosenImports;
 
 class ValidatorController extends Controller
 {
@@ -32,7 +36,7 @@ class ValidatorController extends Controller
         }else{
             $check = $request->session()->get('admin.id');
             $user = $request->session()->get('admin.data');
-            $profiledata = Dosen::where('nip','=', $user["nip"])->first();
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
 
             $statusaktif = MasterStatusKeaktifan::all();
             $statusDosen = MasterStatusDosen::all();
@@ -251,7 +255,7 @@ class ValidatorController extends Controller
         }else{
             $check = $request->session()->get('admin.id');
             $user = $request->session()->get('admin.data');
-            $profiledata = Dosen::where('nip','=', $user["nip"])->first();
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
 
             $dosen = Dosen::where('nip','=',$id)->with('tmtpangkat')->first();
             $statusaktif = MasterStatusKeaktifan::all();
@@ -260,6 +264,35 @@ class ValidatorController extends Controller
             $jabatanDosen = MasterJabatanFungsional::all();
             $unit = Fakultas::all();
             return view('admin.formdosenedit',compact('dosen','statusDosen', 'pangkatDosen', 'jabatanDosen', 'unit', 'statusaktif','profiledata'));
-        }    
+        }
+        
+    }
+
+    public function importDosen(Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $imports = Import::all();
+            $check = $request->session()->get('admin.id');
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            return view('admin.importdosen', compact('profiledata','imports'));
+        }
+    }
+
+    public function storeImportDosen(Request $request){
+        $excel = null;
+        if($request->file('inputfile')){
+            Import::query()->delete();
+            //simpan file
+            $file = $request->file('inputfile');
+            $excel = time()."_".$file->getClientOriginalName();
+            
+            Excel::import(new DosenImports, $file);
+            $upload = 'excel';
+            $file->move($upload,$excel);
+
+            return redirect()->route('admin-import-dosen');
+        }
     }
 }
