@@ -27,6 +27,9 @@ Route::prefix('admin')->group(function () {
     Route::get('/penelitian', 'admin\PenelitianController@index')->name('penelitian-list');
     Route::get('/pengabdian', 'admin\PengabdianController@index')->name('pengabdian-list');
     Route::get('/kompetensi', 'admin\KompetensiController@index')->name('kompetensi-list');
+    Route::get('/import/penelitian-show', 'import\ImportPenelitianController@show')->name('show-import-penelitian');
+    Route::Post('/import/penelitian-review', 'import\ImportPenelitianController@view')->name('show-review-penelitian');
+    Route::Post('/import/penelitian-save', 'import\ImportPenelitianController@save')->name('save-penelitian');
     Route::get('/import/dosen','admin\ValidatorController@importDosen')->name('admin-import-dosen');
     Route::post('/import/dosen/submit','admin\ValidatorController@storeImportDosen')->name('import-dosen');
     Route::get('/{id}/delete/dosen', 'admin\ValidatorController@deleteSort')->name('data-dosen-delete');

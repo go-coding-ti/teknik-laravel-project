@@ -6,7 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pegawai extends Model
 {
+    //
     protected $table = 'tb_pegawai';
+
+    protected $primaryKey = 'id_pegawai';
 
     protected $fillable = ['nama', 'gelar', 'gelar_depan', 'gelar_belakang', 'jenis_kelamin', 'tempat_lahir'
     , 'tanggal_lahir', 'alamat_domisili', 'alamat_rumah', 'telp_rumah', 'no_hp', 'email_aktif','foto', 'no_karpeg',  'file_karpeg'

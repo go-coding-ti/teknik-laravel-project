@@ -10,6 +10,8 @@ class Penulis extends Model
     //
     protected $table = 'master_penulis';
 
+    protected $primaryKey = 'id_penulis';
+
     protected $fillable = ['id_penelitian', 'nama_penulis', 'role'];
 
     public function penelitian(){
