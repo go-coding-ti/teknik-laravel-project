@@ -22,7 +22,8 @@ Route::prefix('admin')->group(function () {
     Route::get('/', 'admin\HomeController@Home')->name('admin-home');
     Route::get('/{id}/delete', 'admin\ValidatorController@destroy')->name('dosen-delete');
     Route::get('/detail/dosen/{id}', 'admin\ValidatorController@detailDosen')->name('dosen-detail');
-    Route::get('/create', 'admin\ValidatorController@index')->name('dosen-createpage');
+    Route::get('/listdosen', 'admin\ValidatorController@index')->name('dosen-page');
+    Route::get('/create', 'admin\ValidatorController@create')->name('dosen-createpage');
     Route::post('/store', 'admin\ValidatorController@store')->name('dosen-store');
     Route::get('/penelitian', 'admin\PenelitianController@index')->name('penelitian-list');
     Route::get('/pengabdian', 'admin\PengabdianController@index')->name('pengabdian-list');
@@ -36,6 +37,6 @@ Route::prefix('admin')->group(function () {
 });
 
 Route::prefix('user')->group(function () {
-    Route::get('/dashboard', 'admin\HomeController@Home')->name('user-home');
+    Route::get('/dashboard', 'user\HomeController@Home')->name('user-home');
     Route::get('/logout','auth\AuthController@logout')->name('admin-logout');
 });

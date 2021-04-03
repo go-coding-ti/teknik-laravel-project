@@ -27,14 +27,52 @@
         </div>
         <!-- Divider -->
         <hr style="margin-top: 20px" class="sidebar-divider my-0">
-  
-        <!-- Nav Item - Dashboard -->
+        
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMaster" aria-expanded="true" aria-controls="collapseUtilities">
+            <i class="fas fa-fw fa-house-user"></i>
+            <span>Master Data</span>
+          </a>
+          <div id="collapseMaster" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <a class="collapse-item" href="utilities-border.html">Fakultas</a>
+              <a class="collapse-item" href="utilities-border.html">Jabatan Fungsional</a>
+              <a class="collapse-item" href="utilities-border.html">Kategori Penelitian</a>
+              <a class="collapse-item" href="utilities-border.html">Kategori Pengabdian</a>
+              <a class="collapse-item" href="utilities-border.html">Pangkat PNS</a>
+              <a class="collapse-item" href="utilities-border.html">Prodi</a>
+              <a class="collapse-item" href="utilities-border.html">Status Dosen</a>
+              <a class="collapse-item" href="utilities-border.html">Status Keaktifan</a>
+              <a class="collapse-item" href="utilities-border.html">Status Kepegawaian</a>
+            </div>
+          </div>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDataUser" aria-expanded="true" aria-controls="collapseUtilities">
+            <i class="fas fa-fw fa-user"></i>
+            <span>Management Data User</span>
+          </a>
+          <div id="collapseDataUser" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <a class="collapse-item" href="/admin/listdosen">Data Dosen</a>
+              <a class="collapse-item" href="utilities-border.html">Data Pegawai</a>
+            </div>
+          </div>
+        </li>
+
+        {{-- <!-- Nav Item - Dashboard -->
         <li class="nav-item">
           <a class="nav-link" href="/admin">
             <i class="fas fa-fw fa-user"></i>
             <span>Management Data Dosen</span></a>
         </li>
-  
+
+        <li class="nav-item">
+          <a class="nav-link" href="/admin">
+            <i class="fas fa-fw fa-user"></i>
+            <span>Management Data Pegawai</span></a>
+        </li> --}}
         <!-- Divider -->
         <!--<hr class="sidebar-divider">-->
   

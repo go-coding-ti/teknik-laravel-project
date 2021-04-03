@@ -15,7 +15,7 @@ class AuthController extends Controller
         $cekad = $request->session()->get('admin.data');
         $cekdos = $request->session()->get('dosen.data');
         if(!is_null($cekdos)){
-            return redirect('/dashboard');
+            return redirect('/user/dashboard');
         }elseif(!is_null($cekad)){
             return redirect('/admin/dashboard');
         }else{
@@ -44,7 +44,7 @@ class AuthController extends Controller
                 if(Hash::check($password, $validdosen->password)){
                     $request->session()->put('dosen',['data'=>$validdosen, 'check'=>'dosen']);
                     $get=$request->session()->get('dosen');
-                    return redirect('/dashboard');
+                    return redirect('/user/dashboard');
                 }else{
                     return redirect('/login')->with('alert','Password Salah!');
                 }
@@ -55,7 +55,7 @@ class AuthController extends Controller
             $cekad = $request->session()->get('admin.data');
             $cekdos = $request->session()->get('dosen.data');
             if(!is_null($cekdos)){
-                return redirect('/dashboard');
+                return redirect('/user/dashboard');
             }elseif(!is_null($cekad)){
                 return redirect('/admin/dashboard');
             }
