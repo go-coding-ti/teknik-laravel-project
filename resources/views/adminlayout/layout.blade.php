@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SIM Dosen</title>
+  <title>SIM Dosen | Admin</title>
   <link rel="shortcut icon" href="{{asset('img/favicon.ico')}}" type="image/x-icon">
   <link rel="icon" href="{{asset('img/favicon.ico')}}" type="image/x-icon">
   <!-- Linked Bootstrap lib -->
@@ -52,7 +52,7 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2020</span>
+            <span>Copyright &copy; SIM Dosen 2021</span>
           </div>
         </div>
       </footer>
