@@ -18,7 +18,7 @@ class PenelitianController extends Controller
         $kategori = KategoriPenelitian::all();
         // $id = $kategori->id_kategori_penelitian;
         // dd($kategori->id_kategori_penelitian);
-        return view('admin.penelitian', compact('kategori'));
+        return view('admin.penelitian.penelitian', compact('kategori'));
     }
 
     /**

@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Import;
+use App\ImportDosen;
 use Maatwebsite\Excel\Concerns\ToModel;
 
 class DosenImports implements ToModel
@@ -14,20 +14,28 @@ class DosenImports implements ToModel
     */
     public function model(array $row)
     {
-        return new Import([
-            'nip' => $row[1],
-            'nama' => $row[2], 
-            'tempatlahir' => $row[3],
-            'tanggallahir' => $row[4],
-            'statuspegawai' => $row[5],
-            'unit' => $row[6],
-            'subunit' => $row[7],
-            'keaktifan' => $row[8],
+        return new ImportDosen([
+            'tahun' => $row[1],
+            'nip' => $row[4],
+            'nidn' => $row[3],
+            'nama' => $row[6],
+            'alamat' => $row[19], 
+            'jenis_kelamin' => $row[9],
+            'tanggallahir' => $row[18],
+            'statuspegawai' => $row[10],
+            'kepangkatan' => $row[11],
+            'unit' => $row[7],
+            'subunit' => $row[8],
+            'keaktifan' => $row[13],
             'pangkat' => $row[9],
-            'jabatan' => $row[10],
-            'pendidikan' => $row[11],
-            'email' => $row[12],
-            'telepon' => $row[13],
+            'jabatanfungsional' => $row[12],
+            'pendidikan' => $row[15],
+            'email' => $row[17],
+            'telepon' => $row[16],
+            'tmt_keaktifan' => $row[14],
+            'status_serdos' => $row[21],
+            'tahun_serdos' => $row[22],
+            'tahun_ajaran' => $row[2],
         ]);
     }
 }

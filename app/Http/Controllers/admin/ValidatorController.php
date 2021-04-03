@@ -6,7 +6,8 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Dosen;
-use App\Import;
+use App\ImportDosen;
+use App\ImportPegawai;
 use App\Pegawai;
 use App\MasterIdPendidik;
 use App\TmtJabatanFungsional;
@@ -43,7 +44,7 @@ class ValidatorController extends Controller
             $pangkatDosen = MasterPangkatPns::all();
             $jabatanDosen = MasterJabatanFungsional::all();
             $unit = Fakultas::all();
-            return view('admin.formdosen', compact('statusDosen', 'pangkatDosen', 'jabatanDosen', 'unit', 'statusaktif','profiledata'));
+            return view('admin.dosen.formdosen', compact('statusDosen', 'pangkatDosen', 'jabatanDosen', 'unit', 'statusaktif','profiledata'));
         }
     }
 
@@ -263,7 +264,7 @@ class ValidatorController extends Controller
             $pangkatDosen = MasterPangkatPns::all();
             $jabatanDosen = MasterJabatanFungsional::all();
             $unit = Fakultas::all();
-            return view('admin.formdosenedit',compact('dosen','statusDosen', 'pangkatDosen', 'jabatanDosen', 'unit', 'statusaktif','profiledata'));
+            return view('admin.dosen.formdosenedit',compact('dosen','statusDosen', 'pangkatDosen', 'jabatanDosen', 'unit', 'statusaktif','profiledata'));
         }
         
     }
@@ -272,18 +273,18 @@ class ValidatorController extends Controller
         if(!$request->session()->has('admin')){
             return redirect('/login')->with('expired','Session Telah Berakhir');
         }else{
-            $imports = Import::all();
+            $imports = ImportDosen::all();
             $check = $request->session()->get('admin.id');
             $user = $request->session()->get('admin.data');
             $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
-            return view('admin.importdosen', compact('profiledata','imports'));
+            return view('admin.dosen.importdosen', compact('profiledata','imports'));
         }
     }
 
     public function storeImportDosen(Request $request){
         $excel = null;
         if($request->file('inputfile')){
-            Import::query()->delete();
+            ImportDosen::query()->delete();
             //simpan file
             $file = $request->file('inputfile');
             $excel = time()."_".$file->getClientOriginalName();
@@ -292,7 +293,16 @@ class ValidatorController extends Controller
             $upload = 'excel';
             $file->move($upload,$excel);
 
-            return redirect()->route('admin-import-dosen');
+            return redirect()->route('admin-import-dosen')->with('success','Berhasil Meload Excel');
+        }else{
+            return redirect()->route('admin-import-dosen')->with('error','Gagal Meload Excel');
         }
+    }
+
+    public function deleteSort($id){
+        $dosen = ImportDosen::where('id','=',$id);
+        $dosen->delete();
+        
+        return redirect()->route('admin-import-dosen')->with('success','Berhasil Menghapus Data');
     }
 }

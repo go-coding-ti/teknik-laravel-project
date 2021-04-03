@@ -14,7 +14,7 @@ class PengabdianController extends Controller
      */
     public function index()
     {
-        return view('admin.pengabdian');
+        return view('admin.pengabdian.pengabdian');
     }
 
     /**
