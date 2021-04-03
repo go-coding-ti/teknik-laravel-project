@@ -24,7 +24,7 @@ class PenelitianController extends Controller
             $user = $request->session()->get('admin.data');
             $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
             $data = Dosen::get();
-            return view('admin.penelitian', compact('kategori','data','profiledata'));
+            return view('admin.penelitian.penelitian', compact('kategori','data','profiledata'));
         }
         
         // $id = $kategori->id_kategori_penelitian;
