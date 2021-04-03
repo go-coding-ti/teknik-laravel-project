@@ -21,7 +21,7 @@ class ImportPenelitianController extends Controller
             $user = $request->session()->get('admin.data');
             $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
             $data = Dosen::get();
-            return view('admin.penelitian-import', compact('datapenelitian','data','profiledata'));
+            return view('admin.penelitian.penelitian-import', compact('datapenelitian','data','profiledata'));
         }
     }
 
@@ -36,7 +36,7 @@ class ImportPenelitianController extends Controller
             $user = $request->session()->get('admin.data');
             $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
             $data = Dosen::get();
-            return view('admin.penelitian-import', compact('datapenelitian','data','profiledata'));
+            return view('admin.penelitian.penelitian-import', compact('datapenelitian','data','profiledata'));
         }
     }
 
