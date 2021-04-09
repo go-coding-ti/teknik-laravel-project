@@ -114,9 +114,7 @@
                         <td><input type="text" id="row-1-tahunajaran" name="row-1-tahun_ajaran" value="{{$data->tahun_ajaran}} "></td>
                       </tr>
                     @empty
-                    <tr>
-                        <td align="center" colspan="22">Data Kosong</td>
-                    </tr>
+                    
                     @endforelse
                     </tbody>
                     <tfoot>

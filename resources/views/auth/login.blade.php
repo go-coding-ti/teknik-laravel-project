@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SIM Dosen - Login</title>
+  <title>SIM Dosen | Login</title>
   <link rel="shortcut icon" href="{{asset('img/favicon.ico')}}" type="image/x-icon">
   <!-- Custom fonts for this template-->
   <link href="{{asset('assets/admin/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">

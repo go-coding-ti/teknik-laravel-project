@@ -30,7 +30,25 @@ class ValidatorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index(Request $request)
+    {
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            $data = Dosen::get();
+            return view('admin.dosen.listdosen', compact('data','profiledata'));
+        }
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create(Request $request)
     {
         if(!$request->session()->has('admin')){
             return redirect('/login')->with('expired','Session Telah Berakhir');
@@ -46,16 +64,6 @@ class ValidatorController extends Controller
             $unit = Fakultas::all();
             return view('admin.dosen.formdosen', compact('statusDosen', 'pangkatDosen', 'jabatanDosen', 'unit', 'statusaktif','profiledata'));
         }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -304,5 +312,16 @@ class ValidatorController extends Controller
         $dosen->delete();
         
         return redirect()->route('admin-import-dosen')->with('success','Berhasil Menghapus Data');
+    }
+
+    public function indexPegawai(Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            $data = Pegawai::get();
+            return view('admin.dosen.listpegawai', compact('data','profiledata'));
+        }
     }
 }
