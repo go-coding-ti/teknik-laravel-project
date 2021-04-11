@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Dosen extends Model
 {
-    
+    protected $primaryKey = 'nip';
     protected $table = 'tb_dosen';
 
     protected $fillable = ['nama', 'gelar', 'gelar_depan', 'gelar_belakang', 'jenis_kelamin', 'tempat_lahir'

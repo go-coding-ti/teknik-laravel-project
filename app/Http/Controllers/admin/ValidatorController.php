@@ -22,6 +22,8 @@ use App\MasterStatusKeaktifan;
 use App\MasterKeaktifan;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\DosenImports;
+use Response;
+use Illuminate\Support\Facades\Hash;
 
 class ValidatorController extends Controller
 {
@@ -275,53 +277,5 @@ class ValidatorController extends Controller
             return view('admin.dosen.formdosenedit',compact('dosen','statusDosen', 'pangkatDosen', 'jabatanDosen', 'unit', 'statusaktif','profiledata'));
         }
         
-    }
-
-    public function importDosen(Request $request){
-        if(!$request->session()->has('admin')){
-            return redirect('/login')->with('expired','Session Telah Berakhir');
-        }else{
-            $imports = ImportDosen::all();
-            $check = $request->session()->get('admin.id');
-            $user = $request->session()->get('admin.data');
-            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
-            return view('admin.dosen.importdosen', compact('profiledata','imports'));
-        }
-    }
-
-    public function storeImportDosen(Request $request){
-        $excel = null;
-        if($request->file('inputfile')){
-            ImportDosen::query()->delete();
-            //simpan file
-            $file = $request->file('inputfile');
-            $excel = time()."_".$file->getClientOriginalName();
-            
-            Excel::import(new DosenImports, $file);
-            $upload = 'excel';
-            $file->move($upload,$excel);
-
-            return redirect()->route('admin-import-dosen')->with('success','Berhasil Meload Excel');
-        }else{
-            return redirect()->route('admin-import-dosen')->with('error','Gagal Meload Excel');
-        }
-    }
-
-    public function deleteSort($id){
-        $dosen = ImportDosen::where('id','=',$id);
-        $dosen->delete();
-        
-        return redirect()->route('admin-import-dosen')->with('success','Berhasil Menghapus Data');
-    }
-
-    public function indexPegawai(Request $request){
-        if(!$request->session()->has('admin')){
-            return redirect('/login')->with('expired','Session Telah Berakhir');
-        }else{
-            $user = $request->session()->get('admin.data');
-            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
-            $data = Pegawai::get();
-            return view('admin.dosen.listpegawai', compact('data','profiledata'));
-        }
     }
 }

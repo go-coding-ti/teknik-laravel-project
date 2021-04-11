@@ -13,16 +13,6 @@ class PenelitianImports implements ToCollection, WithHeadingRow
     public $data;
     public function collection(Collection $rows)
     {
-        // foreach($rows as $row){
-        //     $penelitian = Penelitian::create([
-        //         'judul' => $row['judul'],
-        //     ]);
-
-        //     $penelitian->penulis()->create([
-        //         'nama_penulis'=> $row['Nama'],
-        //     ]);
-        // }
-        // dd($rows);
         $this->data = $rows;
     }
 }
