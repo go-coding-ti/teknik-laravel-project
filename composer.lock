@@ -4,11 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
     "content-hash": "e746d472dfde425b127962e6924b6e32",
-=======
-    "content-hash": "559754266bcb959c5d6e159916f28b7b",
->>>>>>> main
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1554,7 +1550,6 @@
         },
         {
             "name": "maatwebsite/excel",
-<<<<<<< HEAD
             "version": "3.1.29",
             "source": {
                 "type": "git",
@@ -1565,29 +1560,13 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/Maatwebsite/Laravel-Excel/zipball/1e567e6e19a04fd65b5876d5bc92f4015f09fab4",
                 "reference": "1e567e6e19a04fd65b5876d5bc92f4015f09fab4",
-=======
-            "version": "3.1.27",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Maatwebsite/Laravel-Excel.git",
-                "reference": "584d65427eae4de0ba072297c8fac9b0d63dbc37"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Maatwebsite/Laravel-Excel/zipball/584d65427eae4de0ba072297c8fac9b0d63dbc37",
-                "reference": "584d65427eae4de0ba072297c8fac9b0d63dbc37",
->>>>>>> main
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "illuminate/support": "5.8.*|^6.0|^7.0|^8.0",
                 "php": "^7.0|^8.0",
-<<<<<<< HEAD
                 "phpoffice/phpspreadsheet": "1.16.*"
-=======
-                "phpoffice/phpspreadsheet": "^1.16"
->>>>>>> main
             },
             "require-dev": {
                 "orchestra/testbench": "^6.0",
@@ -1633,11 +1612,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Maatwebsite/Laravel-Excel/issues",
-<<<<<<< HEAD
                 "source": "https://github.com/Maatwebsite/Laravel-Excel/tree/3.1.29"
-=======
-                "source": "https://github.com/Maatwebsite/Laravel-Excel/tree/3.1.27"
->>>>>>> main
             },
             "funding": [
                 {
@@ -1649,11 +1624,7 @@
                     "type": "github"
                 }
             ],
-<<<<<<< HEAD
             "time": "2021-03-16T11:56:39+00:00"
-=======
-            "time": "2021-02-22T16:58:19+00:00"
->>>>>>> main
         },
         {
             "name": "maennchen/zipstream-php",
@@ -2271,18 +2242,6 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
-<<<<<<< HEAD
-            "version": "1.16.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "76d4323b85129d0c368149c831a07a3e258b2b50"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/76d4323b85129d0c368149c831a07a3e258b2b50",
-                "reference": "76d4323b85129d0c368149c831a07a3e258b2b50",
-=======
             "version": "1.17.1",
             "source": {
                 "type": "git",
@@ -2293,7 +2252,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/c55269cb06911575a126dc225a05c0e4626e5fb4",
                 "reference": "c55269cb06911575a126dc225a05c0e4626e5fb4",
->>>>>>> main
                 "shasum": ""
             },
             "require": {
@@ -2321,11 +2279,7 @@
             },
             "require-dev": {
                 "dompdf/dompdf": "^0.8.5",
-<<<<<<< HEAD
-                "friendsofphp/php-cs-fixer": "^2.16",
-=======
                 "friendsofphp/php-cs-fixer": "^2.18",
->>>>>>> main
                 "jpgraph/jpgraph": "^4.0",
                 "mpdf/mpdf": "^8.0",
                 "phpcompatibility/php-compatibility": "^9.3",
@@ -2383,15 +2337,9 @@
             ],
             "support": {
                 "issues": "https://github.com/PHPOffice/PhpSpreadsheet/issues",
-<<<<<<< HEAD
-                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/1.16.0"
-            },
-            "time": "2020-12-31T18:03:49+00:00"
-=======
                 "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/1.17.1"
             },
             "time": "2021-03-02T17:54:11+00:00"
->>>>>>> main
         },
         {
             "name": "phpoption/phpoption",

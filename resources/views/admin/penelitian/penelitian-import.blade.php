@@ -1,6 +1,26 @@
 @extends('adminlayout.layout')
 @section('content')
+@section('add_js')
+<script>
+   $('input[type="file"]').change(function(e){
+        var fileName = e.target.files[0].name;
+        $('.custom-file-label').html(fileName);
+    });
+    
+</script>
+@endsection
 
+<?php
+  function myfunction($row, $value){
+        if($row == 1){
+          $d['nama'] = $value;
+          echo($d['nama']);
+        }elseif($row == 2){
+          $d['judul'] = $value;
+          echo($d['judul']);
+        }
+    }
+?>
 
 <div class="container-fluid">
         <div style="margin-left: 10px;" class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -18,8 +38,8 @@
                 @csrf
                 <div class="input-group mb-4">
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="inputGroupFile" name="inputfile">
-                        <label class="custom-file-label" for="inputGroupFile">Choose file</label>
+                    <label class="custom-file-label" for="inputGroupFile">Choose file</label>
+                        <input type="file" class="form-control-file" id="inputGroupFile" name="inputfile">
                     </div>
                     <div class="input-group-append">
                         <button class="btn btn-outline-secondary" type="submit">Import</button>
@@ -40,8 +60,9 @@
                         @if($datapenelitian != NULL)
                             @foreach($datapenelitian as $d)
                             <tr>
-                                    <td><input value="{{$d['nama']}}"></input></td>
-                                    <td><input value="{{$d['judul']}}"></input></td>
+                                <td onclick="">{{$d['nama']}}</td>
+                                    <!-- <td><input onkeyup="echo()" value="{{$d['nama']}}"></input></td> -->
+                                    <!-- <td><input onkeyup="myfunction( 2, $d['judul'])" value="{{$d['judul']}}"></input></td> -->
                             </tr>
                             @endforeach
                         @else
