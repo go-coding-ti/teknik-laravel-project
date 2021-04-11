@@ -7,7 +7,8 @@ use App\Penulis;
 
 class Penelitian extends Model
 {
-    //
+    public $timestamps = false;
+    
     protected $table = 'master_penelitian';
 
     protected $primaryKey = 'id_Penelitian';

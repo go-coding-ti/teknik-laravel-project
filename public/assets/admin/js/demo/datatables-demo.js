@@ -1,5 +1,5 @@
 // Call the dataTables jQuery plugin
-$(document).ready(function() {
+$(document).ready(function () {
   $('#dataTable').DataTable();
 
   // var table1 = $('#dataTableRev').DataTable({
@@ -32,7 +32,7 @@ $(document).ready(function() {
       clear: true
     },
     columnDefs: [
-      { "width": "20%", "targets": 2, orderable: false, target: [0,1,2,3] }
+      { "width": "20%", "targets": 2, orderable: false, target: [0, 1, 2, 3] }
     ],
     buttons: [
       'searchPanes'
@@ -41,10 +41,10 @@ $(document).ready(function() {
   table.searchPanes.container().prependTo(table.table().container());
   table.searchPanes.resizePanes();
   table.searchPanes.container().hide();
-  $('#toggle').on('click',function () {
+  $('#toggle').on('click', function () {
 
     table.searchPanes.container().toggle();
 
   });
-  
+
 });

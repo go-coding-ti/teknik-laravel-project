@@ -31,9 +31,11 @@ Route::prefix('admin')->group(function () {
     Route::get('/import/penelitian-show', 'import\ImportPenelitianController@show')->name('show-import-penelitian');
     Route::Post('/import/penelitian-review', 'import\ImportPenelitianController@view')->name('show-review-penelitian');
     Route::Post('/import/penelitian-save', 'import\ImportPenelitianController@save')->name('save-penelitian');
-    Route::get('/import/dosen','admin\ValidatorController@importDosen')->name('admin-import-dosen');
-    Route::post('/import/dosen/submit','admin\ValidatorController@storeImportDosen')->name('import-dosen');
-    Route::get('/{id}/delete/dosen', 'admin\ValidatorController@deleteSort')->name('data-dosen-delete');
+    Route::get('/import/dosen','import\ImportDosenController@importDosen')->name('admin-import-dosen');
+    Route::post('/import/dosen/submit','import\ImportDosenController@storeImportDosen')->name('import-dosen');
+
+    Route::get('/contoh/excel', 'import\ImportDosenController@downloadExcel');
+    Route::post('/submit/import/dosen','import\ImportDosenController@storeDosenFromImport')->name('upload-import-dosen');
 });
 
 Route::prefix('user')->group(function () {

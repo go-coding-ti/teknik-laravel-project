@@ -2,10 +2,31 @@
 @section('content')
 @section('add_js')
 <script>
-   $('input[type="file"]').change(function(e){
-        var fileName = e.target.files[0].name;
-        $('.custom-file-label').html(fileName);
-    });
+  $('input[type="file"]').change(function(e){
+      var fileName = e.target.files[0].name;
+      $('.custom-file-label').html(fileName);
+  });
+</script>
+<script>
+    $(document).ready(function() {
+      $('#sub').click( function() {
+          var data = $('input').serialize();
+          $.ajaxSetup({
+            header:$('meta[name="_token"]').attr('content')
+          })e.preventDefault(e);
+
+          $.ajax({
+            type:"POST",
+            url:'/admin/submit/import/dosen',
+            data:data,
+            success: function(data){
+                console.log(data);
+            },error: function(data){
+
+            }
+          })
+      } );
+  });
 </script>
 @endsection
       <!-- Begin Page Content -->
@@ -21,13 +42,13 @@
               </div>
               <div class="card-body">
                 @if (Session::has('error'))
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="fa fa-times"></i> 
-                  {{ Session::get('error') }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <i class="fa fa-times"></i> 
+                    {{ Session::get('error') }}
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
                 @endif
                 @if (isset($errors) && $errors->any())
                   <div class="alert alert-danger">
@@ -44,11 +65,20 @@
                         </button>
                   </div>
                 @endif
+                @if (!empty($success))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fa fa-check"></i> {{$success}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                  </div>
+                @endif
+                <small>Untuk Contoh Template File yang akan di Import dapat di download </small><a target="_blank" href="/admin/contoh/excel"><u>disini</u></a>
                 <form action="{{route('import-dosen')}}" method="post" enctype="multipart/form-data" >
                     @csrf
                     <div class="input-group mb-4">
                         <div class="custom-file">
-                            <label class="custom-file-label" for="inputGroupFile">Format File: .xlsx, .csv</label>
+                            <label class="custom-file-label" for="inputGroupFile">Format File: .xls, .xlsx, .csv</label>
                             <input type="file" class="form-control-file" id="inputGroupFile" name="inputfile">
                         </div>
                         <div class="input-group-append">
@@ -57,10 +87,11 @@
                     </div>
                 </form>
                 <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" cellspacing="0">
+                <form enctype="multipart/form-data" action="/admin/submit/import/dosen" method="POST">
+                  @csrf
+                  <table class="table table-bordered" id="dataTable" cellspacing="0">
                     <thead>
                       <tr>
-                        <th>Action</th>
                         <th>Tahun</th>
                         <th>NIP</th>
                         <th>NIDN</th>
@@ -73,7 +104,6 @@
                         <th>Unit</th>
                         <th>Sub Unit</th>
                         <th>Keaktifan</th>
-                        <th>Pangkat</th>
                         <th>Jabatan Fungsional</th>
                         <th>Pendidikan</th>
                         <th>Email</th>
@@ -85,44 +115,50 @@
                       </tr>
                     </thead>
                     <tbody>
-                    @forelse($imports as $data)
-                    <tr>
-                        <td style="width: 40%!important" align="center">
-                          <a class="btn btn-danger btn-sm" href="/admin/{{$data->id}}/delete/dosen" onclick="return confirm('Apakah Anda Yakin ?')"><i class="fas fa-trash"></i> </a>
-                          <a class="btn btn-success btn-sm" href="/admin/{{$data->id}}/delete/dosen" onclick="return confirm('Apakah Anda Yakin ?')"><i class="fas fa-check"></i> </a>
-                        </td>
-                        <td><input type="text" id="row-1-tahun" name="row-1-tahun" value="{{$data->tahun}}"></td>
-                        <td><input type="text" id="row-1-nip" name="row-1-nip" value="{{$data->nip}}"></td>
-                        <td><input type="text" id="row-1-nidn" name="row-1-nidn" value="{{$data->nidn}}"></td>
-                        <td><input type="text" id="row-1-nama" name="row-1-nama" value="{{$data->nama}} "></td>
-                        <td><input type="text" id="row-1-alamat" name="row-1-alamat" value="{{$data->alamat}} "></td>
-                        <td><input type="text" id="row-1-nama" name="row-1-nama" value="{{$data->jenis_kelamin}} "></td>
-                        <td><input type="text" id="row-1-tanggallahir" name="row-1-tanggallahir" value="{{$data->tanggallahir}} "></td>
-                        <td><input type="text" id="row-1-status" name="row-1-status" value=" {{$data->statuspegawai}}"></td>
-                        <td><input type="text" id="row-1-kepangkatan" name="row-1-kepangkatan" value="{{$data->kepangkatan}} "></td>
-                        <td><input type="text" id="row-1-unit" name="row-1-unit" value=" {{$data->unit}}"></td>
-                        <td><input type="text" id="row-1-subunit" name="row-1-subunit" value=" {{$data->subunit}}"></td>
-                        <td><input type="text" id="row-1-keaktifan" name="row-1-keaktifan" value="{{$data->keaktifan}} "></td>
-                        <td><input type="text" id="row-1-pangkat" name="row-1-pangkat" value=" {{$data->pangkat}}"></td>
-                        <td><input type="text" id="row-1-jabatan" name="row-1-jabatan" value=" {{$data->jabatanfungsional}}"></td>
-                        <td><input type="text" id="row-1-pendidikan" name="row-1-pendidikan" value=" {{$data->pendidikan}}"></td>
-                        <td><input type="text" id="row-1-email" name="row-1-email" value="{{$data->email}} "></td>
-                        <td><input type="text" id="row-1-telepon" name="row-1-telepon" value=" {{$data->telepon}}"></td>
-                        <td><input type="text" id="row-1-tmtkeaktifan" name="row-1-tmt_keaktifan" value="{{$data->tmt_keaktifan}} "></td>
-                        <td><input type="text" id="row-1-statusserdos" name="row-1-status_serdos" value="{{$data->status_serdos}} "></td>
-                        <td><input type="text" id="row-1-tahunserdos" name="row-1-tahun_serdos" value="{{$data->tahun_serdos}} "></td>
-                        <td><input type="text" id="row-1-tahunajaran" name="row-1-tahun_ajaran" value="{{$data->tahun_ajaran}} "></td>
+                    @if($imports != NULL)
+                      @foreach($imports as $data)
+                      <tr>
+                          <td><input type="text" id="row-1-tahun" name="row_tahun[]" value="{{$data['tahun']}}"></td>
+                          <td><input type="text" id="row-1-nip" name="row_nip[]" value="{{$data['nip']}}"></td>
+                          <td><input type="text" id="row-1-nidn" name="row_nidn[]" value="{{$data['nidn']}}"></td>
+                          <td><input type="text" id="row-1-nama" name="row_nama[]" value="{{$data['nama']}} "></td>
+                          <td><input type="text" id="row-1-alamat" name="row_alamat[]" value="{{$data['alamat_tinggal']}} "></td>
+                          <td><input type="text" id="row-1-jeniskelamin" name="row_jeniskelamin[]" value="{{$data['jenis_kelamin']}} "></td>
+                          <td><input type="text" id="row-1-tanggallahir" name="row_tanggallahir[]" value="{{$data['tanggal_lahir']}} "></td>
+                          <td><input type="text" id="row-1-status" name="row_status[]" value=" {{$data['status_pegawai']}}"></td>
+                          <td><input type="text" id="row-1-kepangkatan" name="row_kepangkatan[]" value="{{$data['kepangkatan']}} "></td>
+                          <td><input type="text" id="row-1-unit" name="row_unit_[]" value=" {{$data['unit']}}"></td>
+                          <td><input type="text" id="row-1-subunit" name="row_subunit[]" value=" {{$data['sunit']}}"></td>
+                          <td><input type="text" id="row-1-keaktifan" name="row_keaktifan[]" value="{{$data['keaktifan']}} "></td>
+                          <td><input type="text" id="row-1-jabatan" name="row_jabatan[]" value=" {{$data['jabatan_fungsional']}}"></td>
+                          <td><input type="text" id="row-1-pendidikan" name="row_pendidikan[]" value=" {{$data['pendidikan_terakhir']}}"></td>
+                          <td><input type="text" id="row-1-email" name="row_email[]" value="{{$data['email']}} "></td>
+                          <td><input type="text" id="row-1-telepon" name="row_telepon[]" value=" {{$data['telepon']}}"></td>
+                          <td><input type="text" id="row-1-tmtkeaktifan" name="row_tmt_keaktifan[]" value="{{$data['tmt_sk_keaktifan']}} "></td>
+                          <td><input type="text" id="row-1-statusserdos" name="row_status_serdos[]" value="{{$data['status_serdos']}} "></td>
+                          <td><input type="text" id="row-1-tahunserdos" name="row_tahun_serdos[]" value="{{$data['tahun_serdos']}} "></td>
+                          <td><input type="text" id="row-1-tahunajaran" name="row_tahun_ajaran[]" value="{{$data['tahun_ajaran']}} "></td>
                       </tr>
-                    @empty
-                    
-                    @endforelse
+                      @endforeach
+                    @else
+
+                    @endif
                     </tbody>
+                    @if($imports == NULL)
                     <tfoot>
                         <tr>
-                            <th align="center" colspan="22"><button class="btn btn-success" type="submit"><i class="fas fa-upload"></i> Upload Semua ke Tabel Dosen</button></th>
+                            <th align="center" colspan="20"><button id="sub" class="btn btn-success" type="submit" disabled><i class="fas fa-upload"></i> Upload Semua ke Tabel Dosen</button></th>
                         </tr>
                     </tfoot>
+                    @else
+                    <tfoot>
+                      <tr>
+                          <th align="center" colspan="20"><button id="sub" class="btn btn-success" type="submit"><i class="fas fa-upload"></i> Upload Semua ke Tabel Dosen</button></th>
+                      </tr>
+                  </tfoot>
+                    @endif
                   </table>
+                </form>
                 </div>
               </div>
             </div>
