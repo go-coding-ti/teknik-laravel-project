@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Prodi extends Model
 {
     //
+    protected $primaryKey = 'id_prodi';
     protected $table = 'master_prodi';
 
     protected $fillable = ['id_fakultas', 'id_prodi'];
