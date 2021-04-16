@@ -9,51 +9,36 @@ class Dosen extends Model
     protected $primaryKey = 'nip';
     protected $table = 'tb_dosen';
 
-    protected $fillable = ['nama', 'gelar', 'gelar_depan', 'gelar_belakang', 'jenis_kelamin', 'tempat_lahir'
-    , 'tanggal_lahir', 'alamat_domisili', 'alamat_rumah', 'telp_rumah', 'no_hp', 'email_aktif','foto', 'no_karpeg',  'file_karpeg'
-    , 'no_npwp', 'file_npwp', 'no_karis/karsu', 'file_karis/karsu', 'no_ktp', 'file_ktp', 'status_keaktifan', 'tmt_keaktifan'];
-
     public function masteridpendidik(){
-        return $this->belongsTo(MasterIdPendidik::class, 'nip');
-    }
-
-    public function masterstatusdosen(){
-        return $this->belongsTo(MasterStatusDosen::class, 'id_status_dosen');
+        return $this->hasMany(MasterIdPendidik::class, 'nip');
     }
 
     public function prodi(){
         return $this->belongsTo(Prodi::class, 'id_prodi');
     }
-    public function fakultas(){
-        return $this->hasOneThrough(Fakultas::class, Prodi::class);
-    }
 
     public function pendidikan(){
-        return $this->belongsTo(Pendidikan::class, 'id_pendidikan');
+        return $this->hasMany(MasterPendidikan::class, 'nip');
     }
 
     public function tmtpangkat(){
-        return $this->hasMany(TmtKepangkatanFungsional::class, 'id_tmt_kepangkatan_fungsional');
+        return $this->hasMany(TmtKepangkatanFungsional::class, 'nip');
     }
 
-    public function pangkat(){
-        return $this->belongsToMany(MasterPangkatPns::class, 'tmt_kepangkatan_fungsional', 'id_pangkat_pns','nip');
+    public function tmtstatus(){
+        return $this->hasMany(TmtStatusDosen::class, 'nip');
     }
 
-    public function kepegawainan(){
-        return $this->belongsTo(MasterStatusKepegawaian::class, 'id_status_kepegawaian');
+    public function tmtkepegawaian(){
+        return $this->hasMany(TmtStatusKepegawaianDosen::class, 'nip');
     }
 
     public function tmtjabatan(){
-        return $this->hasMany('App\TmtJabatanFungsional','tmt_jabatan_fungsional' , 'nip' );
+        return $this->hasMany(TmtJabatanFungsional::class, 'nip' );
     }
 
-    public function jabatan(){
-        return $this->belongsToMany('App\MasterJabatanFungsional', 'tmt_jabatan_fungsional', 'nip', 'id_jabatan_fungsional')->withPivot('id_tmt_jabatan_fungsional');
-    }
-
-    public function keaktifan(){
-        return $this->hasMany('App\MasterKeaktifan', 'nip', 'id_keaktifan');
+    public function tmtkeaktifan(){
+        return $this->hasMany(MasterKeaktifan::class, 'nip');
     }
 
 }

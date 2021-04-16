@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class TmtKepangkatanFungsional extends Model
 {
-    //
+    public $timestamps = false;
     protected $table = 'tmt_kepangkatan_fungsional';
     protected $primaryKey = 'id_tmt_kepangkatan_fungsional';
-    protected $fillable = ['id_pangkat_pns', 'nip', 'tmt_pangkat/golongan', 'unit'];
+    protected $fillable = ['id_pangkat_pns', 'nip', 'tmt_pangkat_golongan', 'unit'];
 
     public function dosen(){
         return $this->belongsTo(Dosen::class, 'nip');

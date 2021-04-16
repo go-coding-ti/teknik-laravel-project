@@ -34,7 +34,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/import/dosen','import\ImportDosenController@importDosen')->name('admin-import-dosen');
     Route::post('/import/dosen/submit','import\ImportDosenController@storeImportDosen')->name('import-dosen');
 
-    Route::get('/contoh/excel', 'import\ImportDosenController@downloadExcel');
+    Route::get('/contoh/excel', 'import\ImportDosenController@downloadExcelDosen');
     Route::post('/submit/import/dosen','import\ImportDosenController@storeDosenFromImport')->name('upload-import-dosen');
 });
 

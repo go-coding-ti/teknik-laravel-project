@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class MasterStatusDosen extends Model
 {
     //
+    protected $primaryKey = 'id_status_dosen';
     protected $table = 'master_status_dosen';
 
     protected $fillable = ['id_status_dosen', 'status_dosen'];

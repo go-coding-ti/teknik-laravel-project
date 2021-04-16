@@ -8,6 +8,8 @@ use App\Penelitian;
 class KategoriPenelitian extends Model
 {
     //
+    protected $primaryKey = 'id_kategori_penelitian';
+
     protected $table = 'master_kategori_penelitian';
     
     protected $fillable = ['kategori_penelitian'];

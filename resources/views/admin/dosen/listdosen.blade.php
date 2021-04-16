@@ -29,6 +29,38 @@
               <h6 class="m-0 font-weight-bold text-primary">List Data Dosen</h6>
             </div>
             <div class="card-body">
+              @if (Session::has('error'))
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <i class="fa fa-times"></i> 
+                    {{ Session::get('error') }}
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                @endif
+                @if (isset($errors) && $errors->any())
+                  <div class="alert alert-danger">
+                    @foreach ($errors->all() as $error)
+                      {{$error}}
+                    @endforeach
+                  </div>
+                @endif
+                @if (Session::has('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fa fa-check"></i> {{Session::get('success')}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                  </div>
+                @endif
+                @if (!empty($success))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fa fa-check"></i> {{$success}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                  </div>
+                @endif
               <div class="table-responsive">
               <a class= "btn btn-success text-white" href="{{route('dosen-createpage')}}"><i class="fas fa-plus"></i> Tambah Data Dosen</a>
               <a data-toggle="modal" data-target="#modal-global" class= "btn btn-primary text-white" id="toggle" ><i class="fas fa-download"></i> Import & Export Data Dosen</a>  
@@ -36,11 +68,9 @@
                   <thead>
                     <tr>
                       <th>NIP</th>
-                      <th>Nama</th>
-                      <th>Jenis Kelamin</th>
+                      <th>Foto</th>
+                      <th>Nama(dengan gelar)</th>
                       <th>No HP</th>
-                      <th>Status Keaktifan</th>
-                      <th>Tmt Keaktifan</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -48,11 +78,21 @@
                   @foreach ($data as $i => $dosen)
                     <tr>
                       <td>{{$dosen->nip}}</td>
-                      <td>{{$dosen->nama}}</td>
-                      <td>{{$dosen->jenis_kelamin}}</td>
+                      <td>
+                        @if($dosen->foto!=null)
+                          <img src="{{asset('img/'.$dosen->foto)}}" class="mb-3" style="border:solid #000 3px;height:200px;width:150px;" id="propic">
+                        @else
+                          <img src="{{asset('img/user.jpg')}}" class="mb-3" style="border:solid #000 3px;height:200px;width:150px;" id="propic">
+                        @endif
+                      </td>
+                      @if(is_null($dosen->gelar_depan) && is_null($dosen->gelar_belakang))
+                        <td>{{$dosen->nama}}</td>
+                      @elseif(is_null($dosen->gelar_depan))
+                        <td>{{$dosen->nama}}, {{$dosen->gelar_belakang}}</td>
+                      @else
+                        <td>{{$dosen->gelar_depan}} {{$dosen->nama}}, {{$dosen->gelar_belakang}}</td>
+                      @endif
                       <td>{{$dosen->no_hp}}</td>
-                      <td>{{$dosen->status_keaktifan}}</td>
-                      <td>{{$dosen->tmt_keaktifan}}</td>
                       <td>
                         <a href="/admin/detail/dosen/{{$dosen->nip}}" class="btn btn-warning btn-sm"><i class="fas fa-eye"></i></a>
                         <a style="margin-right:7px" class="btn btn-danger btn-sm" href="/admin/{{$dosen->nip}}/delete" onclick="return confirm('Apakah Anda Yakin ?')"><i class="fas fa-trash"></i></a>

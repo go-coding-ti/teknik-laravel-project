@@ -92,6 +92,7 @@
                   <table class="table table-bordered" id="dataTable" cellspacing="0">
                     <thead>
                       <tr>
+                        <th>Action</th>
                         <th>Tahun</th>
                         <th>NIP</th>
                         <th>NIDN</th>
@@ -118,23 +119,29 @@
                     @if($imports != NULL)
                       @foreach($imports as $data)
                       <tr>
+                        <td align="center">
+                          <a class="btn btn-danger btn-sm" id='del' 
+                          onclick="var table = $('#dataTable').DataTable();table.row($(this).parents('tr')).remove().draw();">
+                            <i style="color:#fff" class="fas fa-trash"></i>
+                          </a>
+                          </td>
                           <td><input type="text" id="row-1-tahun" name="row_tahun[]" value="{{$data['tahun']}}"></td>
                           <td><input type="text" id="row-1-nip" name="row_nip[]" value="{{$data['nip']}}"></td>
                           <td><input type="text" id="row-1-nidn" name="row_nidn[]" value="{{$data['nidn']}}"></td>
                           <td><input type="text" id="row-1-nama" name="row_nama[]" value="{{$data['nama']}} "></td>
                           <td><input type="text" id="row-1-alamat" name="row_alamat[]" value="{{$data['alamat_tinggal']}} "></td>
                           <td><input type="text" id="row-1-jeniskelamin" name="row_jeniskelamin[]" value="{{$data['jenis_kelamin']}} "></td>
-                          <td><input type="text" id="row-1-tanggallahir" name="row_tanggallahir[]" value="{{$data['tanggal_lahir']}} "></td>
+                          <td><input type="text" id="row-1-tanggallahir" name="row_tanggallahir[]" value="{{PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($data['tanggal_lahir'])->format('Y-m-d')}} "></td>
                           <td><input type="text" id="row-1-status" name="row_status[]" value=" {{$data['status_pegawai']}}"></td>
                           <td><input type="text" id="row-1-kepangkatan" name="row_kepangkatan[]" value="{{$data['kepangkatan']}} "></td>
-                          <td><input type="text" id="row-1-unit" name="row_unit_[]" value=" {{$data['unit']}}"></td>
+                          <td><input type="text" id="row-1-unit" name="row_unit[]" value=" {{$data['unit']}}"></td>
                           <td><input type="text" id="row-1-subunit" name="row_subunit[]" value=" {{$data['sunit']}}"></td>
                           <td><input type="text" id="row-1-keaktifan" name="row_keaktifan[]" value="{{$data['keaktifan']}} "></td>
                           <td><input type="text" id="row-1-jabatan" name="row_jabatan[]" value=" {{$data['jabatan_fungsional']}}"></td>
                           <td><input type="text" id="row-1-pendidikan" name="row_pendidikan[]" value=" {{$data['pendidikan_terakhir']}}"></td>
                           <td><input type="text" id="row-1-email" name="row_email[]" value="{{$data['email']}} "></td>
                           <td><input type="text" id="row-1-telepon" name="row_telepon[]" value=" {{$data['telepon']}}"></td>
-                          <td><input type="text" id="row-1-tmtkeaktifan" name="row_tmt_keaktifan[]" value="{{$data['tmt_sk_keaktifan']}} "></td>
+                          <td><input type="text" id="row-1-tmtkeaktifan" name="row_tmt_keaktifan[]" value="{{PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($data['tmt_sk_keaktifan'])->format('Y-m-d')}} "></td>
                           <td><input type="text" id="row-1-statusserdos" name="row_status_serdos[]" value="{{$data['status_serdos']}} "></td>
                           <td><input type="text" id="row-1-tahunserdos" name="row_tahun_serdos[]" value="{{$data['tahun_serdos']}} "></td>
                           <td><input type="text" id="row-1-tahunajaran" name="row_tahun_ajaran[]" value="{{$data['tahun_ajaran']}} "></td>
@@ -147,13 +154,13 @@
                     @if($imports == NULL)
                     <tfoot>
                         <tr>
-                            <th align="center" colspan="20"><button id="sub" class="btn btn-success" type="submit" disabled><i class="fas fa-upload"></i> Upload Semua ke Tabel Dosen</button></th>
+                            <th align="center" colspan="21"><button id="sub" class="btn btn-success" type="submit" disabled><i class="fas fa-upload"></i> Upload Semua ke Tabel Dosen</button></th>
                         </tr>
                     </tfoot>
                     @else
                     <tfoot>
                       <tr>
-                          <th align="center" colspan="20"><button id="sub" class="btn btn-success" type="submit"><i class="fas fa-upload"></i> Upload Semua ke Tabel Dosen</button></th>
+                          <th align="center" colspan="21"><button id="sub" class="btn btn-success" type="submit"><i class="fas fa-upload"></i> Upload Semua ke Tabel Dosen</button></th>
                       </tr>
                   </tfoot>
                     @endif

@@ -1,221 +1,662 @@
 @extends('adminlayout.layout')
 @section('content')
+@section('add_js')
+<script>
+  $('input[type="file"]').change(function(e){
+      var fileName = e.target.files[0].name;
+      $('.custom-file-label').html(fileName);
+  });
+</script>
+@endsection
+@section('add_css')
+
+@endsection
 <div class="container-fluid">
-        <div class="card shadow">
-            <form method="POST" enctype="multipart/form-data" action="{{route('dosen-store')}}">
-            @csrf
-                <div class="form-group card-header shadow">
-                    <div class="row justify-content-center">
-                        <div class="col col-md-10">
-                            <h3 class="m-0 font-weight-bold text-primary">Data Dosen</h3>
-                        </div>
-                        <div class="col col-1">
-                            <button type="submit" class="btn btn-success">Update</button>
-                        </div>
-                        <div class="col col-1">
-                            <a href="{{route('admin-home')}}" class="btn btn-danger">Cancel</a>
-                        </div>
+    @if (Session::has('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fa fa-times"></i> 
+        {{ Session::get('error') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+    @if (Session::has('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fa fa-check"></i> {{Session::get('success')}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    @endif
+    <div style="margin-left: 10px;" class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800"><i class="fas fa-list"></i> Detail Data Dosen</h1>
+    </div>
+    <div class="card shadow">
+        <form method="POST" enctype="multipart/form-data" action="{{route('dosen-store')}}">
+        @csrf
+            <div class="form-group card-header shadow">
+                <div class="row">
+                    <div class="col">
+                        <h3 class="font-weight-bold text-primary"><i class="fas fa-user"></i> Data Dosen</h3>
+                    </div>
+                <div class="row">
+                    <div class="col">
+                        <button type="submit" class="btn btn-success" onclick="return confirm('Apakah Anda Yakin Ingin Mengupdate Data?')"><i class="fas fa-save"></i> Update</button>
+                        <a href="{{route('admin-home')}}" class="btn btn-danger"><i class="fas fa-times"></i> Cancel</a>
                     </div>
                 </div>
-                <div class="form-group card-header">
-                    <div class="row align-items-center">
-                        <div class="col col-4">
-                            <label for="nidn" class="font-weight-bold text-dark">NIDN/NIDK/NUP</label>
-                            <input type="text" class="form-control" id="nidn" name="nidn" placeholder="NIDN/NIDK/NUP" value="{{$dosen->nip}}">
+                </div>
+            </div>
+            <div class="form-group card-body">
+                <div class="row align-items-center">
+                    <div class="col col-3 ">
+                        <div style="margin-top: -40px" class="row">
+                            <div align="center" class='col'>
+                                @if(is_null($dosen->foto))
+                                    <img src="{{asset('img/user.jpg')}}" class="mb-3" style="border:solid #000 3px;height:200px;width:150px;" id="propic">
+                                @else
+                                    <img src="{{asset('img/'.$dosen->foto)}}" class="mb-3" style="border:solid #000 3px;height:200px;width:150px;" id="propic">
+                                @endif
+                            </div>
                         </div>
-                        <div class="col col-4 ">
-                            <label for="nip" class="font-weight-bold text-dark">NIP</label>
-                            <input type="text" class="form-control" id="nip" name="nip" placeholder="NIP">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="profile_image" name="profile_image">
+                            <label for="profile_image" class="custom-file-label">.jpg/.png</label>
+                            <small style="color: red">
+                                @error('profile_image')
+                                    {{$message}}
+                                @enderror
+                            </small>
                         </div>
-                        <div class="col col-sm-1">
-                        
+                    </div>
+
+                    <div class="col col-sm-1"></div>
+
+                    <div  class="col col-4">
+                        <div class="row">
+                            <div class='col'>
+                                <label for="JenisSerdos" class="font-weight-bold text-dark">Jenis Serdos</label>
+                                <select class="form-control" id="JenisSerdos" name="jenisserdos">
+                                    @if(count($dosen->masteridpendidik)>0)
+                                        <option value="" {{ $dosen->masteridpendidik[0]->jenis_id==NULL ? 'selected' : '' }}>Pilih Jenis Serdos</option>
+                                        <option value="NIDN" {{ $dosen->masteridpendidik[0]->jenis_id=="NIDN" ? 'selected' : '' }}>NIDN</option>
+                                        <option value="NIDK" {{ $dosen->masteridpendidik[0]->jenis_id=="NIDK" ? 'selected' : '' }}>NIDK</option>
+                                        <option value="NUP" {{ $dosen->masteridpendidik[0]->jenis_id=="NUP" ? 'selected' : '' }}>NUP</option>
+                                    @else
+                                        <option value="" selected>Pilih Jenis Serdos</option>
+                                        <option value="NIDN" >NIDN</option>
+                                        <option value="NIDK">NIDK</option>
+                                        <option value="NUP">NUP</option>
+                                    @endif
+                                </select>
+                                <small style="color: red">
+                                    @error('jenisserdos')
+                                        {{$message}}
+                                    @enderror
+                                </small>
+                            </div>
+                            <div class='col'>
+                                <label for="nidn" class="font-weight-bold text-dark">NIDN/NIDK/NUP</label>
+                                @if(count($dosen->masteridpendidik)>0)
+                                    <input type="text" class="form-control" id="nidn" name="nidn" placeholder="Masukan NIDN/NIDK/NUP" value="{{$dosen->masteridpendidik[0]->nidn_nidk_nup}}">
+                                @else
+                                    <input type="text" class="form-control" id="nidn" name="nidn" placeholder="Masukan NIDN/NIDK/NUP">
+                                @endif
+                                <small style="color: red">
+                                    @error('nidn')
+                                        {{$message}}
+                                    @enderror
+                                </small>
+                            </div>
                         </div>
-                        <div class="col col-2 ">
-                        <img src="" class="mb-3" style="border:solid #000 5px;height:120px;width:100px;" id="propic">
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="profile_image" name="profile_image">
-                                <label for="profile_image" class="custom-file-label">.jpg/.png</label>
+                        <div class="row">
+                            <div class='col'>
+                                <label for="InputEmail" class="font-weight-bold text-dark">Email Aktif</label>
+                                <input type="email" class="form-control" id="InputEmail" name="email" placeholder="Masukan Email" value="{{$dosen->email_aktif}}">
+                                <small style="color: red">
+                                    @error('email')
+                                        {{$message}}
+                                    @enderror
+                                </small>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <label for="gelardepan" class="font-weight-bold text-dark">Gelar Depan</label>
-                            <input type="text" class="form-control" id="gelardepan" name="gelardepan" placeholder="Gelar Depan">
+
+                    <div class="col col-4">
+                        <div class="row">
+                            <div class='col'>
+                        <label for="nip" class="font-weight-bold text-dark">NIP</label>
+                        <input type="text" class="form-control" id="nip" name="nip" placeholder="Masukan NIP" value="{{$dosen->nip}}">
+                        <small style="color: red">
+                            @error('nip')
+                                {{$message}}
+                            @enderror
+                        </small>
+                            </div>
                         </div>
-                        <div class="col">
-                            <label for="InputName" class="font-weight-bold text-dark">Nama Lengkap</label>
-                            <input type="text" class="form-control" id="InputName" name="nama" placeholder="Nama Lengkap">
-                        </div>
-                        <div class="col">
-                            <label for="gelarbelakang" class="font-weight-bold text-dark">Gelar Belakang</label>
-                            <input type="text" class="form-control" id="gelarbelakang" name="gelarbelakang" placeholder="Gelar Belakang">
+                        <div class="row">
+                            <div class='col'>
+                                <label for="InputTelpRumah" class="font-weight-bold text-dark">Telp Rumah</label>
+                                <input type="text" class="form-control" id="InputTelpRumahRumah" name="telprumah" placeholder="No. Telp Rumah" value="{{$dosen->telp_rumah}}">
+                                <small style="color: red">
+                                    @error('telprumah')
+                                        {{$message}}
+                                    @enderror
+                                </small>
+                            </div>
+                            <div class='col'>
+                                <label for="InputNoHp" class="font-weight-bold text-dark">No HP</label>
+                                <input type="text" class="form-control" id="InputNoHp" name="nohp" placeholder="No. HP" value="{{$dosen->no_hp}}">
+                                <small style="color: red">
+                                    @error('nohp')
+                                        {{$message}}
+                                    @enderror
+                                </small>
+                            </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col col-lg-2">
-                            <label for="StatusDosen" class="font-weight-bold text-dark">Status Dosen</label>
-                            <select class="form-control" name="statusdosen" id="statusdosen">
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <label for="gelardepan" class="font-weight-bold text-dark">Gelar Depan</label>
+                        <input type="text" class="form-control" id="gelardepan" name="gelardepan" placeholder="Masukan Gelar Depan" value="{{$dosen->gelar_depan}}">
+                        <small>
+                            Contoh jika gelar depan lebih dari satu (Prof. Dr.)
+                        </small>
+                        <small style="color: red">
+                            @error('gelardepan')
+                                {{$message}}
+                            @enderror
+                        </small>
+                    </div>
+                    <div class="col">
+                        <label for="InputName" class="font-weight-bold text-dark">Nama Lengkap</label>
+                        <input type="text" class="form-control" id="InputName" name="nama" placeholder="Masukan Nama Lengkap" value="{{$dosen->nama}}">
+                        <small style="color: red">
+                            @error('nama')
+                                {{$message}}
+                            @enderror
+                        </small>
+                    </div>
+                    <div class="col">
+                        <label for="gelarbelakang" class="font-weight-bold text-dark">Gelar Belakang</label>
+                        <input type="text" class="form-control" id="gelarbelakang" name="gelarbelakang" placeholder="Masukan Gelar Belakang" value="{{$dosen->gelar_belakang}}">
+                        <small>
+                            Contoh jika gelar belakang lebih dari satu (S.Kom., M.T)
+                        </small>
+                        <small style="color: red">
+                            @error('gelarbelakang')
+                                {{$message}}
+                            @enderror
+                        </small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="InputTempatLahir" class="font-weight-bold text-dark">Tempat Lahir</label>
+                        <input type="text" class="form-control" id="InputTempatLahir" name="tempatlahir" placeholder="Masukan Tempat Lahir" value="{{$dosen->tempat_lahir}}">
+                        <small style="color: red">
+                            @error('tempatlahir')
+                                {{$message}}
+                            @enderror
+                        </small>
+                    </div>
+                    <div class="col">
+                        <label for="InputTanggalLahir" class="font-weight-bold text-dark">Tanggal Lahir</label>
+                        <input type="date" class="form-control" id="InputTanggalLahir" name="tanggallahir" value="{{$dosen->tanggal_lahir}}">
+                        <small style="color: red">
+                            @error('tanggallahir')
+                                {{$message}}
+                            @enderror
+                        </small>
+                    </div>
+                    <div class="col">
+                        <label for="JenisKelamin" class="font-weight-bold text-dark">Jenis Kelamin</label>
+                        <select class="form-control" id="JenisKelamin" name="jeniskelamin">
+                            <option value="" {{ $dosen->jenis_kelamin==NULL ? 'selected' : '' }}>Pilih JK</option>
+                            <option value="Pria" {{ $dosen->jenis_kelamin=="Pria" ? 'selected' : '' }}>Pria</option>
+                            <option value="Wanita" {{ $dosen->jenis_kelamin=="wanita" ? 'selected' : '' }}>Wanita</option>
+                        </select>
+                        <small style="color: red">
+                            @error('jeniskelamin')
+                                {{$message}}
+                            @enderror
+                        </small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="StatusDosen" class="font-weight-bold text-dark">Status Dosen</label>
+                        <select class="form-control" name="statusdosen" id="StatusDosen">
+                            @if(count($dosen->tmtstatus)>0)
+                                <option value="" {{ $dosen->tmtstatus[0]->id_status_dosen==NULL ? 'selected' : '' }}>Pilih Status</option>
                                 @foreach ($statusDosen as $status)
-                                    <option value="{{$status->id_status_dosen}}" {{ ($dosen->id_status_dosen == $status->id_status_dosen) ? 'selected' : '' }}>{{$status->status_dosen}}</option>
+                                    <option value="{{$status->id_status_dosen}}" {{ $dosen->tmtstatus[0]->id_status_dosen==$status->id_status_dosen ? 'selected' : '' }}>{{$status->status_dosen}}</option>
                                 @endforeach
-                            </select>
-                        </div>
-                        <div class="col">
-                            <label for="InputTempatLahir" class="font-weight-bold text-dark">Tempat Lahir</label>
-                            <input type="text" class="form-control" id="InputTempatLahir" name="tempatlahir" placeholder="Tempat Lahir">
-                        </div>
-                        <div class="col">
-                            <label for="InputTanggalLahir" class="font-weight-bold text-dark">Tanggal Lahir</label>
-                            <input type="date" class="form-control" id="InputTanggalLahir" name="tanggallahir" placeholder="Tanggal Lahir">
-                        </div>
-                        <div class="col col-lg-2">
-                            <label for="JenisKelamin" class="font-weight-bold text-dark">Jenis Kelamin</label>
-                            <select class="form-control" id="JenisKelamin" name="jeniskelamin">
-                                <option value="Pria" {{ ($dosen->jenis_kelamin == "Pria") ? 'selected' : '' }}>Pria</option>
-                                <option value="Wanita" {{ ($dosen->jenis_kelamin == "Wanita") ? 'selected' : '' }}>Wanita</option>
-                            </select>
-                        </div>
+                            @else
+                                <option value="" selected>Pilih Status</option>
+                                @foreach ($statusDosen as $status)
+                                    <option value="{{$status->id_status_dosen}}">{{$status->status_dosen}}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                        <small style="color: red">
+                            @error('statusdosen')
+                                {{$message}}
+                            @enderror
+                        </small>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <label for="InputAlamatDomisili" class="font-weight-bold text-dark">Alamat Domisili (Tinggal Sekarang)</label>
-                            <input type="text" class="form-control" id="InputAlamatDomisili" name="alamatdomisili"  placeholder="Alamat Domisili (Tinggal Sekarang)">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <label for="InputAlamatRumah" class="font-weight-bold text-dark">Alamat Rumah (Sesuai KK/KTP)</label>
-                            <input type="text" class="form-control" id="InputAlamatRumah" name="alamatrumah" placeholder="Alamat Rumah (Sesuai KK/KTP)">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class='col'>
-                            <label for="InputTelpRumah" class="font-weight-bold text-dark">Telp Rumah</label>
-                            <input type="text" class="form-control" id="InputTelpRumahRumah" name="telprumah" placeholder="Telp Rumah">
-                        </div>
-                        <div class='col'>
-                            <label for="InputNoHp" class="font-weight-bold text-dark">No HP</label>
-                            <input type="text" class="form-control" id="InputNoHp" name="nohp" placeholder="No HP">
-                        </div>
-                        <div class='col'>
-                            <label for="InputEmail" class="font-weight-bold text-dark">Email Aktif</label>
-                            <input type="email" class="form-control" id="InputEmail" name="email" placeholder="Email Aktif">
-                        </div>
+                    <div class="col">
+                        <label for="tmtStatusDosen" class="font-weight-bold text-dark">TMT Status Dosen</label>
+                        @if(count($dosen->tmtstatus)>0)
+                            <input type="date" class="form-control" id="tmtStatusDosen" name="tmtStatusDosen" value="{{$dosen->tmtstatus[0]->tmt_status_dosen}}">
+                        @else
+                            <input type="date" class="form-control" id="tmtStatusDosen" name="tmtStatusDosen" >
+                        @endif
+                        
+                        <small style="color: red">
+                            @error('tmtStatusDosen')
+                                {{$message}}
+                            @enderror
+                        </small>
                     </div>
                 </div>
-                <div class="form-group card-header">
-                    <div class="row">
-                        <div class="col col-md-12">
-                            <h3 class="font-weight-bold text-primary">Data Kepangkatan Fungsional</h3>
-                        </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="StatusKepegawaian" class="font-weight-bold text-dark">Status Kepegawaian</label>
+                        <select class="form-control" name="statusKepegawaian" id="StatusKepegawaian">
+                            @if(count($dosen->tmtkepegawaian)>0)
+                                <option value="" {{ $dosen->tmtkepegawaian[0]->id_status_kepegawaian==NULL ? 'selected' : '' }}>Pilih Status</option>
+                                @foreach ($statusKepegawaian as $status)
+                                    <option value="{{$status->id_status_kepegawaian}}" {{ $dosen->tmtkepegawaian[0]->id_status_kepegawaian==$status->id_status_kepegawaian ? 'selected' : '' }}>{{$status->status_kepegawaian}}</option>
+                                @endforeach
+                            @else
+                                <option value="" selected>Pilih Status</option>
+                                @foreach ($statusKepegawaian as $status)
+                                    <option value="{{$status->id_status_kepegawaian}}">{{$status->status_kepegawaian}}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                        <small style="color: red">
+                            @error('statusKepegawaian')
+                                {{$message}}
+                            @enderror
+                        </small>
+                    </div>
+                    <div class="col">
+                        <label for="tmtStatusKepegawaian" class="font-weight-bold text-dark">TMT Status Kepegawaian</label>
+                        @if(count($dosen->tmtkepegawaian)>0)
+                            <input type="date" class="form-control" id="tmtStatusKepegawaian" name="tmtStatusKepegawaian" value="{{$dosen->tmtstatus[0]->tmt_status_dosen}}">
+                        @else
+                            <input type="date" class="form-control" id="tmtStatusKepegawaian" name="tmtStatusKepegawaian">
+                        @endif
+                        <small style="color: red">
+                            @error('tmtStatusKepegawaian')
+                                {{$message}}
+                            @enderror
+                        </small>
                     </div>
                 </div>
-                <div class="form-group card-header">
-                    <div class="row">
-                        <div class="col">
-                            <label for="PangkatGolongan" class="font-weight-bold text-dark">Pangkat/Golongan Terakhir</label>
-                            <select class="form-control" id="PngkatGolongan" name="pangkatgolongan">
+                <div class="row">
+                    <div class="col">
+                        <label for="InputAlamatDomisili" class="font-weight-bold text-dark">Alamat Domisili (Alamat Tinggal Sekarang)</label>
+                        <input type="text" class="form-control" id="InputAlamatDomisili" name="alamatdomisili"  placeholder="Masukan Alamat Domisili" value="{{$dosen->alamat_domisili}}">
+                        <small style="color: red">
+                            @error('alamatdomisili')
+                                {{$message}}
+                            @enderror
+                        </small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="InputAlamatRumah" class="font-weight-bold text-dark">Alamat Rumah (Sesuai KK/KTP)</label>
+                        <input type="text" class="form-control" id="InputAlamatRumah" name="alamatrumah" placeholder="Masukan Alamat Rumah" value="{{$dosen->alamat_rumah}}">
+                        <small style="color: red">
+                            @error('alamatrumah')
+                                {{$message}}
+                            @enderror
+                        </small>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <br>
+    <div class="card shadow">
+            <div class="form-group card-header shadow">
+                <div class="row">
+                    <div class="col col-md-12">
+                        <h3 class="font-weight-bold text-primary"><i class="fas fa-user-graduate"></i> Data Pendidikan Terakhir</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group card-body">
+                <div class="row">
+                    <div class="col">
+                        <label for="JenjangPendidikan" class="font-weight-bold text-dark">Jenjang Pendidikan Terakhir</label>
+                        <select class="form-control" id="JenjangPendidikan" name="jenjangPendidikan">
+                            @if(count($dosen->pendidikan)>0)
+                                <option value="" {{ $dosen->pendidikan[0]->jenjang_pendidikan_terakhir==NULL ? 'selected' : '' }}>Pilih Jenjang Pendidikan</option>
+                                <option value="S1" {{ $dosen->pendidikan[0]->jenjang_pendidikan_terakhir=="S1" ? 'selected' : '' }}>S1</option>
+                                <option value="S2" {{ $dosen->pendidikan[0]->jenjang_pendidikan_terakhir=="S2" ? 'selected' : '' }}>S2</option>
+                                <option value="S3" {{ $dosen->pendidikan[0]->jenjang_pendidikan_terakhir=="S3" ? 'selected' : '' }}>S3</option>
+                            @else
+                                <option value="" selected>Pilih Jenjang Pendidikan</option>
+                                <option value="S1">S1</option>
+                                <option value="S2">S2</option>
+                                <option value="S3">S3</option>
+                            @endif
+                        </select>
+                        <small style="color: red">
+                            @error('jenjangPendidikan')
+                                {{$message}}
+                            @enderror
+                        </small>
+                    </div>
+                    <div class="col">
+                        <label for="Institusi" class="font-weight-bold text-dark">Nama Institusi</label>
+                        @if(count($dosen->pendidikan)>0)
+                            <input type="text" class="form-control" id="Institusi" name="institusi" placeholder="Masukan Nama Institusi" value="{{$dosen->pendidikan[0]->nama_institusi}}">
+                        @else
+                            <input type="text" class="form-control" id="Institusi" name="institusi" placeholder="Masukan Nama Institusi">
+                        @endif
+                        <small style="color: red">
+                            @error('institusi')
+                                {{$message}}
+                            @enderror
+                        </small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="BidangIlmu" class="font-weight-bold text-dark">Bidang Ilmu</label>
+                        @if(count($dosen->pendidikan)>0)
+                            <input type="text" class="form-control" id="BidangIlmu" name="bidangIlmu" placeholder="Masukan Bidang Ilmu" value="{{$dosen->pendidikan[0]->bidang_ilmu}}">                            
+                        @else
+                            <input type="text" class="form-control" id="BidangIlmu" name="bidangIlmu" placeholder="Masukan Bidang Ilmu">
+                        @endif
+                        <small style="color: red">
+                            @error('bidangIlmu')
+                                {{$message}}
+                            @enderror
+                        </small>
+                    </div>
+                    <div class="col">
+                        <label for="SelesaiStudi" class="font-weight-bold text-dark">Tanggal Selesai Studi</label>
+                        @if(count($dosen->pendidikan)>0)
+                            <input type="date" class="form-control" id="SelesaiStudi" name="tanggalSelesaiStudi" value="{{$dosen->pendidikan[0]->tanggal_selesai_studi}}">
+                        @else
+                            <input type="date" class="form-control" id="SelesaiStudi" name="tanggalSelesaiStudi" >
+                        @endif
+                        <small style="color: red">
+                            @error('tanggalSelesaiStudi')
+                                {{$message}}
+                            @enderror
+                        </small>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <br>
+    <div class="card shadow">
+            <div class="form-group card-header shadow">
+                <div class="row">
+                    <div class="col col-md-12">
+                        <h3 class="font-weight-bold text-primary"><i class="fas fa-level-up-alt"></i> Data Kepangkatan Fungsional</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group card-body">
+                <div class="row">
+                    <div class="col">
+                        <label for="PangkatGolongan" class="font-weight-bold text-dark">Pangkat/Golongan Terakhir</label>
+                        <select class="form-control" id="PangkatGolongan" name="pangkatGolongan">
+                            @if(count($dosen->tmtpangkat)>0)
+                                <option value="" {{ $dosen->tmtpangkat[0]->id_pangkat_pns==NULL ? 'selected' : '' }}>Pilih Pangkat/Golongan</option>
                                 @foreach($pangkatDosen as $p)
-                                    <option value="{{$p->id_pangkat_pns}}" {{ ($dosen->id_pangkat_pns == $p->id_pangkat_pns) ? 'selected' : '' }}>{{$p->pangkat}}</option>
+                                    <option value="{{$p->id_pangkat_pns}}" {{ $dosen->tmtpangkat[0]->id_pangkat_pns==$p->id_pangkat_pns ? 'selected' : '' }}>{{$p->pangkat}}</option>
                                 @endforeach
-                            </select>
-                        </div>
-                        <div class="col">
-                            <label for="JabatanAkademik" class="font-weight-bold text-dark">Jabatan Akademik Terakhir</label>
-                            <select class="form-control" id="JabatanAkademik" name="jabatanakademik">
+                            @else
+                                <option value="" selected>Pilih Pangkat/Golongan</option>
+                                @foreach($pangkatDosen as $p)
+                                    <option value="{{$p->id_pangkat_pns}}">{{$p->pangkat}}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                        <small style="color: red">
+                            @error('pangkatGolongan')
+                                {{$message}}
+                            @enderror
+                        </small>
+                    </div>
+                    <div class="col">
+                        <label for="JabatanAkademik" class="font-weight-bold text-dark">Jabatan Akademik Terakhir</label>
+                        <select class="form-control" id="JabatanAkademik" name="jabatanakademik">
+                            @if(count($dosen->tmtjabatan)>0)
+                                <option value="" {{ $dosen->tmtjabatan[0]->id_jabatan_fungsional==NULL ? 'selected' : '' }}>Pilih Jabatan Akademik</option>
+                                @foreach($jabatanDosen as $j)
+                                    <option value="{{$j->id_jabatan_fungsional}}" {{ $dosen->tmtjabatan[0]->id_jabatan_fungsional==$j->id_jabatan_fungsional ? 'selected' : '' }}>{{$j->jabatan_fungsional}}</option>
+                                @endforeach
+                            @else
+                                <option value="" selected>Pilih Jabatan Akademik</option>
                                 @foreach($jabatanDosen as $j)
                                     <option value="{{$j->id_jabatan_fungsional}}">{{$j->jabatan_fungsional}}</option>
                                 @endforeach
-                            </select>
-                        </div>
+                            @endif
+                        </select>
+                        <small style="color: red">
+                            @error('jabatanakademik')
+                                {{$message}}
+                            @enderror
+                        </small>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <label for="TmtPangkatGolongan" class="font-weight-bold text-dark">TMT Pangkat/Golongan Terakhir</label>
-                            <input type="date" class="form-control" id="TmtPangkatGolongan" name="tmtpangkatgolongan"  placeholder="TMT Pangkat/Golongan Terakhir">
-                        </div>
-                        <div class="col">
-                            <label for="TmtJabatan" class="font-weight-bold text-dark">TMT Jabatan Terakhir</label>
-                            <input type="date" class="form-control" id="TmtJabatan" name="tmtjabatan" >
-                        </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="TmtPangkatGolongan" class="font-weight-bold text-dark">TMT Pangkat/Golongan Terakhir</label>
+                        @if(count($dosen->tmtpangkat)>0)
+                            <input type="date" class="form-control" id="TmtPangkatGolongan" name="tmtpangkatgolongan" value="{{$dosen->tmtpangkat[0]->tmt_pangkat_golongan}}">
+                        @else
+                            <input type="date" class="form-control" id="TmtPangkatGolongan" name="tmtpangkatgolongan">
+                        @endif
+                        <small style="color: red">
+                            @error('tmtpangkatgolongan')
+                                {{$message}}
+                            @enderror
+                        </small>
                     </div>
-                    <div class="row">
-                        <div class="col col-md-6">
-                            <label for="Unit" class="font-weight-bold text-dark">Unit</label>
-                            <select class="form-control" id="Unit" name="unit">
+                    <div class="col">
+                        <label for="TmtJabatan" class="font-weight-bold text-dark">TMT Jabatan Terakhir</label>
+                        @if(count($dosen->tmtjabatan)>0)
+                            <input type="date" class="form-control" id="TmtJabatan" name="tmtjabatan" value="{{$dosen->tmtjabatan[0]->tmt_jabatan_fungsional}}">
+                        @else
+                            <input type="date" class="form-control" id="TmtJabatan" name="tmtjabatan">
+                        @endif
+                        <small style="color: red">
+                            @error('tmtjabatan')
+                                {{$message}}
+                            @enderror
+                        </small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col col-md-6">
+                        <label for="Unit" class="font-weight-bold text-dark">Unit</label>
+                        <select class="form-control" id="Unit" name="unit">
+                            @if(count($dosen->tmtjabatan)>0)
+                                <option value="" {{ $dosen->tmtpangkat[0]->unit==NULL ? 'selected' : '' }}>Pilih Unit</option>
+                                @foreach($unit as $u)
+                                    <option value="{{$u->id_fakultas}}" {{ $dosen->tmtpangkat[0]->unit==$u->id_fakultas ? 'selected' : '' }}>{{$u->fakultas}}</option>
+                                @endforeach
+                            @else
+                                <option value="" selected>Pilih Unit</option>
                                 @foreach($unit as $u)
                                     <option value="{{$u->id_fakultas}}">{{$u->fakultas}}</option>
                                 @endforeach
-                            </select>
-                        </div>
+                            @endif
+                        </select>
+                        <small style="color: red">
+                            @error('unit')
+                                {{$message}}
+                            @enderror
+                        </small>
+                    </div>
+                    <div class="col col-md-6">
+                        <label for="Subunit" class="font-weight-bold text-dark">Sub-Unit</label>
+                        <select class="form-control" id="Subunit" name="subunit">
+                            <option value="" {{ $dosen->id_prodi==NULL ? 'selected' : '' }}>Pilih Sub-Unit</option>
+                            @foreach($subunit as $u)
+                                <option value="{{$u->id_prodi}}" {{ $dosen->id_prodi == $u->id_prodi  ? 'selected' : '' }}>{{$u->prodi}}</option>
+                            @endforeach
+                        </select>
+                        <small style="color: red">
+                            @error('subunit')
+                                {{$message}}
+                            @enderror
+                        </small>
                     </div>
                 </div>
-                <div class="form-group card-header">
-                    <div class="row">
-                        <div class="col col-md-12">
-                            <h3 class="font-weight-bold text-primary">Berkas</h3>
-                        </div>
+            </div>
+    </div>
+    <br>
+    <div class="card shadow">
+            <div class="form-group card-header shadow">
+                <div class="row">
+                    <div class="col col-md-12">
+                        <h3 class="font-weight-bold text-primary"><i class="fas fa-folder-open"></i> Berkas</h3>
                     </div>
                 </div>
-                <div class="form-group card-header">
-                    <div class="row">
-                        <div class="col">
-                            <label for="NoKarpeg" class="font-weight-bold text-dark">No Karpeg</label>
-                            <input type="text" class="form-control" id="NoKarpeg" name="nokarpeg" placeholder="No Karpeg">
-                        </div>
-                        <div class="col">
-                            <label for="FileKarpeg" class="font-weight-bold text-dark">File Karpeg</label>
-                            <input type="file" class="form-control-file" id="FileKarpeg" name="filekarpeg">
-                            <a href="#"><i class="fas fa-download"></i> Download file</a>
-                        </div>
-                        <div class="col">
-                            <label for="NoNpwp" class="font-weight-bold text-dark">No NPWP</label>
-                            <input type="text" class="form-control" id="NoNpwp" name="nonpwp" placeholder="No NPWP">
-                        </div>
-                        <div class="col">
-                            <label for="FileNpwp" class="font-weight-bold text-dark">File NPWP</label>
-                            <input type="file" class="form-control-file" name="filenpwp">
-                            <a href="#"><i class="fas fa-download"></i> Download file</a>
-                        </div>
+            </div>
+            <div class="form-group card-body">
+                <div class="row">
+                    <div class="col">
+                        <label for="NoKarpeg" class="font-weight-bold text-dark">No. Karpeg</label>
+                        <input type="text" class="form-control" id="NoKarpeg" name="nokarpeg" placeholder="Masukan No. Karpeg" value="{{$dosen->no_karpeg}}">
+                        <small style="color: red">
+                            @error('nokarpeg')
+                                {{$message}}
+                            @enderror
+                        </small>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <label for="NoKaris" class="font-weight-bold text-dark">No Karis/Karsu</label>
-                            <input type="text" class="form-control" id="Nokaris" name="nokaris" placeholder="No Karis/Karsu">
-                        </div>
-                        <div class="col">
-                            <label for="FileKaris" class="font-weight-bold text-dark">File Karis/Karsu</label>
-                            <input type="file" class="form-control-file" id="FileKaris" name="filekaris">
+                    <div class="col">
+                        <label for="FileKarpeg" class="font-weight-bold text-dark">File Karpeg</label>
+                        <input type="file" class="form-control-file" id="FileKarpeg" name="filekarpeg">
+                        @if(!is_null($dosen->file_karpeg))
                             <a href="#"><i class="fas fa-download"></i> Download file</a>
-                        </div>
-                        <div class="col">
-                            <label for="NoKtp" class="font-weight-bold text-dark">No KTP</label>
-                            <input type="text" class="form-control" id="NoKtp" name="noktp" placeholder="No KTP">
-                        </div>
-                        <div class="col">
-                            <label for="FileKtp" class="font-weight-bold text-dark">File KTP</label>
-                            <input type="file" class="form-control-file" id="FileKTP" name="filektp">
-                            <a href="#"><i class="fas fa-download"></i> Download file</a>
-                        </div>
+                        @endif
+                        <small style="color: red">
+                            @error('filekarpeg')
+                                {{$message}}
+                            @enderror
+                        </small>
                     </div>
-                    <div class="row">
-                        <div class="col">
-                            <label for="StatusAktif" class="font-weight-bold text-dark">Status Keaktifan</label>
-                            <select id="StatusAktif" class="form-control" name="statusaktif">
+                    <div class="col">
+                        <label for="NoNpwp" class="font-weight-bold text-dark">No. NPWP</label>
+                        <input type="text" class="form-control" id="NoNpwp" name="nonpwp" placeholder="Masukan No. NPWP" value="{{$dosen->no_npwp}}">
+                        <small style="color: red">
+                            @error('nonpwp')
+                                {{$message}}
+                            @enderror
+                        </small>
+                    </div>
+                    <div class="col">
+                        <label for="FileNpwp" class="font-weight-bold text-dark">File NPWP</label>
+                        <input type="file" class="form-control-file" name="filenpwp">
+                        @if(!is_null($dosen->file_npwp))
+                            <a href="#"><i class="fas fa-download"></i> Download file</a>
+                        @endif
+                        <small style="color: red">
+                            @error('filenpwp')
+                                {{$message}}
+                            @enderror
+                        </small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="NoKaris" class="font-weight-bold text-dark">No. Karis/Karsu</label>
+                        <input type="text" class="form-control" id="Nokaris" name="nokaris" placeholder="Masukan No. Karis/Karsu" value="{{$dosen->no_karis_karsu}}">
+                        <small style="color: red">
+                            @error('nokaris')
+                                {{$message}}
+                            @enderror
+                        </small>
+                    </div>
+                    <div class="col">
+                        <label for="FileKaris" class="font-weight-bold text-dark">File Karis/Karsu</label>
+                        <input type="file" class="form-control-file" id="FileKaris" name="filekaris">
+                        @if(!is_null($dosen->file_karis_karsu))
+                            <a href="#"><i class="fas fa-download"></i> Download file</a>
+                        @endif
+                        <small style="color: red">
+                            @error('filekaris')
+                                {{$message}}
+                            @enderror
+                        </small>
+                    </div>
+                    <div class="col">
+                        <label for="NoKtp" class="font-weight-bold text-dark">No. KTP</label>
+                        <input type="text" class="form-control" id="NoKtp" name="noktp" placeholder="Masukan No. KTP" value="{{$dosen->no_ktp}}">
+                        <small style="color: red">
+                            @error('noktp')
+                                {{$message}}
+                            @enderror
+                        </small>
+                    </div>
+                    <div class="col">
+                        <label for="FileKtp" class="font-weight-bold text-dark">File KTP</label>
+                        <input type="file" class="form-control-file" id="FileKTP" name="filektp">
+                        @if(!is_null($dosen->file_ktp))
+                            <a href="#"><i class="fas fa-download"></i> Download file</a>
+                        @endif
+                        <small style="color: red">
+                            @error('filektp')
+                                {{$message}}
+                            @enderror
+                        </small>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="StatusAktif" class="font-weight-bold text-dark">Status Keaktifan</label>
+                        <select id="StatusAktif" class="form-control" name="statusaktif">
+                            @if(count($dosen->tmtkeaktifan)>0)
+                                <option value="" {{$dosen->tmtkeaktifan[0]->id_status_keaktifan==NULL ? 'selected' : '' }}>Pilih Status Keaktifan</option>
+                                @foreach($statusaktif as $s)
+                                    <option value="{{$s->id_status_keaktifan}}" {{$dosen->tmtkeaktifan[0]->id_status_keaktifan==$s->id_status_keaktifan ? 'selected' : '' }}>{{$s->status_keaktifan}}</option>
+                                @endforeach
+                            @else
+                                <option value="" selected>Pilih Status Keaktifan</option>
                                 @foreach($statusaktif as $s)
                                     <option value="{{$s->id_status_keaktifan}}">{{$s->status_keaktifan}}</option>
                                 @endforeach
-                            </select>
-                        </div>
-                        <div class="col">
-                            <label for="TmtAktif" class="font-weight-bold text-dark">TMT Keaktifan</label>
+                            @endif
+                        </select>
+                        <small style="color: red">
+                            @error('statusaktif')
+                                {{$message}}
+                            @enderror
+                        </small>
+                    </div>
+                    <div class="col">
+                        <label for="TmtAktif" class="font-weight-bold text-dark">TMT Keaktifan</label>
+                        @if(count($dosen->tmtkeaktifan)>0)
+                            <input type="date" class="form-control" id="TmtAktif" name="tmtaktif" value="{{$dosen->tmtkeaktifan[0]->tmt_keaktifan}}">
+                        @else
                             <input type="date" class="form-control" id="TmtAktif" name="tmtaktif">
-                        </div>
+                        @endif
+                        <small style="color: red">
+                            @error('tmtaktif')
+                                {{$message}}
+                            @enderror
+                        </small>
                     </div>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
+    </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script>

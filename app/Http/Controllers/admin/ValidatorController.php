@@ -19,11 +19,14 @@ use App\MasterPendidikan;
 use App\Prodi;
 use App\Fakultas;
 use App\MasterStatusKeaktifan;
+use App\MasterStatusKepegawaian;
 use App\MasterKeaktifan;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\DosenImports;
 use Response;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Hash;;
+use App\TmtStatusDosen;
+use App\TmtStatusKepegawaianDosen;
 
 class ValidatorController extends Controller
 {
@@ -63,8 +66,10 @@ class ValidatorController extends Controller
             $statusDosen = MasterStatusDosen::all();
             $pangkatDosen = MasterPangkatPns::all();
             $jabatanDosen = MasterJabatanFungsional::all();
+            $statusKepegawaian = MasterStatusKepegawaian::all();
             $unit = Fakultas::all();
-            return view('admin.dosen.formdosen', compact('statusDosen', 'pangkatDosen', 'jabatanDosen', 'unit', 'statusaktif','profiledata'));
+            $subunit = Prodi::all();
+            return view('admin.dosen.formdosen', compact('statusDosen', 'pangkatDosen', 'jabatanDosen', 'unit','subunit','statusaktif','statusKepegawaian','profiledata'));
         }
     }
 
@@ -83,6 +88,7 @@ class ValidatorController extends Controller
 
         $this->validate($request, [
             'nidn' => 'required',
+            'jenisserdos' => 'required',
             'nip' => 'required|unique:tb_dosen',
             'profile_image' => 'required',
             'gelardepan' => 'required',
@@ -97,21 +103,29 @@ class ValidatorController extends Controller
             'telprumah' => 'required',
             'nohp' => 'required',
             'email' => 'required|email',
-            'pangkatgolongan' => 'required',
+            'pangkatGolongan' => 'required',
             'jabatanakademik' => 'required',
-            'tmtpangkatgologan' => 'required',
+            'tmtpangkatgolongan' => 'required',
             'tmtjabatan' => 'required',
             'unit' => 'required',
+            'subunit' => 'required',
             'nokarpeg' => 'required',
-            'filekarpeg' => 'required|mimes: pdf|max:8000',
+            'filekarpeg' => 'required|max:8000',
             'nonpwp' => 'required',
-            'filenpwp' => 'required|mimes: pdf|max:8000',
+            'filenpwp' => 'required|max:8000',
             'nokaris' => 'required',
-            'filekaris' => 'required|mimes: pdf|max:8000',
+            'filekaris' => 'required|max:8000',
             'noktp' => 'required',
-            'filektp' => 'required|mimes: pdf|max:8000',
+            'filektp' => 'required|max:8000',
             'statusaktif' => 'required',
             'tmtaktif' => 'required',
+            'jenjangPendidikan' => 'required',
+            'institusi' => 'required',
+            'bidangIlmu' => 'required',
+            'tanggalSelesaiStudi' => 'required',
+            'tmtStatusDosen' => 'required',
+            'statusKepegawaian' => 'required',
+            'tmtStatusKepegawaian' => 'required',
         ],$messages);
         
         $images = null;
@@ -167,6 +181,8 @@ class ValidatorController extends Controller
         }
         $dosen->nip = $request->nip;
         $dosen->nama = $request->nama;
+        $dosen->password = Hash::make($request->nip);
+        $dosen->id_prodi = $request->subunit;
         $dosen->gelar_depan = $request->gelardepan;
         $dosen->gelar_belakang = $request->gelarbelakang;
         $dosen->jenis_kelamin = $request->jeniskelamin;
@@ -181,27 +197,55 @@ class ValidatorController extends Controller
         $dosen->no_npwp = $request->nonpwp;
         $dosen->no_karis_karsu = $request->nokaris;
         $dosen->no_ktp = $request->noktp;
-        $dosen->save();
+        if($dosen->save()){
+            $aktif = new MasterKeaktifan;
+            $aktif->nip = $request->nip;
+            $aktif->id_status_keaktifan = $request->statusaktif;
+            $aktif->tmt_keaktifan = $request->tmtaktif;
+            $aktif->save();
+    
+            $fungsi = new TmtKepangkatanFungsional;
+            $fungsi->nip = $request->nip;
+            $fungsi->id_pangkat_pns = $request->pangkatGolongan;
+            $fungsi->unit = $request->unit;
+            $fungsi->tmt_pangkat_golongan = $request->tmtpangkatgolongan;
+            $fungsi->save();
+    
+            $jabat = new TmtJabatanFungsional;
+            $jabat->id_jabatan_fungsional = $request->jabatanakademik;
+            $jabat->nip = $request->nip;
+            $jabat->tmt_jabatan_fungsional = $request->tmtjabatan;
+            $jabat->save();
+    
+            $didik = new MasterIdPendidik;
+            $didik->nip = $request->nip;
+            $didik->jenis_id = $request->jenisserdos;
+            $didik->nidn_nidk_nup = $request->nidn;
+            $didik->save();
+    
+            $hispendik = new MasterPendidikan;
+            $hispendik->nip = $request->nip;
+            $hispendik->jenjang_pendidikan_terakhir=$request->jenjangPendidikan;
+            $hispendik->nama_institusi = $request->institusi;
+            $hispendik->bidang_ilmu = $request->bidangIlmu;
+            $hispendik->tanggal_selesai_studi = $request->tanggalSelesaiStudi;
+            $hispendik->save();
+    
+            $status = new TmtStatusDosen;
+            $status->nip = $request->nip;
+            $status->id_status_dosen = $request->statusdosen;
+            $status->tmt_status_dosen = $request->tmtStatusDosen;
+            $status->save();
 
-        $aktif = new MasterKeaktifan;
-        $aktif->nip = $request->nip;
-        $aktif->id_status_keaktifan = $request->statusaktif;
-        $aktif->tmt_keaktifan = $request->tmtaktif;
-        $aktif->save();
-
-        $fungsi = new TmtKepangkatanFungsional;
-        $fungsi->nip = $request->nip;
-        $fungsi->id_pangkat_pns = $request->pangkatgolongan;
-        $fungsi->unit->$request->unit;
-        $fungsi->save();
-
-        $jabat = new TmtJabatanFungsional;
-        $jabat->id_jabatanfungsional = $request->jabatanakademik;
-        $jabat->nip = $request->nip;
-        $jabat->tmt_jabatan_fungsional = $request->tmtjabatan;
-        $jabat->save();
-
-        return redirect()->route('admin-home');
+            $kepeg = new TmtStatusKepegawaianDosen;
+            $kepeg->id_status_kepegawaian = $request->statusKepegawaian;
+            $kepeg->nip = $request->nip;
+            $kepeg->tmt_status_kepegawaian_dosen = $request->tmtStatusKepegawaian;
+            $kepeg->save();
+            return redirect()->route('dosen-page')->with('success','Berhasil Menambah Data Dosen!');
+        }else{
+            return redirect()->route('dosen-page')->with('error','Gagal Menambah Data Dosen!');
+        }
     }
 
     /**
@@ -246,35 +290,28 @@ class ValidatorController extends Controller
      */
     public function destroy($id)
     {
-        $statusDosen = MasterKeaktifan::where('nip', '=', $id);
-        $idpendidik = MasterIdPendidik::where('nip', '=', $id);
-        $tmtjabatan = TmtJabatanFungsional::where('nip', '=', $id);
-        $tmtpangkat = TmtKepangkatanFungsional::where('nip', '=', $id);
         $dosen = Dosen::where('nip', '=', $id);
-        $statusDosen->delete();
-        $idpendidik->delete();
-        $tmtjabatan->delete();
-        $tmtpangkat->delete();
         $dosen->delete();
-        
-        return redirect()->route('admin-home');
+        return redirect()->route('dosen-page')->with('success','Berhasil Menghapus Data Dosen!');
     }
 
     public function detailDosen($id, Request $request){
         if(!$request->session()->has('admin')){
             return redirect('/login')->with('expired','Session Telah Berakhir');
         }else{
+            $dosen = Dosen::with('tmtpangkat')->where('nip','=',$id)->first();
             $check = $request->session()->get('admin.id');
             $user = $request->session()->get('admin.data');
             $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
 
-            $dosen = Dosen::where('nip','=',$id)->with('tmtpangkat')->first();
             $statusaktif = MasterStatusKeaktifan::all();
             $statusDosen = MasterStatusDosen::all();
             $pangkatDosen = MasterPangkatPns::all();
             $jabatanDosen = MasterJabatanFungsional::all();
+            $statusKepegawaian = MasterStatusKepegawaian::all();
             $unit = Fakultas::all();
-            return view('admin.dosen.formdosenedit',compact('dosen','statusDosen', 'pangkatDosen', 'jabatanDosen', 'unit', 'statusaktif','profiledata'));
+            $subunit = Prodi::all();
+            return view('admin.dosen.formdosenedit',compact('statusDosen', 'pangkatDosen', 'jabatanDosen', 'unit','subunit','statusaktif','statusKepegawaian','profiledata','dosen'));
         }
         
     }
