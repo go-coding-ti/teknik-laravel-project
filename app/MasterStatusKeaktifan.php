@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class MasterStatusKeaktifan extends Model
 {
     //
+    public $timestamps = false;
     protected $primaryKey = 'id_status_keaktifan';
     protected $table = 'master_status_keaktifan';
 

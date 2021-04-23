@@ -25,7 +25,7 @@
   <link href="{{ asset('assets/admin/vendor/datatables/searchPanes.bootstrap4.min.css')}}" rel="stylesheet">
   <link href="{{ asset('assets/admin/vendor/datatables/select.bootstrap4.min.css')}}" rel="stylesheet">
   <link href="{{ asset('assets/admin/vendor/datatables/buttons.dataTables.min.css')}}" rel="stylesheet">
-
+  @yield('add_css')
 </head>
 
 <body id="page-top">
@@ -117,5 +117,6 @@
   <script src="{{ asset('assets/admin/vendor/datatables/dataTables.select.min.js')}}"></script>
   <script src="{{ asset('assets/admin/vendor/datatables/dataTables.buttons.min.js')}}"></script>
   <script src="{{ asset('assets/admin/js/custom.js')}}"></script>
+  @yield('add_js')
 </body>
 </html>

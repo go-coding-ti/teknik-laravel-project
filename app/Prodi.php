@@ -9,6 +9,7 @@ class Prodi extends Model
     //
     protected $primaryKey = 'id_prodi';
     protected $table = 'master_prodi';
+    public $timestamps = false;
 
     protected $fillable = ['id_fakultas', 'id_prodi'];
 

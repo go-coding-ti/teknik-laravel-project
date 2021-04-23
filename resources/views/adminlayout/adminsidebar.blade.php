@@ -2,7 +2,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a style="height:50px !important;" class="sidebar-brand d-flex align-items-center justify-content-center" href="/admin">
+        <a style="height:50px !important;" class="sidebar-brand d-flex align-items-center justify-content-center" href="/admin/dashboard">
           <div class="sidebar-brand-icon">
             <img style="height: 37px;" src="{{asset('assets/admin/img/unud.png')}}">
           </div>
@@ -33,17 +33,17 @@
             <i class="fas fa-fw fa-house-user"></i>
             <span>Master Data</span>
           </a>
-          <div id="collapseMaster" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+          <div id="collapseMaster" class="collapse {{ Request::is('admin/masterdata*') ? 'show' : '' }}" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-              <a class="collapse-item" href="utilities-border.html">Fakultas</a>
-              <a class="collapse-item" href="utilities-border.html">Jabatan Fungsional</a>
-              <a class="collapse-item" href="utilities-border.html">Kategori Penelitian</a>
-              <a class="collapse-item" href="utilities-border.html">Kategori Pengabdian</a>
-              <a class="collapse-item" href="utilities-border.html">Pangkat PNS</a>
-              <a class="collapse-item" href="utilities-border.html">Prodi</a>
-              <a class="collapse-item" href="utilities-border.html">Status Dosen</a>
-              <a class="collapse-item" href="utilities-border.html">Status Keaktifan</a>
-              <a class="collapse-item" href="utilities-border.html">Status Kepegawaian</a>
+              <a class="collapse-item {{ Request::is('admin/masterdata/fakultas*') ? 'active' : '' }}" href="{{route('masterdata-fakultas-index')}}">Fakultas</a>
+              <a class="collapse-item {{ Request::is('admin/masterdata/jabatanfungsional*') ? 'active' : '' }}" href="{{route('masterdata-jabatanfungsional-index')}}">Jabatan Fungsional</a>
+              <a class="collapse-item {{ Request::is('admin/masterdata/kategoripenelitian*') ? 'active' : '' }}" href="{{route('masterdata-kategoripenelitian-index')}}">Kategori Penelitian</a>
+              <a class="collapse-item {{ Request::is('admin/masterdata/kategoripengabdian*') ? 'active' : '' }}" href="{{route('masterdata-kategoripengabdian-index')}}">Kategori Pengabdian</a>
+              <a class="collapse-item {{ Request::is('admin/masterdata/pangkatpns*') ? 'active' : '' }}" href="{{route('masterdata-pangkatpns-index')}}">Pangkat PNS</a>
+              <a class="collapse-item {{ Request::is('admin/masterdata/prodi*') ? 'active' : '' }}" href="{{route('masterdata-prodi-index')}}">Prodi</a>
+              <a class="collapse-item {{ Request::is('admin/masterdata/statusdosen*') ? 'active' : '' }}" href="{{route('masterdata-statusdosen-index')}}">Status Dosen</a>
+              <a class="collapse-item {{ Request::is('admin/masterdata/statuskeaktifan*') ? 'active' : '' }}" href="{{route('masterdata-statuskeaktifan-index')}}">Status Keaktifan</a>
+              <a class="collapse-item {{ Request::is('admin/masterdata/statuskepegawaian*') ? 'active' : '' }}" href="{{route('masterdata-statuskepegawaian-index')}}">Status Kepegawaian</a>
             </div>
           </div>
         </li>
@@ -53,9 +53,9 @@
             <i class="fas fa-fw fa-user"></i>
             <span>Management Data User</span>
           </a>
-          <div id="collapseDataUser" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+          <div id="collapseDataUser" class="collapse {{ Request::is('admin/datauser*') ? 'show' : '' }}" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-              <a class="collapse-item" href="/admin/listdosen">Data Dosen</a>
+              <a class="collapse-item {{ Request::is('admin/datauser/dosen*') ? 'active' : '' }}" href="/admin/datauser/dosen/listdosen">Data Dosen</a>
               <a class="collapse-item" href="utilities-border.html">Data Pegawai</a>
             </div>
           </div>

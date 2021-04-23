@@ -1,5 +1,8 @@
 @extends('adminlayout.layout')
 @section('content')
+@section('add_js')
+    
+@endsection
 <div class="modal fade" id="modal-global">
   <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -9,8 +12,8 @@
                   <div>
                     <h4>Pilih Salah Satu</h4>
                     <br>
-                    <a href="/admin/import/dosen" class= "btn btn-primary text-white" id="toggle" ><i class="fas fa-download"></i> Import Data Dosen</a>
-                    <a class= "btn btn-info text-white" id="toggle" ><i class="fas fa-upload"></i> Export Data Dosen</a>
+                    <a href="/admin/datauser/dosen/import/dosen" class= "btn btn-primary text-white" id="toggle" ><i class="fas fa-download"></i> Import Data Dosen</a>
+                    <a href="/admin/datauser/dosen/export/dosen" class= "btn btn-info text-white" id="toggle" ><i class="fas fa-upload"></i> Export Data Dosen</a>
                   </div>
               </div>
           </div>
@@ -65,20 +68,24 @@
               <a class= "btn btn-success text-white" href="{{route('dosen-createpage')}}"><i class="fas fa-plus"></i> Tambah Data Dosen</a>
               <a data-toggle="modal" data-target="#modal-global" class= "btn btn-primary text-white" id="toggle" ><i class="fas fa-download"></i> Import & Export Data Dosen</a>  
               <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                  <thead>
+                  <thead align="center">
                     <tr>
+                      <th>Action</th>
                       <th>NIP</th>
                       <th>Foto</th>
                       <th>Nama(dengan gelar)</th>
                       <th>No HP</th>
-                      <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
                   @foreach ($data as $i => $dosen)
                     <tr>
+                      <td align="center">
+                        <a href="/admin/datauser/dosen/detaildosen/{{$dosen->nip}}" class="btn btn-warning btn-sm"><i class="fas fa-eye"></i></a>
+                        <a style="margin-right:7px" class="btn btn-danger btn-sm" href="/admin/datauser/dosen/{{$dosen->nip}}/delete" onclick="return confirm('Apakah Anda Yakin ?')"><i class="fas fa-trash"></i></a>
+                      </td>
                       <td>{{$dosen->nip}}</td>
-                      <td>
+                      <td align="center">
                         @if($dosen->foto!=null)
                           <img src="{{asset('img/'.$dosen->foto)}}" class="mb-3" style="border:solid #000 3px;height:200px;width:150px;" id="propic">
                         @else
@@ -93,10 +100,6 @@
                         <td>{{$dosen->gelar_depan}} {{$dosen->nama}}, {{$dosen->gelar_belakang}}</td>
                       @endif
                       <td>{{$dosen->no_hp}}</td>
-                      <td>
-                        <a href="/admin/detail/dosen/{{$dosen->nip}}" class="btn btn-warning btn-sm"><i class="fas fa-eye"></i></a>
-                        <a style="margin-right:7px" class="btn btn-danger btn-sm" href="/admin/{{$dosen->nip}}/delete" onclick="return confirm('Apakah Anda Yakin ?')"><i class="fas fa-trash"></i></a>
-                      </td>
                     </tr>
                   @endforeach
                   </tbody>

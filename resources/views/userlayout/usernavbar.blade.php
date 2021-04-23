@@ -89,7 +89,14 @@
                     <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                   </div>
                 </li>
-    
+                <!-- Nav Item - Alerts -->
+                <div style="margin-top: 20px">
+                  @if($profiledata->chat_id != NULL )
+                    <span class="badge badge-pill badge-success">Telegram Sudah Terdaftar</span>
+                  @else
+                    <span class="badge badge-pill badge-warning">Telegram Belum Terdaftar</span>
+                  @endif
+                </div>
                 {{-- <!-- Nav Item - Messages -->
                 <li class="nav-item dropdown no-arrow mx-1">
                   <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -173,7 +180,7 @@
                       Activity Log
                     </a> --}}
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="/admin/logout" data-toggle="modal" data-target="#logoutModal">
+                    <a class="dropdown-item" href="/user/logout" data-toggle="modal" data-target="#logoutModal">
                       <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                       Logout
                     </a>

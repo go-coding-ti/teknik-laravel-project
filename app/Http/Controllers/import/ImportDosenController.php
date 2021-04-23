@@ -42,22 +42,27 @@ class ImportDosenController extends Controller
     }
 
     public function storeImportDosen(Request $request){
-        $excel = null;
-        if($request->file('inputfile')){
-            $user = $request->session()->get('admin.data');
-            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
-            $file = $request->file('inputfile');
-            $excel = time()."_".$file->getClientOriginalName();
-            
-            $rows = Excel::ToCollection(new DosenImports, $file);
-            $imports = $rows['0'];
-
-            $upload = 'excel';
-            $file->move($upload,$excel);
-            return view('admin.dosen.importdosen', compact('imports','profiledata'),['success'=>'Berhasil Meload Data Excel']);
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
         }else{
-            return redirect()->route('admin-import-dosen')->with('error','Gagal Meload Excel');
+            $excel = null;
+            if($request->file('inputfile')){
+                $user = $request->session()->get('admin.data');
+                $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+                $file = $request->file('inputfile');
+                $excel = time()."_".$file->getClientOriginalName();
+                
+                $rows = Excel::ToCollection(new DosenImports, $file);
+                $imports = $rows['0'];
+    
+                $upload = 'excel';
+                $file->move($upload,$excel);
+                return view('admin.dosen.importdosen', compact('imports','profiledata'),['success'=>'Berhasil Meload Data Excel']);
+            }else{
+                return redirect()->route('admin-import-dosen')->with('error','Gagal Meload Excel');
+            }
         }
+        
     }
 
     public function downloadExcelDosen(){
@@ -132,7 +137,11 @@ class ImportDosenController extends Controller
                 $fungsional->nip = $request->row_nip[$nips];
                 $fungsional->id_jabatan_fungsional = $id_jabatan_fungsional->id_jabatan_fungsional;
                 $fungsional->update();
-
+                
+                $idstatus = TmtStatusDosen::where('nip','=',$request->row_nip[$nips])->first();
+                $updateStatus = TmtStatusDosen::find($idstatus->id);
+                $status->nip = $request->row_nip[$nips];
+                $status->update();
                 continue;
             }else if (!isset($checkDosen)) {
                 $storeDosen = new Dosen;
@@ -188,6 +197,10 @@ class ImportDosenController extends Controller
                 $fungsional->nip = $request->row_nip[$nips];
                 $fungsional->id_jabatan_fungsional = $id_jabatan_fungsional->id_jabatan_fungsional;
                 $fungsional->save();
+
+                $status = new TmtStatusDosen;
+                $status->nip = $request->row_nip[$nips];
+                $status->save();
                 // row_tahun
                 // row_status_serdos
                 // row_tahun_serdos

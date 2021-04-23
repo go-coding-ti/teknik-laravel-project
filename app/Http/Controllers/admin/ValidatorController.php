@@ -27,6 +27,9 @@ use Response;
 use Illuminate\Support\Facades\Hash;;
 use App\TmtStatusDosen;
 use App\TmtStatusKepegawaianDosen;
+use App\KategoriPenelitian;
+use App\Pengabdian;
+use App\KategoriPengabdian;
 
 class ValidatorController extends Controller
 {
@@ -110,13 +113,13 @@ class ValidatorController extends Controller
             'unit' => 'required',
             'subunit' => 'required',
             'nokarpeg' => 'required',
-            'filekarpeg' => 'required|max:8000',
+            'filekarpeg' => 'required|mimetypes:application/pdf|max:8000',
             'nonpwp' => 'required',
-            'filenpwp' => 'required|max:8000',
+            'filenpwp' => 'required|mimetypes:application/pdf|max:8000',
             'nokaris' => 'required',
-            'filekaris' => 'required|max:8000',
+            'filekaris' => 'required|mimetypes:application/pdf|max:8000',
             'noktp' => 'required',
-            'filektp' => 'required|max:8000',
+            'filektp' => 'required|mimetypes:application/pdf|max:8000',
             'statusaktif' => 'required',
             'tmtaktif' => 'required',
             'jenjangPendidikan' => 'required',
@@ -313,6 +316,701 @@ class ValidatorController extends Controller
             $subunit = Prodi::all();
             return view('admin.dosen.formdosenedit',compact('statusDosen', 'pangkatDosen', 'jabatanDosen', 'unit','subunit','statusaktif','statusKepegawaian','profiledata','dosen'));
         }
+    }
+
+    public function downloadKarpeg($file){
+        $file="karpeg/".$file;
+        if(is_file($file)){
+            $headers = array(
+                'Content-Type: application/pdf',
+            );
+            return Response::download($file, 'Karpeg_File.pdf', $headers);
+        }else{
+            return redirect()->back()->with('error','Gagal Mendowload file Karpeg!');
+        }
         
+    }
+
+    public function downloadKariskarsu($file){
+        $file="karis/".$file;
+        if(is_file($file)){
+            $headers = array(
+                'Content-Type: application/pdf',
+            );
+            return Response::download($file, 'Karis_Karsu_File.pdf', $headers);
+        }else{
+            return redirect()->back()->with('error','Gagal Mendowload file Karis/Karsu!');
+        }
+        
+    }
+
+    public function downloadNpwp($file){
+        $file="npwp/".$file;
+        if(is_file($file)){
+            $headers = array(
+                'Content-Type: application/pdf',
+            );
+            return Response::download($file, 'NPWP_File.pdf', $headers);
+        }else{
+            return redirect()->back()->with('error','Gagal Mendowload file NPWP!');
+        }
+        
+    }
+
+    public function downloadKtp($file){
+        $file="ktp/".$file;
+        if(is_file($file)){
+            $headers = array(
+                'Content-Type: application/pdf',
+            );
+            return Response::download($file, 'KTP_File.pdf', $headers);
+        }else{
+            return redirect()->back()->with('error','Gagal Mendowload file KTP!');
+        }
+    }
+
+    public function indexFakultas(Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            $datafakultas = Fakultas::get();
+            return view('admin.masterdata.fakultas.index', compact('datafakultas','profiledata'));
+        }
+    }
+
+    public function createFakultas(Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            return view('admin.masterdata.fakultas.create', compact('profiledata'));
+        }
+    }
+
+    public function storeFakultas(Request $request){
+        $messages = [
+            'required' => 'Kolom :attribute Wajib Diisi!',
+            'unique' => 'Kolom :attribute Tidak Boleh Sama!',
+		];
+
+        $this->validate($request, [
+            'fakultas' => 'required|unique:master_fakultas',
+        ],$messages);
+
+        $fak = new Fakultas;
+        $fak->fakultas = $request->fakultas;
+        $fak->save();
+        return redirect()->route('masterdata-fakultas-index')->with('success','Berhasil Menambah Data Fakultas!');
+    }
+
+    public function showFakultas($id, Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            $datafakultas = Fakultas::where('id_fakultas','=',$id)->first();
+            return view('admin.masterdata.fakultas.edit', compact('datafakultas','profiledata'));
+        }
+    }
+
+    public function updateFakultas($id, Request $request){
+        $messages = [
+            'required' => 'Kolom :attribute Wajib Diisi!',
+            'unique' => 'Kolom :attribute Tidak Boleh Sama!',
+		];
+
+        $this->validate($request, [
+            'fakultas' => 'required',
+        ],$messages);
+
+        $fak = Fakultas::find($id);
+        $fak->fakultas = $request->fakultas;
+        $fak->update();
+        return redirect()->route('masterdata-fakultas-index')->with('success','Berhasil Mengupdate Data Fakultas!');
+    }
+
+    public function deleteFakultas($id)
+    {
+        $fak = Fakultas::where('id_fakultas', '=', $id);
+        $fak->delete();
+        return redirect()->route('masterdata-fakultas-index')->with('success','Berhasil Menghapus Data Fakultas!');
+    }
+
+    public function indexJF(Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            $datajf = MasterJabatanFungsional::get();
+            return view('admin.masterdata.jabatanfungsional.index', compact('datajf','profiledata'));
+        }
+    }
+
+    public function createJF(Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            return view('admin.masterdata.jabatanfungsional.create', compact('profiledata'));
+        }
+    }
+
+    public function storeJF(Request $request){
+        $messages = [
+            'required' => 'Kolom :attribute Wajib Diisi!',
+            'unique' => 'Kolom :attribute Tidak Boleh Sama!',
+		];
+
+        $this->validate($request, [
+            'jabatan_fungsional' => 'required|unique:master_jabatan_fungsional',
+        ],$messages);
+
+        $jf = new MasterJabatanFungsional;
+        $jf->jabatan_fungsional = $request->jabatan_fungsional;
+        $jf->save();
+        return redirect()->route('masterdata-jabatanfungsional-index')->with('success','Berhasil Menambah Data Jabatan Fungsional!');
+    }
+
+    public function showJF($id, Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            $datajf = MasterJabatanFungsional::where('id_jabatan_fungsional','=',$id)->first();
+            return view('admin.masterdata.jabatanfungsional.edit', compact('datajf','profiledata'));
+        }
+    }
+
+    public function updateJF($id, Request $request){
+        $messages = [
+            'required' => 'Kolom :attribute Wajib Diisi!',
+            'unique' => 'Kolom :attribute Tidak Boleh Sama!',
+		];
+
+        $this->validate($request, [
+            'jabatan_fungsional' => 'required',
+        ],$messages);
+
+        $jf = MasterJabatanFungsional::find($id);
+        $jf->jabatan_fungsional = $request->jabatan_fungsional;
+        $jf->update();
+        return redirect()->route('masterdata-jabatanfungsional-index')->with('success','Berhasil Mengupdate Data Jabatan Fungsional!');
+    }
+
+    public function deleteJF($id){
+        $jf = MasterJabatanFungsional::where('id_jabatan_fungsional', '=', $id);
+        $jf->delete();
+        return redirect()->route('masterdata-jabatanfungsional-index')->with('success','Berhasil Menghapus Data Jabatan Fungsional!');
+    }
+
+    public function indexKP(Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            $datakp = KategoriPenelitian::get();
+            return view('admin.masterdata.kategoripenelitian.index', compact('datakp','profiledata'));
+        }
+    }
+
+    public function createKP(Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            return view('admin.masterdata.kategoripenelitian.create', compact('profiledata'));
+        }
+    }
+
+    public function storeKP(Request $request){
+        $messages = [
+            'required' => 'Kolom :attribute Wajib Diisi!',
+            'unique' => 'Kolom :attribute Tidak Boleh Sama!',
+		];
+
+        $this->validate($request, [
+            'kategori_penelitian' => 'required|unique:master_kategori_penelitian',
+        ],$messages);
+
+        $kp = new KategoriPenelitian;
+        $kp->kategori_penelitian = $request->kategori_penelitian;
+        $kp->save();
+        return redirect()->route('masterdata-kategoripenelitian-index')->with('success','Berhasil Menambah Data Kategori Penelitian!');
+    }
+
+    public function showKP($id, Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            $datakp = KategoriPenelitian::where('id_kategori_penelitian','=',$id)->first();
+            return view('admin.masterdata.kategoripenelitian.edit', compact('datakp','profiledata'));
+        }
+    }
+
+    public function updateKP($id, Request $request){
+        $messages = [
+            'required' => 'Kolom :attribute Wajib Diisi!',
+            'unique' => 'Kolom :attribute Tidak Boleh Sama!',
+		];
+
+        $this->validate($request, [
+            'kategori_penelitian' => 'required',
+        ],$messages);
+
+        $kp = KategoriPenelitian::find($id);
+        $kp->kategori_penelitian = $request->kategori_penelitian;
+        $kp->update();
+        return redirect()->route('masterdata-kategoripenelitian-index')->with('success','Berhasil Mengupdate Data Kategori Penelitian!');
+    }
+
+    public function deleteKP($id){
+        $kp = KategoriPenelitian::where('id_kategori_penelitian', '=', $id);
+        $kp->delete();
+        return redirect()->route('masterdata-kategoripenelitian-index')->with('success','Berhasil Menghapus Data Kategori Penelitian!');
+    }
+
+    public function indexKPeng(Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            $datakpeng = KategoriPengabdian::get();
+            return view('admin.masterdata.kategoripengabdian.index', compact('datakpeng','profiledata'));
+        }
+    }
+
+    public function createKPeng(Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            return view('admin.masterdata.kategoripengabdian.create', compact('profiledata'));
+        }
+    }
+
+    public function storeKPeng(Request $request){
+        $messages = [
+            'required' => 'Kolom :attribute Wajib Diisi!',
+            'unique' => 'Kolom :attribute Tidak Boleh Sama!',
+		];
+
+        $this->validate($request, [
+            'kategori_pengabdian' => 'required|unique:master_kategori_pengabdian',
+        ],$messages);
+
+        $kpeng = new KategoriPengabdian;
+        $kpeng->kategori_pengabdian = $request->kategori_pengabdian;
+        $kpeng->save();
+        return redirect()->route('masterdata-kategoripengabdian-index')->with('success','Berhasil Menambah Data Kategori Pengabdian!');
+    }
+
+    public function showKPeng($id, Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            $datakpeng = KategoriPengabdian::where('id_kategori_pengabdian','=',$id)->first();
+            return view('admin.masterdata.kategoripengabdian.edit', compact('datakpeng','profiledata'));
+        }
+    }
+
+    public function updateKPeng($id, Request $request){
+        $messages = [
+            'required' => 'Kolom :attribute Wajib Diisi!',
+            'unique' => 'Kolom :attribute Tidak Boleh Sama!',
+		];
+
+        $this->validate($request, [
+            'kategori_pengabdian' => 'required',
+        ],$messages);
+
+        $kpeng = KategoriPengabdian::find($id);
+        $kpeng->kategori_pengabdian = $request->kategori_pengabdian;
+        $kpeng->update();
+        return redirect()->route('masterdata-kategoripengabdian-index')->with('success','Berhasil Mengupdate Data Kategori Pengabdian!');
+    }
+
+    public function deleteKPeng($id){
+        $kpeng = KategoriPengabdian::where('id_kategori_pengabdian', '=', $id);
+        $kpeng->delete();
+        return redirect()->route('masterdata-kategoripengabdian-index')->with('success','Berhasil Menghapus Data Kategori Pengabdian!');
+    }
+
+    public function indexPP(Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            $datapp = MasterPangkatPns::get();
+            return view('admin.masterdata.pangkatpns.index', compact('datapp','profiledata'));
+        }
+    }
+
+    public function createPP(Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            return view('admin.masterdata.pangkatpns.create', compact('profiledata'));
+        }
+    }
+
+    public function storePP(Request $request){
+        $messages = [
+            'required' => 'Kolom :attribute Wajib Diisi!',
+            'unique' => 'Kolom :attribute Tidak Boleh Sama!',
+		];
+
+        $this->validate($request, [
+            'pangkat' => 'required',
+            'golongan' => 'required',
+        ],$messages);
+
+        $pp = new MasterPangkatPns;
+        $pp->pangkat = $request->pangkat;
+        $pp->golongan = $request->golongan;
+        $pp->save();
+        return redirect()->route('masterdata-pangkatpns-index')->with('success','Berhasil Menambah Data Pangkat PNS!');
+    }
+
+    public function showPP($id, Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            $datapp = MasterPangkatPns::where('id_pangkat_pns','=',$id)->first();
+            return view('admin.masterdata.pangkatpns.edit', compact('datapp','profiledata'));
+        }
+    }
+
+    public function updatePP($id, Request $request){
+        $messages = [
+            'required' => 'Kolom :attribute Wajib Diisi!',
+            'unique' => 'Kolom :attribute Tidak Boleh Sama!',
+		];
+
+        $this->validate($request, [
+            'pangkat' => 'required',
+            'golongan' => 'required',
+        ],$messages);
+
+        $pp = MasterPangkatPns::find($id);
+        $pp->pangkat = $request->pangkat;
+        $pp->golongan = $request->golongan;
+        $pp->update();
+        return redirect()->route('masterdata-pangkatpns-index')->with('success','Berhasil Mengupdate Data Pangkat PNS!');
+    }
+
+    public function deletePP($id){
+        $pp = MasterPangkatPns::where('id_pangkat_pns', '=', $id);
+        $pp->delete();
+        return redirect()->route('masterdata-pangkatpns-index')->with('success','Berhasil Menghapus Data Pangkat PNS!');
+    }
+
+
+    public function indexProdi(Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            $dataprodi = Prodi::get();
+            return view('admin.masterdata.prodi.index', compact('dataprodi','profiledata'));
+        }
+    }
+
+    public function createProdi(Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            $unit = Fakultas::all();
+            return view('admin.masterdata.prodi.create', compact('unit','profiledata'));
+        }
+    }
+
+    public function storeProdi(Request $request){
+        $messages = [
+            'required' => 'Kolom :attribute Wajib Diisi!',
+            'unique' => 'Kolom :attribute Tidak Boleh Sama!',
+		];
+
+        $this->validate($request, [
+            'id_fakultas' => 'required',
+            'prodi' => 'required|unique:master_prodi',
+        ],$messages);
+
+        $prodi = new Prodi;
+        $prodi->id_fakultas = $request->id_fakultas;
+        $prodi->prodi = $request->prodi;
+        $prodi->save();
+        return redirect()->route('masterdata-prodi-index')->with('success','Berhasil Menambah Data Prodi!');
+    }
+
+    public function showProdi($id, Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            $dataprodi = Prodi::where('id_prodi','=',$id)->first();
+            $unit = Fakultas::all();
+            return view('admin.masterdata.prodi.edit', compact('dataprodi','unit','profiledata'));
+        }
+    }
+
+    public function updateProdi($id, Request $request){
+        $messages = [
+            'required' => 'Kolom :attribute Wajib Diisi!',
+            'unique' => 'Kolom :attribute Tidak Boleh Sama!',
+		];
+
+        $this->validate($request, [
+            'id_fakultas' => 'required',
+            'prodi' => 'required',
+        ],$messages);
+
+        $prodi = Prodi::find($id);
+        $prodi->id_fakultas = $request->id_fakultas;
+        $prodi->prodi = $request->prodi;
+        $prodi->update();
+        return redirect()->route('masterdata-prodi-index')->with('success','Berhasil Mengupdate Data Prodi!');
+    }
+
+    public function deleteProdi($id){
+        $prodi = Prodi::where('id_prodi', '=', $id);
+        $prodi->delete();
+        return redirect()->route('masterdata-prodi-index')->with('success','Berhasil Menghapus Data Prodi!');
+    }
+
+
+    public function indexSD(Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            $datasd = MasterStatusDosen::get();
+            return view('admin.masterdata.statusdosen.index', compact('datasd','profiledata'));
+        }
+    }
+
+    public function createSD(Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            return view('admin.masterdata.statusdosen.create', compact('profiledata'));
+        }
+    }
+
+    public function storeSD(Request $request){
+        $messages = [
+            'required' => 'Kolom :attribute Wajib Diisi!',
+            'unique' => 'Kolom :attribute Tidak Boleh Sama!',
+		];
+
+        $this->validate($request, [
+            'status_dosen' => 'required|unique:master_status_dosen',
+        ],$messages);
+
+        $sd = new MasterStatusDosen;
+        $sd->status_dosen = $request->status_dosen;
+        $sd->save();
+        return redirect()->route('masterdata-statusdosen-index')->with('success','Berhasil Menambah Data Status Dosen!');
+    }
+
+    public function showSD($id, Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            $datasd = MasterStatusDosen::where('id_status_dosen','=',$id)->first();
+            return view('admin.masterdata.statusdosen.edit', compact('datasd','profiledata'));
+        }
+    }
+
+    public function updateSD($id, Request $request){
+        $messages = [
+            'required' => 'Kolom :attribute Wajib Diisi!',
+            'unique' => 'Kolom :attribute Tidak Boleh Sama!',
+		];
+
+        $this->validate($request, [
+            'status_dosen' => 'required',
+        ],$messages);
+
+        $sd = MasterStatusDosen::find($id);
+        $sd->status_dosen = $request->status_dosen;
+        $sd->update();
+        return redirect()->route('masterdata-statusdosen-index')->with('success','Berhasil Mengupdate Data Status Dosen!');
+    }
+
+    public function deleteSD($id){
+        $sd = MasterStatusDosen::where('id_status_dosen', '=', $id);
+        $sd->delete();
+        return redirect()->route('masterdata-statusdosen-index')->with('success','Berhasil Menghapus Data Status Dosen!');
+    }
+
+
+    public function indexSK(Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            $datask = MasterStatusKeaktifan::get();
+            return view('admin.masterdata.statuskeaktifan.index', compact('datask','profiledata'));
+        }
+    }
+
+    public function createSK(Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            return view('admin.masterdata.statuskeaktifan.create', compact('profiledata'));
+        }
+    }
+
+    public function storeSK(Request $request){
+        $messages = [
+            'required' => 'Kolom :attribute Wajib Diisi!',
+            'unique' => 'Kolom :attribute Tidak Boleh Sama!',
+		];
+
+        $this->validate($request, [
+            'status_keaktifan' => 'required|unique:master_status_keaktifan',
+        ],$messages);
+
+        $sk = new MasterStatusKeaktifan;
+        $sk->status_keaktifan = $request->status_keaktifan;
+        $sk->save();
+        return redirect()->route('masterdata-statuskeaktifan-index')->with('success','Berhasil Menambah Data Status Keaktifan!');
+    }
+
+    public function showSK($id, Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            $datask = MasterStatusKeaktifan::where('id_status_keaktifan','=',$id)->first();
+            return view('admin.masterdata.statuskeaktifan.edit', compact('datask','profiledata'));
+        }
+    }
+
+    public function updateSK($id, Request $request){
+        $messages = [
+            'required' => 'Kolom :attribute Wajib Diisi!',
+            'unique' => 'Kolom :attribute Tidak Boleh Sama!',
+		];
+
+        $this->validate($request, [
+            'status_keaktifan' => 'required',
+        ],$messages);
+
+        $sk = MasterStatusKeaktifan::find($id);
+        $sk->status_keaktifan = $request->status_keaktifan;
+        $sk->update();
+        return redirect()->route('masterdata-statuskeaktifan-index')->with('success','Berhasil Mengupdate Data Status Keaktifan!');
+    }
+
+    public function deleteSK($id){
+        $sk = MasterStatusKeaktifan::where('id_status_keaktifan', '=', $id);
+        $sk->delete();
+        return redirect()->route('masterdata-statuskeaktifan-index')->with('success','Berhasil Menghapus Data Status Keaktifan!');
+    }
+
+
+    public function indexSKp(Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            $dataskp = MasterStatusKepegawaian::get();
+            return view('admin.masterdata.statuskepegawaian.index', compact('dataskp','profiledata'));
+        }
+    }
+
+    public function createSKp(Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            return view('admin.masterdata.statuskepegawaian.create', compact('profiledata'));
+        }
+    }
+
+    public function storeSKp(Request $request){
+        $messages = [
+            'required' => 'Kolom :attribute Wajib Diisi!',
+            'unique' => 'Kolom :attribute Tidak Boleh Sama!',
+		];
+
+        $this->validate($request, [
+            'status_kepegawaian' => 'required|unique:master_status_kepegawaian',
+        ],$messages);
+
+        $skp = new MasterStatusKepegawaian;
+        $skp->status_kepegawaian = $request->status_kepegawaian;
+        $skp->save();
+        return redirect()->route('masterdata-statuskepegawaian-index')->with('success','Berhasil Menambah Data Status Kepegawaian!');
+    }
+
+    public function showSKp($id, Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            $dataskp = MasterStatusKepegawaian::where('id_status_kepegawaian','=',$id)->first();
+            return view('admin.masterdata.statuskepegawaian.edit', compact('dataskp','profiledata'));
+        }
+    }
+
+    public function updateSKp($id, Request $request){
+        $messages = [
+            'required' => 'Kolom :attribute Wajib Diisi!',
+            'unique' => 'Kolom :attribute Tidak Boleh Sama!',
+		];
+
+        $this->validate($request, [
+            'status_kepegawaian' => 'required',
+        ],$messages);
+
+        $skp = MasterStatusKepegawaian::find($id);
+        $skp->status_kepegawaian = $request->status_kepegawaian;
+        $skp->update();
+        return redirect()->route('masterdata-statuskepegawaian-index')->with('success','Berhasil Mengupdate Data Status Kepegawaian!');
+    }
+
+    public function deleteSKp($id){
+        $skp = MasterStatusKepegawaian::where('id_status_kepegawaian', '=', $id);
+        $skp->delete();
+        return redirect()->route('masterdata-statuskepegawaian-index')->with('success','Berhasil Menghapus Data Status Kepegawaian!');
     }
 }
