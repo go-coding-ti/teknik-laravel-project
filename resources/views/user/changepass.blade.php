@@ -21,7 +21,7 @@
             </button>
         </div>
     @endif
-    <form method="POST" enctype="multipart/form-data" action="/">
+    <form method="POST" enctype="multipart/form-data" action="{{route('user-store-changepass')}}">
     @csrf
     <div class="card shadow">
         <div class="form-group card-header shadow">
@@ -37,27 +37,25 @@
             <label for="oldpass" class="font-weight-bold text-dark">Masukan Password Lama</label>
             <div class="input-group mb-4">    
                 <input type="password" class="form-control" id="oldpass" name="oldpass" placeholder="Masukan Password Lama" data-toggle="password">
+                <small style="color: red">
+                    @error('oldpass')
+                        {{$message}}
+                    @enderror
+                </small>
             </div>
-            <small style="color: red">
-                @error('oldpass')
-                    {{$message}}
-                @enderror
-            </small>
 
             <label for="newpass" class="font-weight-bold text-dark">Masukan Password Baru</label>
             <div class="input-group mb-4">
                 <input type="password" class="form-control" id="newpass" name="newpass" placeholder="Masukan Password Baru" data-toggle="password">
+                <small style="color: red">
+                    @error('newpass')
+                        {{$message}}
+                    @enderror
+                </small>
             </div>
-            <small style="color: red">
-                @error('newpass')
-                    {{$message}}
-                @enderror
-            </small>
             
             <label for="confirmpass" class="font-weight-bold text-dark">Konfirmasi Password</label>
-            <div class="input-group mb-4">
-                <input type="password" class="form-control" id="confirmpass" name="confirmpass" placeholder="Konfirmasi Password">
-            </div>
+            <input type="password" class="form-control" id="confirmpass" name="confirmpass" placeholder="Konfirmasi Password">
             <small style="color: red">
                 @error('confirmpass')
                     {{$message}}

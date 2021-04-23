@@ -42,7 +42,7 @@ $("#profile_image").change(function() {
         </div>
     @endif
     <div style="margin-left: 10px;" class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800"><i class="fas fa-list"></i> Detail Data Dosen</h1>
+        <h1 class="h3 mb-0 text-gray-800"><i class="fas fa-list"></i> Profile Data Dosen</h1>
     </div>
     <form method="POST" enctype="multipart/form-data" action="{{route('dosen-store')}}">
     @csrf

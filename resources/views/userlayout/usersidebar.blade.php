@@ -29,7 +29,7 @@
         <hr style="margin-top: 20px" class="sidebar-divider my-0">
   
         <!-- Nav Item - Dashboard -->
-        <li class="nav-item">
+        <li class="nav-item {{ Request::is('user/datadiridosen') ? 'active' : '' }}">
           <a class="nav-link" href="/user/datadiridosen">
             <i class="fas fa-fw fa-user"></i>
             <span>Data Diri</span></a>

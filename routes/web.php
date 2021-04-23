@@ -118,7 +118,8 @@ Route::prefix('admin')->group(function () {
 });
 
 Route::prefix('user')->group(function () {
-    Route::get('/changepass', 'user\HomeController@changepass')->name('user-chnagepass');
+    Route::get('/changepass', 'user\HomeController@changepass')->name('user-changepass');
+    Route::post('/store/changepass', 'user\HomeController@storechangepass')->name('user-store-changepass');
     Route::get('/dashboard', 'user\HomeController@Home')->name('user-home');
     Route::get('/logout','auth\AuthController@logout')->name('user-logout');
     Route::get('/datadiridosen','user\HomeCOntroller@dataDosen')->name('user-data');

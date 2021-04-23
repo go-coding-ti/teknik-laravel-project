@@ -42,6 +42,35 @@ class HomeController extends Controller
         }
     }
 
+    public function storechangepass(Request $request){
+        $messages = [
+            'required' => 'Kolom :attribute Wajib Diisi!',
+            'unique' => 'Kolom :attribute Tidak Boleh Sama!',
+            'min' => 'Kolom :attribute harus diisi minimal 8 karakter!',
+            'same' => 'Kolom :attribute harus sama dengan kolom Passwor Baru',
+		];
+
+        $this->validate($request, [
+            'oldpass' => 'required',
+            'newpass' => 'required|min:8',
+            'confirmpass' => 'required|same:newpass',
+        ],$messages);
+
+        $user = $request->session()->get('dosen.data');
+        $profiledata = Dosen::where('nip','=', $user["nip"])->first();
+        if(Hash::check($request->oldpass, $profiledata->password)){
+            $password = Hash::make($request->newpass);
+            $dos = Dosen::find($profiledata->nip);
+            $dos->password = $password;
+            $dos->change_password = 1;
+            $dos->update();
+            return redirect()->route('user-home')->with('success','Berhasil Merubah Password!');
+        }else{
+            return redirect()->route('user-changepass')->with('error','Password Lama tidak cocok!');
+        }
+        
+    }
+
     public function home(Request $request){
         if(!$request->session()->has('dosen')){
             return redirect('/login')->with('expired','Session Telah Berakhir');
