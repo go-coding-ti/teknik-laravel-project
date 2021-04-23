@@ -8,6 +8,8 @@ use App\Penelitian;
 class KategoriPenelitian extends Model
 {
     //
+    public $timestamps = false;
+    
     protected $primaryKey = 'id_kategori_penelitian';
 
     protected $table = 'master_kategori_penelitian';

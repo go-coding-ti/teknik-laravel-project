@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class MasterJabatanFungsional extends Model
 {
     //
+    public $timestamps = false;
     protected $primaryKey = 'id_jabatan_fungsional';
     protected $table = 'master_jabatan_fungsional';
 

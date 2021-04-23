@@ -8,6 +8,7 @@ class MasterPangkatPns extends Model
 {
     //
     protected $table = 'master_pangkat_pns';
+    public $timestamps = false;
     protected $primaryKey = 'id_pangkat_pns';
     protected $fillable = ['pangkat', 'golongan'];
 

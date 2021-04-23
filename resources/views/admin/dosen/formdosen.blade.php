@@ -1,11 +1,23 @@
 @extends('adminlayout.layout')
 @section('content')
 @section('add_js')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script>
-  $('input[type="file"]').change(function(e){
-      var fileName = e.target.files[0].name;
-      $('.custom-file-label').html(fileName);
-  });
+  function readURL(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    
+    reader.onload = function(e) {
+      $('#propic').attr('src', e.target.result);
+    }
+    
+    reader.readAsDataURL(input.files[0]); // convert to base64 string
+  }
+}
+
+$("#profile_image").change(function() {
+  readURL(this);
+});
 </script>
 @endsection
 <div class="container-fluid">
@@ -29,9 +41,9 @@
     <div style="margin-left: 10px;" class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800"><i class="fas fa-list"></i> Tambah Data Dosen</h1>
     </div>
+    <form method="POST" enctype="multipart/form-data" action="{{route('dosen-store')}}">
+    @csrf
     <div class="card shadow">
-        <form method="POST" enctype="multipart/form-data" action="{{route('dosen-store')}}">
-        @csrf
             <div class="form-group card-header shadow">
                 <div class="row">
                     <div class="col">
@@ -56,8 +68,8 @@
                             </div>
                         </div>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="profile_image" name="profile_image">
-                            <label for="profile_image" class="custom-file-label">.jpg/.png</label>
+                            <input type="file" class="custom-file-input" id="profile_image" name="profile_image" onchange="this.nextElementSibling.innerText = this.files[0].name">
+                            <label for="profile_image" class="custom-file-label foto">.jpg/.png</label>
                             <small style="color: red">
                                 @error('profile_image')
                                     {{$message}}
@@ -455,12 +467,15 @@
                     </div>
                     <div class="col">
                         <label for="FileKarpeg" class="font-weight-bold text-dark">File Karpeg</label>
-                        <input type="file" class="form-control-file" id="FileKarpeg" name="filekarpeg">
-                        <small style="color: red">
-                            @error('filekarpeg')
-                                {{$message}}
-                            @enderror
-                        </small>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="FileKarpeg" name="filekarpeg" onchange="this.nextElementSibling.innerText = this.files[0].name">
+                            <label for="FileKarpeg" class="custom-file-label karpeg">.pdf</label>
+                            <small style="color: red">
+                                @error('filekarpeg')
+                                    {{$message}}
+                                @enderror
+                            </small>
+                        </div>
                     </div>
                     <div class="col">
                         <label for="NoNpwp" class="font-weight-bold text-dark">No. NPWP</label>
@@ -473,12 +488,15 @@
                     </div>
                     <div class="col">
                         <label for="FileNpwp" class="font-weight-bold text-dark">File NPWP</label>
-                        <input type="file" class="form-control-file" name="filenpwp">
-                        <small style="color: red">
-                            @error('filenpwp')
-                                {{$message}}
-                            @enderror
-                        </small>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="Filenpwp" name="filenpwp" onchange="this.nextElementSibling.innerText = this.files[0].name">
+                            <label for="Filenpwp" class="custom-file-label npwp">.pdf</label>
+                            <small style="color: red">
+                                @error('filenpwp')
+                                    {{$message}}
+                                @enderror
+                            </small>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -493,12 +511,15 @@
                     </div>
                     <div class="col">
                         <label for="FileKaris" class="font-weight-bold text-dark">File Karis/Karsu</label>
-                        <input type="file" class="form-control-file" id="FileKaris" name="filekaris">
-                        <small style="color: red">
-                            @error('filekaris')
-                                {{$message}}
-                            @enderror
-                        </small>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="FileKaris" name="filekaris" onchange="this.nextElementSibling.innerText = this.files[0].name">
+                            <label for="FileKaris" class="custom-file-label karis">.pdf</label>
+                            <small style="color: red">
+                                @error('filekaris')
+                                    {{$message}}
+                                @enderror
+                            </small>
+                        </div>
                     </div>
                     <div class="col">
                         <label for="NoKtp" class="font-weight-bold text-dark">No. KTP</label>
@@ -511,12 +532,15 @@
                     </div>
                     <div class="col">
                         <label for="FileKtp" class="font-weight-bold text-dark">File KTP</label>
-                        <input type="file" class="form-control-file" id="FileKTP" name="filektp">
-                        <small style="color: red">
-                            @error('filektp')
-                                {{$message}}
-                            @enderror
-                        </small>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="FileKTP" name="filektp" onchange="this.nextElementSibling.innerText = this.files[0].name">
+                            <label for="FileKTP" class="custom-file-label ktp">.pdf</label>
+                            <small style="color: red">
+                                @error('filektp')
+                                    {{$message}}
+                                @enderror
+                            </small>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -545,25 +569,7 @@
                     </div>
                 </div>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script>
-  function readURL(input) {
-  if (input.files && input.files[0]) {
-    var reader = new FileReader();
-    
-    reader.onload = function(e) {
-      $('#propic').attr('src', e.target.result);
-    }
-    
-    reader.readAsDataURL(input.files[0]); // convert to base64 string
-  }
-}
-
-$("#profile_image").change(function() {
-  readURL(this);
-});
-</script>
 @endsection

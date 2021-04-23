@@ -45,7 +45,7 @@
                       <input type="name" name="username" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="NIP">
                     </div>
                     <div class="form-group">
-                      <input type="password" name="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
+                      <input type="password" name="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password" data-toggle="password">
                     </div>
                     <input type="submit" value="Login" class="btn btn-primary btn-user btn-block"/>
 
@@ -92,7 +92,7 @@
 
   <!-- Custom scripts for all pages-->
   <script src="{{asset('assets/admin/js/sb-admin-2.min.js')}}"></script>
-
+  <script src="{{ asset('assets/admin/js/bootstrap-show-password.js')}}"></script>
 </body>
 
 </html>

@@ -11,7 +11,7 @@ class Penelitian extends Model
     
     protected $table = 'master_penelitian';
 
-    protected $primaryKey = 'id_Penelitian';
+    protected $primaryKey = 'id_penelitian';
 
     protected $fillable = ['id_kategori_penelitian','jenis_penelitian', 'judul', 'penerbit', 'edisi', 'ISBN', 'jumlah_halaman'
     , 'bulan_publikasi', 'tahun_publikasi', 'keterangan', 'file_sk_tugas', 'file_bukti_kerja', 'status_validitas'];
