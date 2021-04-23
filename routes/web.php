@@ -27,6 +27,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/datauser/dosen/create', 'admin\ValidatorController@create')->name('dosen-createpage');
     Route::post('/datauser/dosen/store', 'admin\ValidatorController@store')->name('dosen-store');
     Route::get('/datauser/dosen/detaildosen/{id}', 'admin\ValidatorController@detailDosen')->name('dosen-detail');
+    Route::post('/datauser/dosen/updatedetaildosen/{id}', 'admin\ValidatorController@update')->name('dosen-detail-update');
     Route::get('/datauser/dosen/{id}/delete', 'admin\ValidatorController@destroy')->name('dosen-delete');
 
     Route::get('/datauser/dosen/import/dosen','import\ImportDosenController@importDosen')->name('admin-import-dosen');
@@ -122,7 +123,8 @@ Route::prefix('user')->group(function () {
     Route::post('/store/changepass', 'user\HomeController@storechangepass')->name('user-store-changepass');
     Route::get('/dashboard', 'user\HomeController@Home')->name('user-home');
     Route::get('/logout','auth\AuthController@logout')->name('user-logout');
-    Route::get('/datadiridosen','user\HomeCOntroller@dataDosen')->name('user-data');
+    Route::get('/datadiridosen','user\HomeController@dataDosen')->name('user-data');
+    Route::post('/datadiridosen/update/{id}', 'user\HomeController@updatedataDosen')->name('user-data-update');
     Route::get('/file/karpeg/{file}', 'user\HomeController@downloadKarpeg')->name('user-download-karpeg-dosen');
     Route::get('/file/kariskarsu/{file}', 'user\HomeController@downloadKariskarsu')->name('user-download-kariskarsu-dosen');
     Route::get('/file/npwp/{file}', 'user\HomeController@downloadNpwp')->name('user-download-npwp-dosen');

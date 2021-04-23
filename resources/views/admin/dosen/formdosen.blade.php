@@ -51,9 +51,7 @@ $("#profile_image").change(function() {
                     </div>
                     <div class="row">
                         <div class="col">
-                            
                             <button type="submit" class="btn btn-success" onclick="return confirm('Apakah Anda Yakin Ingin Menyimpan Data?')"><i class="fas fa-save"></i> Simpan</button>
-                        
                             <a href="{{route('admin-home')}}" class="btn btn-danger"><i class="fas fa-times"></i> Cancel</a>
                         </div>
                     </div>
@@ -86,9 +84,9 @@ $("#profile_image").change(function() {
                                 <label for="JenisSerdos" class="font-weight-bold text-dark">Jenis Serdos</label>
                                 <select class="form-control" id="JenisSerdos" name="jenisserdos">
                                     <option value="" selected>Pilih Jenis Serdos</option>
-                                    <option value="NIDN">NIDN</option>
-                                    <option value="NIDK">NIDK</option>
-                                    <option value="NUP">NUP</option>
+                                    <option value="NIDN" {{old('jenisserdos')=='NIDN' ? 'selected' : ''}}>NIDN</option>
+                                    <option value="NIDK" {{old('jenisserdos')=='NIDK' ? 'selected' : ''}}>NIDK</option>
+                                    <option value="NUP" {{old('jenisserdos')=='NUP' ? 'selected' : ''}}>NUP</option>
                                 </select>
                                 <small style="color: red">
                                     @error('jenisserdos')
@@ -98,7 +96,7 @@ $("#profile_image").change(function() {
                             </div>
                             <div class='col'>
                                 <label for="nidn" class="font-weight-bold text-dark">NIDN/NIDK/NUP</label>
-                                <input type="text" class="form-control" id="nidn" name="nidn" placeholder="Masukan NIDN/NIDK/NUP">
+                                <input type="text" class="form-control" id="nidn" name="nidn" placeholder="Masukan NIDN/NIDK/NUP" value="{{$errors->any() ? old('nidn') : ''}}">
                                 <small style="color: red">
                                     @error('nidn')
                                         {{$message}}
@@ -109,7 +107,7 @@ $("#profile_image").change(function() {
                         <div class="row">
                             <div class='col'>
                                 <label for="InputEmail" class="font-weight-bold text-dark">Email Aktif</label>
-                                <input type="email" class="form-control" id="InputEmail" name="email" placeholder="Masukan Email">
+                                <input type="email" class="form-control" id="InputEmail" name="email" placeholder="Masukan Email" value="{{$errors->any() ? old('email') : ''}}">
                                 <small style="color: red">
                                     @error('email')
                                         {{$message}}
@@ -123,7 +121,7 @@ $("#profile_image").change(function() {
                         <div class="row">
                             <div class='col'>
                         <label for="nip" class="font-weight-bold text-dark">NIP</label>
-                        <input type="text" class="form-control" id="nip" name="nip" placeholder="Masukan NIP">
+                        <input type="text" class="form-control" id="nip" name="nip" placeholder="Masukan NIP" value="{{$errors->any() ? old('nip') : ''}}">
                         <small style="color: red">
                             @error('nip')
                                 {{$message}}
@@ -134,7 +132,7 @@ $("#profile_image").change(function() {
                         <div class="row">
                             <div class='col'>
                                 <label for="InputTelpRumah" class="font-weight-bold text-dark">Telp Rumah</label>
-                                <input type="text" class="form-control" id="InputTelpRumahRumah" name="telprumah" placeholder="No. Telp Rumah">
+                                <input type="text" class="form-control" id="InputTelpRumahRumah" name="telprumah" placeholder="No. Telp Rumah" value="{{$errors->any() ? old('telprumah') : ''}}">
                                 <small style="color: red">
                                     @error('telprumah')
                                         {{$message}}
@@ -143,7 +141,7 @@ $("#profile_image").change(function() {
                             </div>
                             <div class='col'>
                                 <label for="InputNoHp" class="font-weight-bold text-dark">No HP</label>
-                                <input type="text" class="form-control" id="InputNoHp" name="nohp" placeholder="No. HP">
+                                <input type="text" class="form-control" id="InputNoHp" name="nohp" placeholder="No. HP" value="{{$errors->any() ? old('nohp') : ''}}">
                                 <small style="color: red">
                                     @error('nohp')
                                         {{$message}}
@@ -157,7 +155,7 @@ $("#profile_image").change(function() {
                 <div class="row">
                     <div class="col">
                         <label for="gelardepan" class="font-weight-bold text-dark">Gelar Depan</label>
-                        <input type="text" class="form-control" id="gelardepan" name="gelardepan" placeholder="Masukan Gelar Depan">
+                        <input type="text" class="form-control" id="gelardepan" name="gelardepan" placeholder="Masukan Gelar Depan" value="{{$errors->any() ? old('gelardepan') : ''}}">
                         <small>
                             Contoh jika gelar depan lebih dari satu (Prof. Dr.)
                         </small>
@@ -169,7 +167,7 @@ $("#profile_image").change(function() {
                     </div>
                     <div class="col">
                         <label for="InputName" class="font-weight-bold text-dark">Nama Lengkap</label>
-                        <input type="text" class="form-control" id="InputName" name="nama" placeholder="Masukan Nama Lengkap">
+                        <input type="text" class="form-control" id="InputName" name="nama" placeholder="Masukan Nama Lengkap" value="{{$errors->any() ? old('nama') : ''}}">
                         <small style="color: red">
                             @error('nama')
                                 {{$message}}
@@ -178,7 +176,7 @@ $("#profile_image").change(function() {
                     </div>
                     <div class="col">
                         <label for="gelarbelakang" class="font-weight-bold text-dark">Gelar Belakang</label>
-                        <input type="text" class="form-control" id="gelarbelakang" name="gelarbelakang" placeholder="Masukan Gelar Belakang">
+                        <input type="text" class="form-control" id="gelarbelakang" name="gelarbelakang" placeholder="Masukan Gelar Belakang" value="{{$errors->any() ? old('gelarbelakang') : ''}}">
                         <small>
                             Contoh jika gelar belakang lebih dari satu (S.Kom., M.T)
                         </small>
@@ -192,7 +190,7 @@ $("#profile_image").change(function() {
                 <div class="row">
                     <div class="col">
                         <label for="InputTempatLahir" class="font-weight-bold text-dark">Tempat Lahir</label>
-                        <input type="text" class="form-control" id="InputTempatLahir" name="tempatlahir" placeholder="Masukan Tempat Lahir">
+                        <input type="text" class="form-control" id="InputTempatLahir" name="tempatlahir" placeholder="Masukan Tempat Lahir" value="{{$errors->any() ? old('tempatlahir') : ''}}">
                         <small style="color: red">
                             @error('tempatlahir')
                                 {{$message}}
@@ -201,7 +199,7 @@ $("#profile_image").change(function() {
                     </div>
                     <div class="col">
                         <label for="InputTanggalLahir" class="font-weight-bold text-dark">Tanggal Lahir</label>
-                        <input type="date" class="form-control" id="InputTanggalLahir" name="tanggallahir" >
+                        <input type="date" class="form-control" id="InputTanggalLahir" name="tanggallahir" value="{{$errors->any() ? old('tanggallahir') : ''}}">
                         <small style="color: red">
                             @error('tanggallahir')
                                 {{$message}}
@@ -212,8 +210,8 @@ $("#profile_image").change(function() {
                         <label for="JenisKelamin" class="font-weight-bold text-dark">Jenis Kelamin</label>
                         <select class="form-control" id="JenisKelamin" name="jeniskelamin">
                             <option value="" selected>Pilih JK</option>
-                            <option value="Pria">Pria</option>
-                            <option value="Wanita">Wanita</option>
+                            <option value="Pria" {{old('jeniskelamin')=='Pria' ? 'selected' : ''}}>Pria</option>
+                            <option value="Wanita" {{old('jeniskelamin')=='Wanita' ? 'selected' : ''}}>Wanita</option>
                         </select>
                         <small style="color: red">
                             @error('jeniskelamin')
@@ -228,7 +226,7 @@ $("#profile_image").change(function() {
                         <select class="form-control" name="statusdosen" id="StatusDosen">
                             <option value="" selected>Pilih Status</option>
                             @foreach ($statusDosen as $status)
-                                <option value="{{$status->id_status_dosen}}">{{$status->status_dosen}}</option>
+                                <option value="{{$status->id_status_dosen}}" {{old('statusdosen')==$status->id_status_dosen ? 'selected' : ''}}>{{$status->status_dosen}}</option>
                             @endforeach
                         </select>
                         <small style="color: red">
@@ -239,7 +237,7 @@ $("#profile_image").change(function() {
                     </div>
                     <div class="col">
                         <label for="tmtStatusDosen" class="font-weight-bold text-dark">TMT Status Dosen</label>
-                        <input type="date" class="form-control" id="tmtStatusDosen" name="tmtStatusDosen" >
+                        <input type="date" class="form-control" id="tmtStatusDosen" name="tmtStatusDosen" value="{{$errors->any() ? old('tmtStatusDosen') : ''}}">
                         <small style="color: red">
                             @error('tmtStatusDosen')
                                 {{$message}}
@@ -253,7 +251,7 @@ $("#profile_image").change(function() {
                         <select class="form-control" name="statusKepegawaian" id="StatusKepegawaian">
                             <option value="" selected>Pilih Status</option>
                             @foreach ($statusKepegawaian as $status)
-                                <option value="{{$status->id_status_kepegawaian}}">{{$status->status_kepegawaian}}</option>
+                                <option value="{{$status->id_status_kepegawaian}}" {{old('statusKepegawaian')==$status->id_status_kepegawaian ? 'selected' : ''}}>{{$status->status_kepegawaian}}</option>
                             @endforeach
                         </select>
                         <small style="color: red">
@@ -264,7 +262,7 @@ $("#profile_image").change(function() {
                     </div>
                     <div class="col">
                         <label for="tmtStatusKepegawaian" class="font-weight-bold text-dark">TMT Status Kepegawaian</label>
-                        <input type="date" class="form-control" id="tmtStatusKepegawaian" name="tmtStatusKepegawaian" >
+                        <input type="date" class="form-control" id="tmtStatusKepegawaian" name="tmtStatusKepegawaian" value="{{$errors->any() ? old('tmtStatusKepegawaian') : ''}}">
                         <small style="color: red">
                             @error('tmtStatusKepegawaian')
                                 {{$message}}
@@ -275,7 +273,7 @@ $("#profile_image").change(function() {
                 <div class="row">
                     <div class="col">
                         <label for="InputAlamatDomisili" class="font-weight-bold text-dark">Alamat Domisili (Alamat Tinggal Sekarang)</label>
-                        <input type="text" class="form-control" id="InputAlamatDomisili" name="alamatdomisili"  placeholder="Masukan Alamat Domisili">
+                        <input type="text" class="form-control" id="InputAlamatDomisili" name="alamatdomisili"  placeholder="Masukan Alamat Domisili" value="{{$errors->any() ? old('alamatdomisili') : ''}}">
                         <small style="color: red">
                             @error('alamatdomisili')
                                 {{$message}}
@@ -286,7 +284,7 @@ $("#profile_image").change(function() {
                 <div class="row">
                     <div class="col">
                         <label for="InputAlamatRumah" class="font-weight-bold text-dark">Alamat Rumah (Sesuai KK/KTP)</label>
-                        <input type="text" class="form-control" id="InputAlamatRumah" name="alamatrumah" placeholder="Masukan Alamat Rumah">
+                        <input type="text" class="form-control" id="InputAlamatRumah" name="alamatrumah" placeholder="Masukan Alamat Rumah" value="{{$errors->any() ? old('alamatrumah') : ''}}">
                         <small style="color: red">
                             @error('alamatrumah')
                                 {{$message}}
@@ -311,9 +309,9 @@ $("#profile_image").change(function() {
                         <label for="JenjangPendidikan" class="font-weight-bold text-dark">Jenjang Pendidikan Terakhir</label>
                         <select class="form-control" id="JenjangPendidikan" name="jenjangPendidikan">
                             <option value="" selected>Pilih Jenjang Pendidikan</option>
-                            <option value="S1">S1</option>
-                            <option value="S2">S2</option>
-                            <option value="S3">S3</option>
+                            <option value="S1" {{old('jenjangPendidikan')=='S1' ? 'selected' : ''}}>S1</option>
+                            <option value="S2" {{old('jenjangPendidikan')=='S2' ? 'selected' : ''}}>S2</option>
+                            <option value="S3" {{old('jenjangPendidikan')=='S3' ? 'selected' : ''}}>S3</option>
                         </select>
                         <small style="color: red">
                             @error('jenjangPendidikan')
@@ -323,7 +321,7 @@ $("#profile_image").change(function() {
                     </div>
                     <div class="col">
                         <label for="Institusi" class="font-weight-bold text-dark">Nama Institusi</label>
-                        <input type="text" class="form-control" id="Institusi" name="institusi" placeholder="Masukan Nama Institusi">
+                        <input type="text" class="form-control" id="Institusi" name="institusi" placeholder="Masukan Nama Institusi" value="{{$errors->any() ? old('institusi') : ''}}">
                         <small style="color: red">
                             @error('institusi')
                                 {{$message}}
@@ -334,7 +332,7 @@ $("#profile_image").change(function() {
                 <div class="row">
                     <div class="col">
                         <label for="BidangIlmu" class="font-weight-bold text-dark">Bidang Ilmu</label>
-                        <input type="text" class="form-control" id="BidangIlmu" name="bidangIlmu" placeholder="Masukan Bidang Ilmu">
+                        <input type="text" class="form-control" id="BidangIlmu" name="bidangIlmu" placeholder="Masukan Bidang Ilmu" value="{{$errors->any() ? old('bidangIlmu') : ''}}">
                         <small style="color: red">
                             @error('bidangIlmu')
                                 {{$message}}
@@ -343,7 +341,7 @@ $("#profile_image").change(function() {
                     </div>
                     <div class="col">
                         <label for="SelesaiStudi" class="font-weight-bold text-dark">Tanggal Selesai Studi</label>
-                        <input type="date" class="form-control" id="SelesaiStudi" name="tanggalSelesaiStudi" >
+                        <input type="date" class="form-control" id="SelesaiStudi" name="tanggalSelesaiStudi" value="{{$errors->any() ? old('tanggalSelesaiStudi') : ''}}">
                         <small style="color: red">
                             @error('tanggalSelesaiStudi')
                                 {{$message}}
@@ -369,7 +367,7 @@ $("#profile_image").change(function() {
                         <select class="form-control" id="PangkatGolongan" name="pangkatGolongan">
                             <option value="" selected>Pilih Pangkat/Golongan</option>
                             @foreach($pangkatDosen as $p)
-                                <option value="{{$p->id_pangkat_pns}}">{{$p->pangkat}}</option>
+                                <option value="{{$p->id_pangkat_pns}}" {{old('pangkatGolongan')==$p->id_pangkat_pns ? 'selected' : ''}}>{{$p->pangkat}}</option>
                             @endforeach
                         </select>
                         <small style="color: red">
@@ -383,7 +381,7 @@ $("#profile_image").change(function() {
                         <select class="form-control" id="JabatanAkademik" name="jabatanakademik">
                             <option value="" selected>Pilih Jabatan Akademik</option>
                             @foreach($jabatanDosen as $j)
-                                <option value="{{$j->id_jabatan_fungsional}}">{{$j->jabatan_fungsional}}</option>
+                                <option value="{{$j->id_jabatan_fungsional}}" {{old('jabatanakademik')==$j->id_jabatan_fungsional ? 'selected' : ''}}>{{$j->jabatan_fungsional}}</option>
                             @endforeach
                         </select>
                         <small style="color: red">
@@ -396,7 +394,7 @@ $("#profile_image").change(function() {
                 <div class="row">
                     <div class="col">
                         <label for="TmtPangkatGolongan" class="font-weight-bold text-dark">TMT Pangkat/Golongan Terakhir</label>
-                        <input type="date" class="form-control" id="TmtPangkatGolongan" name="tmtpangkatgolongan">
+                        <input type="date" class="form-control" id="TmtPangkatGolongan" name="tmtpangkatgolongan" value="{{$errors->any() ? old('tmtpangkatgolongan') : ''}}">
                         <small style="color: red">
                             @error('tmtpangkatgolongan')
                                 {{$message}}
@@ -405,7 +403,7 @@ $("#profile_image").change(function() {
                     </div>
                     <div class="col">
                         <label for="TmtJabatan" class="font-weight-bold text-dark">TMT Jabatan Terakhir</label>
-                        <input type="date" class="form-control" id="TmtJabatan" name="tmtjabatan" >
+                        <input type="date" class="form-control" id="TmtJabatan" name="tmtjabatan" value="{{$errors->any() ? old('tmtjabatan') : ''}}">
                         <small style="color: red">
                             @error('tmtjabatan')
                                 {{$message}}
@@ -419,7 +417,7 @@ $("#profile_image").change(function() {
                         <select class="form-control" id="Unit" name="unit">
                             <option value="" selected>Pilih Unit</option>
                             @foreach($unit as $u)
-                                <option value="{{$u->id_fakultas}}">{{$u->fakultas}}</option>
+                                <option value="{{$u->id_fakultas}}" {{old('unit')==$u->id_fakultas ? 'selected' : ''}}>{{$u->fakultas}}</option>
                             @endforeach
                         </select>
                         <small style="color: red">
@@ -433,7 +431,7 @@ $("#profile_image").change(function() {
                         <select class="form-control" id="Subunit" name="subunit">
                             <option value="" selected>Pilih Sub-Unit</option>
                             @foreach($subunit as $u)
-                                <option value="{{$u->id_prodi}}">{{$u->prodi}}</option>
+                                <option value="{{$u->id_prodi}}" {{old('subunit')==$u->id_prodi ? 'selected' : ''}}>{{$u->prodi}}</option>
                             @endforeach
                         </select>
                         <small style="color: red">
@@ -458,7 +456,7 @@ $("#profile_image").change(function() {
                 <div class="row">
                     <div class="col">
                         <label for="NoKarpeg" class="font-weight-bold text-dark">No. Karpeg</label>
-                        <input type="text" class="form-control" id="NoKarpeg" name="nokarpeg" placeholder="Masukan No. Karpeg">
+                        <input type="text" class="form-control" id="NoKarpeg" name="nokarpeg" placeholder="Masukan No. Karpeg" value="{{$errors->any() ? old('nokarpeg') : ''}}">
                         <small style="color: red">
                             @error('nokarpeg')
                                 {{$message}}
@@ -479,7 +477,7 @@ $("#profile_image").change(function() {
                     </div>
                     <div class="col">
                         <label for="NoNpwp" class="font-weight-bold text-dark">No. NPWP</label>
-                        <input type="text" class="form-control" id="NoNpwp" name="nonpwp" placeholder="Masukan No. NPWP">
+                        <input type="text" class="form-control" id="NoNpwp" name="nonpwp" placeholder="Masukan No. NPWP" value="{{$errors->any() ? old('nonpwp') : ''}}">
                         <small style="color: red">
                             @error('nonpwp')
                                 {{$message}}
@@ -502,7 +500,7 @@ $("#profile_image").change(function() {
                 <div class="row">
                     <div class="col">
                         <label for="NoKaris" class="font-weight-bold text-dark">No. Karis/Karsu</label>
-                        <input type="text" class="form-control" id="Nokaris" name="nokaris" placeholder="Masukan No. Karis/Karsu">
+                        <input type="text" class="form-control" id="Nokaris" name="nokaris" placeholder="Masukan No. Karis/Karsu" value="{{$errors->any() ? old('nokaris') : ''}}">
                         <small style="color: red">
                             @error('nokaris')
                                 {{$message}}
@@ -523,7 +521,7 @@ $("#profile_image").change(function() {
                     </div>
                     <div class="col">
                         <label for="NoKtp" class="font-weight-bold text-dark">No. KTP</label>
-                        <input type="text" class="form-control" id="NoKtp" name="noktp" placeholder="Masukan No. KTP">
+                        <input type="text" class="form-control" id="NoKtp" name="noktp" placeholder="Masukan No. KTP" value="{{$errors->any() ? old('noktp') : ''}}">
                         <small style="color: red">
                             @error('noktp')
                                 {{$message}}
@@ -549,7 +547,7 @@ $("#profile_image").change(function() {
                         <select id="StatusAktif" class="form-control" name="statusaktif">
                             <option value="" selected>Pilih Status Keaktifan</option>
                             @foreach($statusaktif as $s)
-                                <option value="{{$s->id_status_keaktifan}}">{{$s->status_keaktifan}}</option>
+                                <option value="{{$s->id_status_keaktifan}}" {{old('statusaktif')==$s->id_status_keaktifan ? 'selected' : ''}}>{{$s->status_keaktifan}}</option>
                             @endforeach
                         </select>
                         <small style="color: red">
@@ -560,7 +558,7 @@ $("#profile_image").change(function() {
                     </div>
                     <div class="col">
                         <label for="TmtAktif" class="font-weight-bold text-dark">TMT Keaktifan</label>
-                        <input type="date" class="form-control" id="TmtAktif" name="tmtaktif">
+                        <input type="date" class="form-control" id="TmtAktif" name="tmtaktif" value="{{$errors->any() ? old('tmtaktif') : ''}}">
                         <small style="color: red">
                             @error('tmtaktif')
                                 {{$message}}

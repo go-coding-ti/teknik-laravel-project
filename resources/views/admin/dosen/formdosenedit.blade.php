@@ -44,7 +44,7 @@ $("#profile_image").change(function() {
     <div style="margin-left: 10px;" class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800"><i class="fas fa-list"></i> Detail Data Dosen</h1>
     </div>
-    <form method="POST" enctype="multipart/form-data" action="{{route('dosen-store')}}">
+    <form method="POST" enctype="multipart/form-data" action="/admin/datauser/dosen/updatedetaildosen/{{$dosen->nip}}">
     @csrf
     <div class="card shadow">
             <div class="form-group card-header shadow">
@@ -75,6 +75,11 @@ $("#profile_image").change(function() {
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" id="profile_image" name="profile_image" onchange="this.nextElementSibling.innerText = this.files[0].name">
                             <label for="profile_image" class="custom-file-label">.jpg/.png</label>
+                            @if (is_null($dosen->foto))
+                                <small style="color: red">
+                                    *Belum Upload Foto Profil
+                                </small>
+                            @endif
                             <small style="color: red">
                                 @error('profile_image')
                                     {{$message}}
@@ -97,9 +102,9 @@ $("#profile_image").change(function() {
                                         <option value="NUP" {{ $dosen->masteridpendidik[0]->jenis_id=="NUP" ? 'selected' : '' }}>NUP</option>
                                     @else
                                         <option value="" selected>Pilih Jenis Serdos</option>
-                                        <option value="NIDN" >NIDN</option>
-                                        <option value="NIDK">NIDK</option>
-                                        <option value="NUP">NUP</option>
+                                        <option value="NIDN" {{old('statusaktif')=="NIDN" ? 'selected' : ''}}>NIDN</option>
+                                        <option value="NIDK" {{old('statusaktif')=="NIDK" ? 'selected' : ''}}>NIDK</option>
+                                        <option value="NUP" {{old('statusaktif')=="NUP" ? 'selected' : ''}}>NUP</option>
                                     @endif
                                 </select>
                                 <small style="color: red">
@@ -111,7 +116,7 @@ $("#profile_image").change(function() {
                             <div class='col'>
                                 <label for="nidn" class="font-weight-bold text-dark">NIDN/NIDK/NUP</label>
                                 @if(count($dosen->masteridpendidik)>0)
-                                    <input type="text" class="form-control" id="nidn" name="nidn" placeholder="Masukan NIDN/NIDK/NUP" value="{{$dosen->masteridpendidik[0]->nidn_nidk_nup}}">
+                                    <input type="text" class="form-control" id="nidn" name="nidn" placeholder="Masukan NIDN/NIDK/NUP" value="{{$errors->any() ? old('nidn') : $dosen->masteridpendidik[0]->nidn_nidk_nup}}">
                                 @else
                                     <input type="text" class="form-control" id="nidn" name="nidn" placeholder="Masukan NIDN/NIDK/NUP">
                                 @endif
@@ -125,7 +130,7 @@ $("#profile_image").change(function() {
                         <div class="row">
                             <div class='col'>
                                 <label for="InputEmail" class="font-weight-bold text-dark">Email Aktif</label>
-                                <input type="email" class="form-control" id="InputEmail" name="email" placeholder="Masukan Email" value="{{$dosen->email_aktif}}">
+                                <input type="email" class="form-control" id="InputEmail" name="email" placeholder="Masukan Email" value="{{$errors->any() ? old('email') : $dosen->email_aktif}}">
                                 <small style="color: red">
                                     @error('email')
                                         {{$message}}
@@ -139,7 +144,7 @@ $("#profile_image").change(function() {
                         <div class="row">
                             <div class='col'>
                         <label for="nip" class="font-weight-bold text-dark">NIP</label>
-                        <input type="text" class="form-control" id="nip" name="nip" placeholder="Masukan NIP" value="{{$dosen->nip}}">
+                        <input type="text" class="form-control" id="nip" name="nip" placeholder="Masukan NIP" value="{{$errors->any() ? old('nip') : $dosen->nip}}">
                         <small style="color: red">
                             @error('nip')
                                 {{$message}}
@@ -150,7 +155,7 @@ $("#profile_image").change(function() {
                         <div class="row">
                             <div class='col'>
                                 <label for="InputTelpRumah" class="font-weight-bold text-dark">Telp Rumah</label>
-                                <input type="text" class="form-control" id="InputTelpRumahRumah" name="telprumah" placeholder="No. Telp Rumah" value="{{$dosen->telp_rumah}}">
+                                <input type="text" class="form-control" id="InputTelpRumahRumah" name="telprumah" placeholder="No. Telp Rumah" value="{{$errors->any() ? old('telprumah') : $dosen->telp_rumah}}">
                                 <small style="color: red">
                                     @error('telprumah')
                                         {{$message}}
@@ -159,7 +164,7 @@ $("#profile_image").change(function() {
                             </div>
                             <div class='col'>
                                 <label for="InputNoHp" class="font-weight-bold text-dark">No HP</label>
-                                <input type="text" class="form-control" id="InputNoHp" name="nohp" placeholder="No. HP" value="{{$dosen->no_hp}}">
+                                <input type="text" class="form-control" id="InputNoHp" name="nohp" placeholder="No. HP" value="{{$errors->any() ? old('nohp') :$dosen->no_hp}}">
                                 <small style="color: red">
                                     @error('nohp')
                                         {{$message}}
@@ -173,7 +178,7 @@ $("#profile_image").change(function() {
                 <div class="row">
                     <div class="col">
                         <label for="gelardepan" class="font-weight-bold text-dark">Gelar Depan</label>
-                        <input type="text" class="form-control" id="gelardepan" name="gelardepan" placeholder="Masukan Gelar Depan" value="{{$dosen->gelar_depan}}">
+                        <input type="text" class="form-control" id="gelardepan" name="gelardepan" placeholder="Masukan Gelar Depan" value="{{$errors->any() ? old('gelardepan') : $dosen->gelar_depan}}">
                         <small>
                             Contoh jika gelar depan lebih dari satu (Prof. Dr.)
                         </small>
@@ -185,7 +190,7 @@ $("#profile_image").change(function() {
                     </div>
                     <div class="col">
                         <label for="InputName" class="font-weight-bold text-dark">Nama Lengkap</label>
-                        <input type="text" class="form-control" id="InputName" name="nama" placeholder="Masukan Nama Lengkap" value="{{$dosen->nama}}">
+                        <input type="text" class="form-control" id="InputName" name="nama" placeholder="Masukan Nama Lengkap" value="{{$errors->any() ? old('nama') : $dosen->nama}}">
                         <small style="color: red">
                             @error('nama')
                                 {{$message}}
@@ -194,7 +199,7 @@ $("#profile_image").change(function() {
                     </div>
                     <div class="col">
                         <label for="gelarbelakang" class="font-weight-bold text-dark">Gelar Belakang</label>
-                        <input type="text" class="form-control" id="gelarbelakang" name="gelarbelakang" placeholder="Masukan Gelar Belakang" value="{{$dosen->gelar_belakang}}">
+                        <input type="text" class="form-control" id="gelarbelakang" name="gelarbelakang" placeholder="Masukan Gelar Belakang" value="{{$errors->any() ? old('gelarbelakang') : $dosen->gelar_belakang}}">
                         <small>
                             Contoh jika gelar belakang lebih dari satu (S.Kom., M.T)
                         </small>
@@ -208,7 +213,7 @@ $("#profile_image").change(function() {
                 <div class="row">
                     <div class="col">
                         <label for="InputTempatLahir" class="font-weight-bold text-dark">Tempat Lahir</label>
-                        <input type="text" class="form-control" id="InputTempatLahir" name="tempatlahir" placeholder="Masukan Tempat Lahir" value="{{$dosen->tempat_lahir}}">
+                        <input type="text" class="form-control" id="InputTempatLahir" name="tempatlahir" placeholder="Masukan Tempat Lahir" value="{{$errors->any() ? old('tempatlahir') : $dosen->tempat_lahir}}">
                         <small style="color: red">
                             @error('tempatlahir')
                                 {{$message}}
@@ -217,7 +222,7 @@ $("#profile_image").change(function() {
                     </div>
                     <div class="col">
                         <label for="InputTanggalLahir" class="font-weight-bold text-dark">Tanggal Lahir</label>
-                        <input type="date" class="form-control" id="InputTanggalLahir" name="tanggallahir" value="{{$dosen->tanggal_lahir}}">
+                        <input type="date" class="form-control" id="InputTanggalLahir" name="tanggallahir" value="{{$errors->any() ? old('tanggallahir') : $dosen->tanggal_lahir}}">
                         <small style="color: red">
                             @error('tanggallahir')
                                 {{$message}}
@@ -263,7 +268,7 @@ $("#profile_image").change(function() {
                     <div class="col">
                         <label for="tmtStatusDosen" class="font-weight-bold text-dark">TMT Status Dosen</label>
                         @if(count($dosen->tmtstatus)>0)
-                            <input type="date" class="form-control" id="tmtStatusDosen" name="tmtStatusDosen" value="{{$dosen->tmtstatus[0]->tmt_status_dosen}}">
+                            <input type="date" class="form-control" id="tmtStatusDosen" name="tmtStatusDosen" value="{{$errors->any() ? old('tmtStatusDosen') : $dosen->tmtstatus[0]->tmt_status_dosen}}">
                         @else
                             <input type="date" class="form-control" id="tmtStatusDosen" name="tmtStatusDosen" >
                         @endif
@@ -300,7 +305,7 @@ $("#profile_image").change(function() {
                     <div class="col">
                         <label for="tmtStatusKepegawaian" class="font-weight-bold text-dark">TMT Status Kepegawaian</label>
                         @if(count($dosen->tmtkepegawaian)>0)
-                            <input type="date" class="form-control" id="tmtStatusKepegawaian" name="tmtStatusKepegawaian" value="{{$dosen->tmtstatus[0]->tmt_status_dosen}}">
+                            <input type="date" class="form-control" id="tmtStatusKepegawaian" name="tmtStatusKepegawaian" value="{{$errors->any() ? old('tmtStatusKepegawaian') : $dosen->tmtstatus[0]->tmt_status_dosen}}">
                         @else
                             <input type="date" class="form-control" id="tmtStatusKepegawaian" name="tmtStatusKepegawaian">
                         @endif
@@ -314,7 +319,7 @@ $("#profile_image").change(function() {
                 <div class="row">
                     <div class="col">
                         <label for="InputAlamatDomisili" class="font-weight-bold text-dark">Alamat Domisili (Alamat Tinggal Sekarang)</label>
-                        <input type="text" class="form-control" id="InputAlamatDomisili" name="alamatdomisili"  placeholder="Masukan Alamat Domisili" value="{{$dosen->alamat_domisili}}">
+                        <input type="text" class="form-control" id="InputAlamatDomisili" name="alamatdomisili"  placeholder="Masukan Alamat Domisili" value="{{ $errors->any() ? old('alamatdomisili') : $dosen->alamat_domisili}}">
                         <small style="color: red">
                             @error('alamatdomisili')
                                 {{$message}}
@@ -325,7 +330,7 @@ $("#profile_image").change(function() {
                 <div class="row">
                     <div class="col">
                         <label for="InputAlamatRumah" class="font-weight-bold text-dark">Alamat Rumah (Sesuai KK/KTP)</label>
-                        <input type="text" class="form-control" id="InputAlamatRumah" name="alamatrumah" placeholder="Masukan Alamat Rumah" value="{{$dosen->alamat_rumah}}">
+                        <input type="text" class="form-control" id="InputAlamatRumah" name="alamatrumah" placeholder="Masukan Alamat Rumah" value="{{ $errors->any() ? old('alamatrumah') : $dosen->alamat_rumah}}">
                         <small style="color: red">
                             @error('alamatrumah')
                                 {{$message}}
@@ -370,7 +375,7 @@ $("#profile_image").change(function() {
                     <div class="col">
                         <label for="Institusi" class="font-weight-bold text-dark">Nama Institusi</label>
                         @if(count($dosen->pendidikan)>0)
-                            <input type="text" class="form-control" id="Institusi" name="institusi" placeholder="Masukan Nama Institusi" value="{{$dosen->pendidikan[0]->nama_institusi}}">
+                            <input type="text" class="form-control" id="Institusi" name="institusi" placeholder="Masukan Nama Institusi" value="{{ $errors->any() ? old('institusi') : $dosen->pendidikan[0]->nama_institusi}}">
                         @else
                             <input type="text" class="form-control" id="Institusi" name="institusi" placeholder="Masukan Nama Institusi">
                         @endif
@@ -385,7 +390,7 @@ $("#profile_image").change(function() {
                     <div class="col">
                         <label for="BidangIlmu" class="font-weight-bold text-dark">Bidang Ilmu</label>
                         @if(count($dosen->pendidikan)>0)
-                            <input type="text" class="form-control" id="BidangIlmu" name="bidangIlmu" placeholder="Masukan Bidang Ilmu" value="{{$dosen->pendidikan[0]->bidang_ilmu}}">                            
+                            <input type="text" class="form-control" id="BidangIlmu" name="bidangIlmu" placeholder="Masukan Bidang Ilmu" value="{{ $errors->any() ? old('bidangIlmu') : $dosen->pendidikan[0]->bidang_ilmu}}">                            
                         @else
                             <input type="text" class="form-control" id="BidangIlmu" name="bidangIlmu" placeholder="Masukan Bidang Ilmu">
                         @endif
@@ -398,7 +403,7 @@ $("#profile_image").change(function() {
                     <div class="col">
                         <label for="SelesaiStudi" class="font-weight-bold text-dark">Tanggal Selesai Studi</label>
                         @if(count($dosen->pendidikan)>0)
-                            <input type="date" class="form-control" id="SelesaiStudi" name="tanggalSelesaiStudi" value="{{$dosen->pendidikan[0]->tanggal_selesai_studi}}">
+                            <input type="date" class="form-control" id="SelesaiStudi" name="tanggalSelesaiStudi" value="{{$errors->any() ? old('tanggalSelesaiStudi') : $dosen->pendidikan[0]->tanggal_selesai_studi}}">
                         @else
                             <input type="date" class="form-control" id="SelesaiStudi" name="tanggalSelesaiStudi" >
                         @endif
@@ -469,7 +474,7 @@ $("#profile_image").change(function() {
                     <div class="col">
                         <label for="TmtPangkatGolongan" class="font-weight-bold text-dark">TMT Pangkat/Golongan Terakhir</label>
                         @if(count($dosen->tmtpangkat)>0)
-                            <input type="date" class="form-control" id="TmtPangkatGolongan" name="tmtpangkatgolongan" value="{{$dosen->tmtpangkat[0]->tmt_pangkat_golongan}}">
+                            <input type="date" class="form-control" id="TmtPangkatGolongan" name="tmtpangkatgolongan" value="{{$errors->any() ? old('tmtpangkatgolongan') :$dosen->tmtpangkat[0]->tmt_pangkat_golongan}}">
                         @else
                             <input type="date" class="form-control" id="TmtPangkatGolongan" name="tmtpangkatgolongan">
                         @endif
@@ -482,7 +487,7 @@ $("#profile_image").change(function() {
                     <div class="col">
                         <label for="TmtJabatan" class="font-weight-bold text-dark">TMT Jabatan Terakhir</label>
                         @if(count($dosen->tmtjabatan)>0)
-                            <input type="date" class="form-control" id="TmtJabatan" name="tmtjabatan" value="{{$dosen->tmtjabatan[0]->tmt_jabatan_fungsional}}">
+                            <input type="date" class="form-control" id="TmtJabatan" name="tmtjabatan" value="{{$errors->any() ? old('tmtjabatan') :$dosen->tmtjabatan[0]->tmt_jabatan_fungsional}}">
                         @else
                             <input type="date" class="form-control" id="TmtJabatan" name="tmtjabatan">
                         @endif
@@ -545,7 +550,7 @@ $("#profile_image").change(function() {
                 <div class="row">
                     <div class="col">
                         <label for="NoKarpeg" class="font-weight-bold text-dark">No. Karpeg</label>
-                        <input type="text" class="form-control" id="NoKarpeg" name="nokarpeg" placeholder="Masukan No. Karpeg" value="{{$dosen->no_karpeg}}">
+                        <input type="text" class="form-control" id="NoKarpeg" name="nokarpeg" placeholder="Masukan No. Karpeg" value="{{$errors->any() ? old('nokarpeg') : $dosen->no_karpeg}}">
                         <small style="color: red">
                             @error('nokarpeg')
                                 {{$message}}
@@ -565,11 +570,15 @@ $("#profile_image").change(function() {
                         </div>
                         @if(!is_null($dosen->file_karpeg))
                             <a href="/admin/file/karpeg/{{$dosen->file_karpeg}}"><i class="fas fa-download"></i> Download file</a>
+                        @else
+                        <small style="color: red">
+                            *Belum Upload File Karpeg
+                        </small>
                         @endif
                     </div>
                     <div class="col">
                         <label for="NoNpwp" class="font-weight-bold text-dark">No. NPWP</label>
-                        <input type="text" class="form-control" id="NoNpwp" name="nonpwp" placeholder="Masukan No. NPWP" value="{{$dosen->no_npwp}}">
+                        <input type="text" class="form-control" id="NoNpwp" name="nonpwp" placeholder="Masukan No. NPWP" value="{{$errors->any() ? old('nonpwp') : $dosen->no_npwp}}">
                         <small style="color: red">
                             @error('nonpwp')
                                 {{$message}}
@@ -589,13 +598,17 @@ $("#profile_image").change(function() {
                         </div>
                         @if(!is_null($dosen->file_npwp))
                             <a href="/admin/file/npwp/{{$dosen->file_npwp}}"><i class="fas fa-download"></i> Download file</a>
+                        @else
+                        <small style="color: red">
+                            *Belum Upload File NPWP
+                        </small>
                         @endif
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
                         <label for="NoKaris" class="font-weight-bold text-dark">No. Karis/Karsu</label>
-                        <input type="text" class="form-control" id="Nokaris" name="nokaris" placeholder="Masukan No. Karis/Karsu" value="{{$dosen->no_karis_karsu}}">
+                        <input type="text" class="form-control" id="Nokaris" name="nokaris" placeholder="Masukan No. Karis/Karsu" value="{{$errors->any() ? old('nokaris') :$dosen->no_karis_karsu}}">
                         <small style="color: red">
                             @error('nokaris')
                                 {{$message}}
@@ -615,11 +628,15 @@ $("#profile_image").change(function() {
                         </div>
                         @if(!is_null($dosen->file_karis_karsu))
                             <a href="/admin/file/kariskarsu/{{$dosen->file_karis_karsu}}"><i class="fas fa-download"></i> Download file</a>
+                        @else
+                        <small style="color: red">
+                            *Belum Upload File Karis/Karsu
+                        </small>
                         @endif
                     </div>
                     <div class="col">
                         <label for="NoKtp" class="font-weight-bold text-dark">No. KTP</label>
-                        <input type="text" class="form-control" id="NoKtp" name="noktp" placeholder="Masukan No. KTP" value="{{$dosen->no_ktp}}">
+                        <input type="text" class="form-control" id="NoKtp" name="noktp" placeholder="Masukan No. KTP" value="{{$errors->any() ? old('noktp') :$dosen->no_ktp}}">
                         <small style="color: red">
                             @error('noktp')
                                 {{$message}}
@@ -639,6 +656,10 @@ $("#profile_image").change(function() {
                         </div>
                         @if(!is_null($dosen->file_ktp))
                             <a href="/admin/file/ktp/{{$dosen->file_ktp}}"><i class="fas fa-download"></i> Download file</a>
+                        @else
+                        <small style="color: red">
+                            *Belum Upload File KTP
+                        </small>
                         @endif
                     </div>
                 </div>
@@ -667,7 +688,7 @@ $("#profile_image").change(function() {
                     <div class="col">
                         <label for="TmtAktif" class="font-weight-bold text-dark">TMT Keaktifan</label>
                         @if(count($dosen->tmtkeaktifan)>0)
-                            <input type="date" class="form-control" id="TmtAktif" name="tmtaktif" value="{{$dosen->tmtkeaktifan[0]->tmt_keaktifan}}">
+                            <input type="date" class="form-control" id="TmtAktif" name="tmtaktif" value="{{$errors->any() ? old('tmtaktif') :$dosen->tmtkeaktifan[0]->tmt_keaktifan}}">
                         @else
                             <input type="date" class="form-control" id="TmtAktif" name="tmtaktif">
                         @endif

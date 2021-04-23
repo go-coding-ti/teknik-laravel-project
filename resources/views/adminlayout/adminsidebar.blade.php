@@ -28,7 +28,7 @@
         <!-- Divider -->
         <hr style="margin-top: 20px" class="sidebar-divider my-0">
         
-        <li class="nav-item">
+        <li class="nav-item {{ Request::is('admin/masterdata*') ? 'active' : '' }}">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMaster" aria-expanded="true" aria-controls="collapseUtilities">
             <i class="fas fa-fw fa-house-user"></i>
             <span>Master Data</span>
@@ -48,7 +48,7 @@
           </div>
         </li>
 
-        <li class="nav-item">
+        <li class="nav-item {{ Request::is('admin/datauser*') ? 'active' : '' }}">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDataUser" aria-expanded="true" aria-controls="collapseUtilities">
             <i class="fas fa-fw fa-user"></i>
             <span>Management Data User</span>
