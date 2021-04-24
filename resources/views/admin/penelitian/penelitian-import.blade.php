@@ -2,27 +2,6 @@
 @section('content')
 @section('add_js')
 <script>
-<<<<<<< HEAD
-   $('input[type="file"]').change(function(e){
-        var fileName = e.target.files[0].name;
-        $('.custom-file-label').html(fileName);
-    });
-    
-</script>
-@endsection
-
-<?php
-  function myfunction($row, $value){
-        if($row == 1){
-          $d['nama'] = $value;
-          echo($d['nama']);
-        }elseif($row == 2){
-          $d['judul'] = $value;
-          echo($d['judul']);
-        }
-    }
-?>
-=======
   $('input[type="file"]').change(function(e){
       var fileName = e.target.files[0].name;
       $('.custom-file-label').html(fileName);
@@ -30,6 +9,7 @@
 </script>
 <script>
     $(document).ready(function() {
+      
       $('#sub').click( function() {
           var data = $('input').serialize();
           $.ajaxSetup({
@@ -43,7 +23,6 @@
             success: function(data){
                 console.log(data);
             },error: function(data){
->>>>>>> d41227880772b8136ede52364bc1fc3aa96b5661
 
             }
           })
@@ -98,15 +77,6 @@
                 <form action="{{Route('show-review-penelitian')}}" method="post" enctype="multipart/form-data" >
                 @csrf
                 <div class="input-group mb-4">
-<<<<<<< HEAD
-                    <div class="custom-file">
-                    <label class="custom-file-label" for="inputGroupFile">Choose file</label>
-                        <input type="file" class="form-control-file" id="inputGroupFile" name="inputfile">
-                    </div>
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="submit">Import</button>
-                    </div>
-=======
                   <div class="custom-file">
                     <label class="custom-file-label" for="inputGroupFile">Format File: .xls, .xlsx, .csv</label>
                     <input type="file" class="form-control-file" id="inputGroupFile" name="inputfile">
@@ -114,7 +84,6 @@
                   <div class="input-group-append">
                       <button class="btn btn-success" type="submit">Import</button>
                   </div>
->>>>>>> d41227880772b8136ede52364bc1fc3aa96b5661
                 </div>
                 </form>
               <div class="table-responsive">
@@ -124,31 +93,44 @@
                   <table class="table table-bordered" id="dataTable" cellspacing="0">
                     <thead>
                       <tr>
-                        <th>Nama</th>
-                        <th>Judul</th>
+                        <th>Action</th>
+                        <th>Karya</th>
+                        <th>Penulis</th>
+                        <th>NIP</th>
+                        <th>Tahun Publikasi</th>
+                        <th>Tahun Ajaran</th>
+                        <th>Unit</th>
+                        <th>Sunit</th>
+                        <th>Kegiatan</th>
+                        <th>File 1</th>
+                        <th>File 2</th>
                       </tr>
                     </thead>
                     <tbody>
-<<<<<<< HEAD
-                        @if($datapenelitian != NULL)
-                            @foreach($datapenelitian as $d)
-                            <tr>
-                                <td onclick="">{{$d['nama']}}</td>
-                                    <!-- <td><input onkeyup="echo()" value="{{$d['nama']}}"></input></td> -->
-                                    <!-- <td><input onkeyup="myfunction( 2, $d['judul'])" value="{{$d['judul']}}"></input></td> -->
-                            </tr>
-                            @endforeach
-                        @else
-=======
                       @if($datapenelitian != NULL)
                           @foreach($datapenelitian as $d)
-                          <tr>
-                            <td><input value="{{$d['nama']}}" name="row_nama[]"></td>
-                            <td><input value="{{$d['judul']}}" name="row_judul[]"></td>
-                          </tr>
+                            @if($d['karya'] == null)
+                              @continue
+                            @else
+                            <tr>
+                              <td align="center"><a class="btn btn-danger btn-sm" id='del' onclick="var table = $('#dataTable').DataTable();
+                                table.row($(this).parents('tr')).remove().draw();
+                                return confirm('Apakah Anda Yakin ?')"><i class="fas fa-trash"></i></a></td>
+                              <td><input value="{{$d['karya']}}" name="row_judul[]"></td>
+                              <td><input value="{{$d['nama']}}" name="row_nama[]"></td>
+                              <td><input value="{{$d['nip']}}" name="row_nip[]"></td>
+                              <td><input value="{{$d['tahun_publikasi']}}" name="row_tahunpub[]"></td>
+                              <td><input value="{{$d['tahun_ajaran']}}" name="row_tahunajar[]"></td>
+                              <td><input value="{{$d['unit']}}" name="row_unit[]"></td>
+                              <td><input value="{{$d['sunit']}}" name="row_sunit[]"></td>
+                              <td><input value="{{$d['kegiatan']}}" name="row_kategori[]"></td>
+                              <td><input value="{{$d['file_1']}}" name="row_file1[]"></td>
+                              <td><input value="{{$d['file_2']}}" name="row_file2[]"></td>
+                            </tr>
+                            @endif
                           @endforeach
+                          
                       @else
->>>>>>> d41227880772b8136ede52364bc1fc3aa96b5661
 
                       @endif
                     </tbody>

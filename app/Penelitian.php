@@ -24,4 +24,8 @@ class Penelitian extends Model
         return $this->belongsTo('App/KategoriPenelitian', 'id_penelitian', 'id_kategori_penelitian');
     }
 
+    public function detailPenelitian(){
+        return $this->hasMany(DetailPenelitian::class, 'id_penelitian');
+    }
+
 }
