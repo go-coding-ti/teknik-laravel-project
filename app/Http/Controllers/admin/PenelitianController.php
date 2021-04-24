@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\KategoriPenelitian;
 use App\Dosen;
 use App\Pegawai;
+use App\Penelitian;
 
 class PenelitianController extends Controller
 {
@@ -21,10 +22,11 @@ class PenelitianController extends Controller
             return redirect('/login')->with('expired','Session Telah Berakhir');
         }else{
             $kategori = KategoriPenelitian::all();
+            $datapenelitian = Penelitian::all();
             $user = $request->session()->get('admin.data');
             $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
             $data = Dosen::get();
-            return view('admin.penelitian.penelitian', compact('kategori','data','profiledata'));
+            return view('admin.penelitian.penelitian', compact('kategori', 'datapenelitian', 'data', 'profiledata'));
         }
         
         // $id = $kategori->id_kategori_penelitian;
