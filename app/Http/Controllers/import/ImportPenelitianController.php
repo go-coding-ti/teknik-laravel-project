@@ -99,6 +99,7 @@ class ImportPenelitianController extends Controller
                         $detailPenelitian->save();
                     }
             }else{
+                $dosen= Dosen::where('nip', '=' , $request->row_nip[$count], 'OR', 'nama', '=', $request->row_nama[$count])->first();
                 $checkPenulis = Penulis::where('id_dosen', '=', $request->row_nip[$count], 'OR', 'nama_penulis', '=', $request->row_nama[$count] )->first();
                     if($checkPenulis ==  null){
                         if($dosen != null){
@@ -138,7 +139,6 @@ class ImportPenelitianController extends Controller
                             $detailPenelitian->id_penulis = $penulis->id_penulis;
                             $detailPenelitian->save();
                         }else{
-                            return redirect()->route('show-import-penelitian')->with('success','Berhasil Mengupload Data');
                         }
                         
                     }
