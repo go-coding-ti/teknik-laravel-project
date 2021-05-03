@@ -33,31 +33,27 @@
                 <a class= "btn btn-warning text-white" id="toggle" ><i class="fas fa-search"></i> Advanced Search</a>
                 <a class= "btn btn-primary text-white" href="{{Route('show-import-penelitian')}}" id="toggle" ><i class="fas fa-download"></i> Import Data Penelitian</a>
                   <table class="table table-bordered" id="dataTables" width="100%" cellspacing="0">
-                    <thead>
+                    <thead align="center">
                       <tr>
                         <th>Action</th>
                         <th>Judul</th>
                         <th>Tahun Ajaran</th>
                         <th>Tahun Publikasi</th>
                         <th>Kategori</th>
-                        <th>File 1</th>
-                        <th>File 2</th>
                       </tr>
                     </thead>
                     <tbody>
                       @if($datapenelitian !=  null)
                         @foreach($datapenelitian as $d)
                         <tr>
-                          <td>
-                            <a href="" class="btn btn-warning btn-sm"><i class="fas fa-eye"></i></a>
+                          <td align="center">
+                            <a href="{{Route('penelitian-detail', $d->id_penelitian)}}" class="btn btn-warning btn-sm"><i class="fas fa-eye"></i></a>
                             <a style="margin-right:7px" class="btn btn-danger btn-sm" href="" onclick="return confirm('Apakah Anda Yakin ?')"><i class="fas fa-trash"></i></a>
                           </td>
                           <td>{{$d->judul}}</td>
                           <td>{{$d->tahun_ajaran}}</td>
                           <td>{{$d->tahun_publikasi}}</td>
                           <td>{{$d->kategori}}</td>
-                          <td>{{$d->file_1}}</td>
-                          <td>{{$d->file_2}}</td>
                         </tr>
                         @endforeach
                       @else

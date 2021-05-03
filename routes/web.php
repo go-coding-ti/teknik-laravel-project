@@ -109,10 +109,12 @@ Route::prefix('admin')->group(function () {
         Route::post('/masterdata/statuskepegawaian/update/{id}', 'admin\ValidatorController@updateSKp')->name('masterdata-statuskepegawaian-update');
         Route::get('/masterdata/statuskepegawaian/delete/{id}', 'admin\ValidatorController@deleteSKp')->name('masterdata-statuskepegawaian-delete');
 
-    Route::get('/penelitian', 'admin\PenelitianController@index')->name('penelitian-list');
     Route::get('/pengabdian', 'admin\PengabdianController@index')->name('pengabdian-list');
     Route::get('/kompetensi', 'admin\KompetensiController@index')->name('kompetensi-list');
     
+    // Operasi Penelitian
+    Route::get('/penelitian', 'admin\PenelitianController@index')->name('penelitian-list');
+    route::get('/penelitian/detail/{id}', 'admin\PenelitianController@detail')->name('penelitian-detail');
     Route::get('/import/penelitian-show', 'import\ImportPenelitianController@show')->name('show-import-penelitian');
     Route::Post('/import/penelitian-review', 'import\ImportPenelitianController@view')->name('show-review-penelitian');
     Route::Post('/import/penelitian-save', 'import\ImportPenelitianController@save')->name('save-penelitian');

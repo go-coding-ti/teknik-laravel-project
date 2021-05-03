@@ -169,4 +169,11 @@ class ImportPenelitianController extends Controller
         //     }
         // }
     }
+    public function downloadTemplatePenelitian(){
+        $file="excel/contohpenelitian.xls";
+        $headers = array(
+            'Content-Type: application/vnd.ms-excel',
+        );
+        return Response::download($file, 'Contoh_File_penelitian.xls', $headers);
+    }
 }

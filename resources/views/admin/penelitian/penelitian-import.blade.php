@@ -74,6 +74,7 @@
                     </button>
               </div>
             @endif
+            <small>Untuk Contoh Template File yang akan di Import dapat di download </small><a target="_blank" href="/admin/contoh/excel"><u>disini</u></a>
                 <form action="{{Route('show-review-penelitian')}}" method="post" enctype="multipart/form-data" >
                 @csrf
                 <div class="input-group mb-4">
@@ -87,7 +88,6 @@
                 </div>
                 </form>
               <div class="table-responsive">
-                <a class= "btn btn-warning text-white" id="toggle" ><i class="fas fa-search"></i> Advanced Search</a>
                 <form enctype="multipart/form-data" action="/admin/import/penelitian-save" method="POST">
                   @csrf
                   <table class="table table-bordered" id="dataTable" cellspacing="0">

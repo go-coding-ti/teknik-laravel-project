@@ -8,6 +8,8 @@ use App\KategoriPenelitian;
 use App\Dosen;
 use App\Pegawai;
 use App\Penelitian;
+use App\Penulis;
+use App\DetailPenelitian;
 
 class PenelitianController extends Controller
 {
@@ -31,6 +33,25 @@ class PenelitianController extends Controller
         
         // $id = $kategori->id_kategori_penelitian;
         // dd($kategori->id_kategori_penelitian);
+    }
+
+    public function detail(Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $kategori = KategoriPenelitian::all();
+            $datapenelitian = Penelitian::where('id_penelitian', $request->id)->get();
+            $idpenulis = DetailPenelitian::where('id_penelitian', $request->id)->get();
+            if($idpenulis != null){
+                foreach($idpenulis as $i){
+                    $penulis[] = Penulis::where('id_penulis', $i->id_penulis)->first();
+                }
+            }
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            $data = Dosen::get();
+            return view('admin.penelitian.penelitian-detail', compact('kategori', 'penulis', 'datapenelitian', 'data', 'profiledata'));
+        }
     }
 
     /**

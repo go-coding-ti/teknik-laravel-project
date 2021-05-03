@@ -32,7 +32,7 @@ $(document).ready(function () {
       clear: true
     },
     columnDefs: [
-      { "width": "20%", "targets": 2, orderable: false, target: [0, 1, 2, 3] }
+      { "width": "30%", "targets": [1, 4], orderable: false, target: [0, 1, 2, 3, 4] }
     ],
     buttons: [
       'searchPanes'
