@@ -41,4 +41,7 @@ class Dosen extends Model
         return $this->hasMany(MasterKeaktifan::class, 'nip');
     }
 
+    public function tahunajaran(){
+        return $this->hasMany(TahunAjaranDosen::class, 'nip');
+    }
 }

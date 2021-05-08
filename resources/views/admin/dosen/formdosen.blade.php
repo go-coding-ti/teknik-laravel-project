@@ -222,6 +222,20 @@ $("#profile_image").change(function() {
                 </div>
                 <div class="row">
                     <div class="col">
+                        <label for="TahunAjaran" class="font-weight-bold text-dark">Tahun Ajaran</label>
+                        <select class="form-control" name="tahunAjaran" id="tahunAjaran">
+                            <option value="" selected>Pilih Tahun Ajaran</option>
+                            @foreach ($tahun as $ta)
+                                <option value="{{$ta->id}}" {{old('tahunAjaran')==$ta->id ? 'selected' : ''}}>{{$ta->semester}} - {{$ta->tahun_ajaran}}</option>
+                            @endforeach
+                        </select>
+                        <small style="color: red">
+                            @error('tahunAjaran')
+                                {{$message}}
+                            @enderror
+                        </small>
+                    </div>
+                    <div class="col">
                         <label for="StatusDosen" class="font-weight-bold text-dark">Status Dosen</label>
                         <select class="form-control" name="statusdosen" id="StatusDosen">
                             <option value="" selected>Pilih Status</option>

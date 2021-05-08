@@ -32,6 +32,8 @@ use App\TmtStatusKepegawaianDosen;
 use App\KategoriPenelitian;
 use App\Pengabdian;
 use App\KategoriPengabdian;
+use App\MasterTahunAjaran;
+use App\TahunAjaranDosen;
 
 class ValidatorController extends Controller
 {
@@ -49,7 +51,9 @@ class ValidatorController extends Controller
             $user = $request->session()->get('admin.data');
             $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
             $data = Dosen::get();
-            return view('admin.dosen.listdosen', compact('data','profiledata'));
+            $prodi = Prodi::all();
+            $ta = MasterTahunAjaran::all();
+            return view('admin.dosen.listdosen', compact('ta','prodi','data','profiledata'));
         }
     }
 
@@ -74,7 +78,8 @@ class ValidatorController extends Controller
             $statusKepegawaian = MasterStatusKepegawaian::all();
             $unit = Fakultas::all();
             $subunit = Prodi::all();
-            return view('admin.dosen.formdosen', compact('statusDosen', 'pangkatDosen', 'jabatanDosen', 'unit','subunit','statusaktif','statusKepegawaian','profiledata'));
+            $tahun = MasterTahunAjaran::where('status','=','Aktif')->get();
+            return view('admin.dosen.formdosen', compact('tahun','statusDosen', 'pangkatDosen', 'jabatanDosen', 'unit','subunit','statusaktif','statusKepegawaian','profiledata'));
         }
     }
 
@@ -130,6 +135,7 @@ class ValidatorController extends Controller
             'tmtStatusDosen' => 'required',
             'statusKepegawaian' => 'required',
             'tmtStatusKepegawaian' => 'required',
+            'tahunAjaran' => 'required',
         ],$messages);
         
         if ($validator->fails()) {
@@ -250,6 +256,11 @@ class ValidatorController extends Controller
             $kepeg->nip = $request->nip;
             $kepeg->tmt_status_kepegawaian_dosen = $request->tmtStatusKepegawaian;
             $kepeg->save();
+
+            $ta = new TahunAjaranDosen;
+            $ta->tahun_ajaran = $request->tahunAjaran;
+            $ta->nip = $dosen->nip;
+            $ta->save();
             return redirect()->route('dosen-page')->with('success','Berhasil Menambah Data Dosen!');
         }else{
             return redirect()->route('dosen-page')->with('error','Gagal Menambah Data Dosen!');
@@ -330,6 +341,7 @@ class ValidatorController extends Controller
             'tmtStatusDosen' => 'required',
             'statusKepegawaian' => 'required',
             'tmtStatusKepegawaian' => 'required',
+            'tahunAjaran' => 'required',
         ],$messages);
         
         if ($validator->fails()) {
@@ -518,6 +530,18 @@ class ValidatorController extends Controller
                 $kepeg->tmt_status_kepegawaian_dosen = $request->tmtStatusKepegawaian;
                 $kepeg->update();
             }
+
+            $ta = TahunAjaranDosen::where('nip','=',$dosen->nip)->first();
+            if(!isset($ta)){
+                $tas = new TahunAjaranDosen;
+                $tas->tahun_ajaran = $request->tahunAjaran;
+                $tas->nip = $dosen->nip;
+                $tas->save();
+            }else{
+                $ta->tahun_ajaran = $request->tahunAjaran;
+                $ta->nip = $dosen->nip;
+                $ta->update();
+            }
             return redirect()->route('dosen-page')->with('success','Berhasil Mengupdate Data Dosen!');
         }else{
             return redirect()->route('dosen-page')->with('error','Gagal Mengupdate Data Dosen!');
@@ -553,7 +577,8 @@ class ValidatorController extends Controller
             $statusKepegawaian = MasterStatusKepegawaian::all();
             $unit = Fakultas::all();
             $subunit = Prodi::all();
-            return view('admin.dosen.formdosenedit',compact('statusDosen', 'pangkatDosen', 'jabatanDosen', 'unit','subunit','statusaktif','statusKepegawaian','profiledata','dosen'));
+            $tahun = MasterTahunAjaran::where('status','=','Aktif')->get();
+            return view('admin.dosen.formdosenedit',compact('tahun','statusDosen', 'pangkatDosen', 'jabatanDosen', 'unit','subunit','statusaktif','statusKepegawaian','profiledata','dosen'));
         }
     }
 
@@ -1251,5 +1276,83 @@ class ValidatorController extends Controller
         $skp = MasterStatusKepegawaian::where('id_status_kepegawaian', '=', $id);
         $skp->delete();
         return redirect()->route('masterdata-statuskepegawaian-index')->with('success','Berhasil Menghapus Data Status Kepegawaian!');
+    }
+
+    public function indexTAj(Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            $datata = MasterTahunAjaran::get();
+            return view('admin.masterdata.tahunajaran.index', compact('datata','profiledata'));
+        }
+    }
+
+    public function createTAj(Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            return view('admin.masterdata.tahunajaran.create', compact('profiledata'));
+        }
+    }
+
+    public function storeTAj(Request $request){
+        $messages = [
+            'required' => 'Kolom :attribute Wajib Diisi!',
+            'unique' => 'Kolom :attribute Tidak Boleh Sama!',
+		];
+
+        $this->validate($request, [
+            'semester' => 'required',
+            'tahunajaran' => 'required',
+            'statusta' => 'required',
+        ],$messages);
+
+        $ta = new MasterTahunAjaran;
+        $ta->semester = $request->semester;
+        $ta->tahun_ajaran = $request->tahunajaran;
+        $ta->status = $request->statusta;
+        $ta->save();
+        return redirect()->route('masterdata-tahunajaran-index')->with('success','Berhasil Menambah Data Tahun Ajaran!');
+    }
+
+    public function showTAj($id, Request $request){
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            $datata = MasterTahunAjaran::where('id','=',$id)->first();
+            return view('admin.masterdata.tahunajaran.edit', compact('datata','profiledata'));
+        }
+    }
+
+    public function updateTAj($id, Request $request){
+        $messages = [
+            'required' => 'Kolom :attribute Wajib Diisi!',
+            'unique' => 'Kolom :attribute Tidak Boleh Sama!',
+		];
+
+        $this->validate($request, [
+            'semester' => 'required',
+            'tahunajaran' => 'required',
+            'statusta' => 'required',
+        ],$messages);
+
+        $ta = MasterTahunAjaran::find($id);
+        $ta->semester = $request->semester;
+        $ta->tahun_ajaran = $request->tahunajaran;
+        $ta->status = $request->statusta;
+        $ta->update();
+        return redirect()->route('masterdata-tahunajaran-index')->with('success','Berhasil Mengupdate Data Tahun Ajaran!');
+    }
+
+    public function deleteTAj($id){
+        $ta = MasterTahunAjaran::where('id', '=', $id);
+        $ta->delete();
+        return redirect()->route('masterdata-tahunajaran-index')->with('success','Berhasil Menghapus Data Tahun Ajaran!');
     }
 }

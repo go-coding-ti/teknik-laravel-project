@@ -73,7 +73,8 @@
                         </button>
                   </div>
                 @endif
-                <small>Untuk Contoh Template File yang akan di Import dapat di download </small><a target="_blank" href="/admin/contoh/excel"><u>disini</u></a>
+                <small>*Untuk Contoh Template File yang akan di Import dapat di download </small><a target="_blank" href="/admin/contoh/excel"><u>disini</u></a>
+                
                 <form action="{{route('import-dosen')}}" method="post" enctype="multipart/form-data" >
                     @csrf
                     <div class="input-group mb-4">
@@ -90,6 +91,11 @@
                 <form enctype="multipart/form-data" action="/admin/submit/import/dosen" method="POST">
                   @csrf
                   <table class="table table-bordered" id="dataTable" cellspacing="0">
+                    @if($imports == NULL)
+                      <button id="sub" class="btn btn-success" type="submit" disabled><i class="fas fa-upload"></i> Upload Semua ke Tabel Dosen</button>
+                    @else
+                      <button id="sub" class="btn btn-success" type="submit"><i class="fas fa-upload"></i> Upload Semua ke Tabel Dosen</button>
+                    @endif
                     <thead>
                       <tr>
                         <th>Action</th>
@@ -151,19 +157,6 @@
 
                     @endif
                     </tbody>
-                    @if($imports == NULL)
-                    <tfoot>
-                        <tr>
-                            <th align="center" colspan="21"><button id="sub" class="btn btn-success" type="submit" disabled><i class="fas fa-upload"></i> Upload Semua ke Tabel Dosen</button></th>
-                        </tr>
-                    </tfoot>
-                    @else
-                    <tfoot>
-                      <tr>
-                          <th align="center" colspan="21"><button id="sub" class="btn btn-success" type="submit"><i class="fas fa-upload"></i> Upload Semua ke Tabel Dosen</button></th>
-                      </tr>
-                  </tfoot>
-                    @endif
                   </table>
                 </form>
                 </div>

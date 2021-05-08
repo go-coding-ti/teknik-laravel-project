@@ -29,7 +29,7 @@
         <hr style="margin-top: 20px" class="sidebar-divider my-0">
         
         <li class="nav-item {{ Request::is('admin/masterdata*') ? 'active' : '' }}">
-          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseMaster" aria-expanded="true" aria-controls="collapseUtilities">
+          <a class="nav-link {{ Request::is('admin/masterdata*') ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseMaster" aria-expanded="true" aria-controls="collapseUtilities">
             <i class="fas fa-fw fa-house-user"></i>
             <span>Master Data</span>
           </a>
@@ -44,12 +44,13 @@
               <a class="collapse-item {{ Request::is('admin/masterdata/statusdosen*') ? 'active' : '' }}" href="{{route('masterdata-statusdosen-index')}}">Status Dosen</a>
               <a class="collapse-item {{ Request::is('admin/masterdata/statuskeaktifan*') ? 'active' : '' }}" href="{{route('masterdata-statuskeaktifan-index')}}">Status Keaktifan</a>
               <a class="collapse-item {{ Request::is('admin/masterdata/statuskepegawaian*') ? 'active' : '' }}" href="{{route('masterdata-statuskepegawaian-index')}}">Status Kepegawaian</a>
+              <a class="collapse-item {{ Request::is('admin/masterdata/tahunajaran*') ? 'active' : '' }}" href="{{route('masterdata-tahunajaran-index')}}">Tahun Ajaran</a>
             </div>
           </div>
         </li>
 
         <li class="nav-item {{ Request::is('admin/datauser*') ? 'active' : '' }}">
-          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseDataUser" aria-expanded="true" aria-controls="collapseUtilities">
+          <a class="nav-link {{ Request::is('admin/datauser*') ? '' : 'collapsed' }}" href="#" data-toggle="collapse" data-target="#collapseDataUser" aria-expanded="{{ Request::is('admin/datauser*') ? 'true' : 'false' }}" aria-controls="collapseDataUser">
             <i class="fas fa-fw fa-user"></i>
             <span>Management Data User</span>
           </a>

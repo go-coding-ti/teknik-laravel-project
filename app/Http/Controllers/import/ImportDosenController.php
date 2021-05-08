@@ -26,6 +26,8 @@ use Response;
 use Illuminate\Support\Facades\Hash;;
 use App\TmtStatusDosen;
 use App\TmtStatusKepegawaianDosen;
+use App\MasterTahunAjaran;
+use App\TahunAjaranDosen;
 
 class ImportDosenController extends Controller
 {
@@ -140,8 +142,8 @@ class ImportDosenController extends Controller
                 
                 $idstatus = TmtStatusDosen::where('nip','=',$request->row_nip[$nips])->first();
                 $updateStatus = TmtStatusDosen::find($idstatus->id);
-                $status->nip = $request->row_nip[$nips];
-                $status->update();
+                $updateStatus->nip = $request->row_nip[$nips];
+                $updateStatus->update();
                 continue;
             }else if (!isset($checkDosen)) {
                 $storeDosen = new Dosen;
@@ -205,6 +207,9 @@ class ImportDosenController extends Controller
                 // row_status_serdos
                 // row_tahun_serdos
                 // row_tahun_ajaran
+
+                // $ta = new TahunAjaranDosen;
+                // $ta->
             }
         }return redirect()->route('admin-import-dosen')->with('success','Berhasil Mengupload Data');
     }

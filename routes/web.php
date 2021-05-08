@@ -34,6 +34,7 @@ Route::prefix('admin')->group(function () {
     Route::post('/datauser/dosen/import/dosen/submit','import\ImportDosenController@storeImportDosen')->name('import-dosen');
     Route::post('/submit/import/dosen','import\ImportDosenController@storeDosenFromImport')->name('upload-import-dosen');
     Route::get('/datauser/dosen/export/dosen','export\ExportDosenController@exportDosen')->name('admin-export-dosen');
+    Route::post('/datauser/dosen/export/dosen/submit','export\ExportDosenController@excel')->name('admin-export-dosen');
 
     Route::get('/contoh/excel', 'import\ImportDosenController@downloadExcelDosen')->name('download-contoh-import-dosen');
     Route::get('/file/karpeg/{file}', 'admin\ValidatorController@downloadKarpeg')->name('download-karpeg-dosen');
@@ -108,6 +109,13 @@ Route::prefix('admin')->group(function () {
         Route::get('/masterdata/statuskepegawaian/detail/{id}', 'admin\ValidatorController@showSKp')->name('masterdata-statuskepegawaian-show');
         Route::post('/masterdata/statuskepegawaian/update/{id}', 'admin\ValidatorController@updateSKp')->name('masterdata-statuskepegawaian-update');
         Route::get('/masterdata/statuskepegawaian/delete/{id}', 'admin\ValidatorController@deleteSKp')->name('masterdata-statuskepegawaian-delete');
+        //operasi tahun ajaran
+        Route::get('/masterdata/tahunajaran/listtahunajaran', 'admin\ValidatorController@indexTAj')->name('masterdata-tahunajaran-index');
+        Route::get('/masterdata/tahunajaran/create', 'admin\ValidatorController@createTAj')->name('masterdata-tahunajaran-create');
+        Route::post('/masterdata/tahunajaran/store', 'admin\ValidatorController@storeTAj')->name('masterdata-tahunajaran-store');
+        Route::get('/masterdata/tahunajaran/detail/{id}', 'admin\ValidatorController@showTAj')->name('masterdata-tahunajaran-show');
+        Route::post('/masterdata/tahunajaran/update/{id}', 'admin\ValidatorController@updateTAj')->name('masterdata-tahunajaran-update');
+        Route::get('/masterdata/tahunajaran/delete/{id}', 'admin\ValidatorController@deleteTAj')->name('masterdata-tahunajaran-delete');
 
     Route::get('/pengabdian', 'admin\PengabdianController@index')->name('pengabdian-list');
     Route::get('/kompetensi', 'admin\KompetensiController@index')->name('kompetensi-list');

@@ -96,10 +96,9 @@ $("#profile_image").change(function() {
                                         <option value="NIDK" {{ $dosen->masteridpendidik[0]->jenis_id=="NIDK" ? 'selected' : '' }}>NIDK</option>
                                         <option value="NUP" {{ $dosen->masteridpendidik[0]->jenis_id=="NUP" ? 'selected' : '' }}>NUP</option>
                                     @else
-                                        <option value="" selected>Pilih Jenis Serdos</option>
-                                        <option value="NIDN" >NIDN</option>
-                                        <option value="NIDK">NIDK</option>
-                                        <option value="NUP">NUP</option>
+                                        <option value="NIDN" {{old('jenisserdos')=="NIDN" ? 'selected' : ''}}>NIDN</option>
+                                        <option value="NIDK" {{old('jenisserdos')=="NIDK" ? 'selected' : ''}}>NIDK</option>
+                                        <option value="NUP" {{old('jenisserdos')=="NUP" ? 'selected' : ''}}>NUP</option>
                                     @endif
                                 </select>
                                 <small style="color: red">
@@ -113,7 +112,7 @@ $("#profile_image").change(function() {
                                 @if(count($dosen->masteridpendidik)>0)
                                     <input type="text" class="form-control" id="nidn" name="nidn" placeholder="Masukan NIDN/NIDK/NUP" value="{{$errors->any() ? old('nidn') : $dosen->masteridpendidik[0]->nidn_nidk_nup}}">
                                 @else
-                                    <input type="text" class="form-control" id="nidn" name="nidn" placeholder="Masukan NIDN/NIDK/NUP">
+                                    <input type="text" class="form-control" id="nidn" name="nidn" placeholder="Masukan NIDN/NIDK/NUP" value="{{$errors->any() ? old('nidn') : ''}}">
                                 @endif
                                 <small style="color: red">
                                     @error('nidn')
@@ -228,8 +227,13 @@ $("#profile_image").change(function() {
                         <label for="JenisKelamin" class="font-weight-bold text-dark">Jenis Kelamin</label>
                         <select class="form-control" id="JenisKelamin" name="jeniskelamin">
                             <option value="" {{ $dosen->jenis_kelamin==NULL ? 'selected' : '' }}>Pilih JK</option>
-                            <option value="Pria" {{ $dosen->jenis_kelamin=="Pria" ? 'selected' : '' }}>Pria</option>
-                            <option value="Wanita" {{ $dosen->jenis_kelamin=="wanita" ? 'selected' : '' }}>Wanita</option>
+                            @if($dosen->jenis_kelamin!=NULL)
+                                <option value="Pria" {{ $dosen->jenis_kelamin=="Pria" ? 'selected' : '' }}>Pria</option>
+                                <option value="Wanita" {{ $dosen->jenis_kelamin=="wanita" ? 'selected' : '' }}>Wanita</option>
+                            @else
+                                <option value="Pria" {{old('jeniskelamin')=="Pria" ? 'selected' : ''}}>Pria</option>
+                                <option value="Wanita" {{old('jeniskelamin')=="Wanita" ? 'selected' : ''}}>Wanita</option>
+                            @endif
                         </select>
                         <small style="color: red">
                             @error('jeniskelamin')
@@ -250,7 +254,7 @@ $("#profile_image").change(function() {
                             @else
                                 <option value="" selected>Pilih Status</option>
                                 @foreach ($statusDosen as $status)
-                                    <option value="{{$status->id_status_dosen}}">{{$status->status_dosen}}</option>
+                                    <option value="{{$status->id_status_dosen}}" {{old('statusdosen')==$status->id_status_dosen ? 'selected' : ''}}>{{$status->status_dosen}}</option>
                                 @endforeach
                             @endif
                         </select>
@@ -265,7 +269,7 @@ $("#profile_image").change(function() {
                         @if(count($dosen->tmtstatus)>0)
                             <input type="date" class="form-control" id="tmtStatusDosen" name="tmtStatusDosen" value="{{$errors->any() ? old('tmtStatusDosen') : $dosen->tmtstatus[0]->tmt_status_dosen}}">
                         @else
-                            <input type="date" class="form-control" id="tmtStatusDosen" name="tmtStatusDosen" >
+                            <input type="date" class="form-control" id="tmtStatusDosen" name="tmtStatusDosen" value="{{$errors->any() ? old('tmtStatusDosen') : ''}}">
                         @endif
                         
                         <small style="color: red">
@@ -287,7 +291,7 @@ $("#profile_image").change(function() {
                             @else
                                 <option value="" selected>Pilih Status</option>
                                 @foreach ($statusKepegawaian as $status)
-                                    <option value="{{$status->id_status_kepegawaian}}">{{$status->status_kepegawaian}}</option>
+                                    <option value="{{$status->id_status_kepegawaian}}" {{old('statusKepegawaian')==$status->id_status_kepegawaian ? 'selected' : ''}}>{{$status->status_kepegawaian}}</option>
                                 @endforeach
                             @endif
                         </select>
@@ -302,7 +306,7 @@ $("#profile_image").change(function() {
                         @if(count($dosen->tmtkepegawaian)>0)
                             <input type="date" class="form-control" id="tmtStatusKepegawaian" name="tmtStatusKepegawaian" value="{{$errors->any() ? old('tmtStatusKepegawaian') : $dosen->tmtstatus[0]->tmt_status_dosen}}">
                         @else
-                            <input type="date" class="form-control" id="tmtStatusKepegawaian" name="tmtStatusKepegawaian">
+                            <input type="date" class="form-control" id="tmtStatusKepegawaian" name="tmtStatusKepegawaian" value="{{$errors->any() ? old('tmtStatusKepegawaian') : ''}}">
                         @endif
                         <small style="color: red">
                             @error('tmtStatusKepegawaian')
@@ -356,9 +360,9 @@ $("#profile_image").change(function() {
                                 <option value="S3" {{ $dosen->pendidikan[0]->jenjang_pendidikan_terakhir=="S3" ? 'selected' : '' }}>S3</option>
                             @else
                                 <option value="" selected>Pilih Jenjang Pendidikan</option>
-                                <option value="S1">S1</option>
-                                <option value="S2">S2</option>
-                                <option value="S3">S3</option>
+                                <option value="S1" {{old('jenjangPendidikan')=="S1" ? 'selected' : ''}}>S1</option>
+                                <option value="S2" {{old('jenjangPendidikan')=="S2" ? 'selected' : ''}}>S2</option>
+                                <option value="S3" {{old('jenjangPendidikan')=="S3" ? 'selected' : ''}}>S3</option>
                             @endif
                         </select>
                         <small style="color: red">
@@ -372,7 +376,7 @@ $("#profile_image").change(function() {
                         @if(count($dosen->pendidikan)>0)
                             <input type="text" class="form-control" id="Institusi" name="institusi" placeholder="Masukan Nama Institusi" value="{{$errors->any() ? old('institusi') : $dosen->pendidikan[0]->nama_institusi}}">
                         @else
-                            <input type="text" class="form-control" id="Institusi" name="institusi" placeholder="Masukan Nama Institusi">
+                            <input type="text" class="form-control" id="Institusi" name="institusi" placeholder="Masukan Nama Institusi" value="{{$errors->any() ? old('institusi') :''}}">
                         @endif
                         <small style="color: red">
                             @error('institusi')
@@ -387,7 +391,7 @@ $("#profile_image").change(function() {
                         @if(count($dosen->pendidikan)>0)
                             <input type="text" class="form-control" id="BidangIlmu" name="bidangIlmu" placeholder="Masukan Bidang Ilmu" value="{{$errors->any() ? old('bidangIlmu') : $dosen->pendidikan[0]->bidang_ilmu}}">                            
                         @else
-                            <input type="text" class="form-control" id="BidangIlmu" name="bidangIlmu" placeholder="Masukan Bidang Ilmu">
+                            <input type="text" class="form-control" id="BidangIlmu" name="bidangIlmu" placeholder="Masukan Bidang Ilmu" value="{{$errors->any() ? old('bidangIlmu') : ''}}">
                         @endif
                         <small style="color: red">
                             @error('bidangIlmu')
@@ -400,7 +404,7 @@ $("#profile_image").change(function() {
                         @if(count($dosen->pendidikan)>0)
                             <input type="date" class="form-control" id="SelesaiStudi" name="tanggalSelesaiStudi" value="{{$errors->any() ? old('tanggalSelesaiStudi') : $dosen->pendidikan[0]->tanggal_selesai_studi}}">
                         @else
-                            <input type="date" class="form-control" id="SelesaiStudi" name="tanggalSelesaiStudi" >
+                            <input type="date" class="form-control" id="SelesaiStudi" name="tanggalSelesaiStudi" value="{{$errors->any() ? old('tanggalSelesaiStudi') : ''}}">
                         @endif
                         <small style="color: red">
                             @error('tanggalSelesaiStudi')
@@ -433,7 +437,7 @@ $("#profile_image").change(function() {
                             @else
                                 <option value="" selected>Pilih Pangkat/Golongan</option>
                                 @foreach($pangkatDosen as $p)
-                                    <option value="{{$p->id_pangkat_pns}}">{{$p->pangkat}}</option>
+                                    <option value="{{$p->id_pangkat_pns}}" {{old('pangkatGolongan')==$p->id_pangkat_pns ? 'selected' : ''}}>{{$p->pangkat}}</option>
                                 @endforeach
                             @endif
                         </select>
@@ -454,7 +458,7 @@ $("#profile_image").change(function() {
                             @else
                                 <option value="" selected>Pilih Jabatan Akademik</option>
                                 @foreach($jabatanDosen as $j)
-                                    <option value="{{$j->id_jabatan_fungsional}}">{{$j->jabatan_fungsional}}</option>
+                                    <option value="{{$j->id_jabatan_fungsional}}" {{old('jabatanakademik')==$j->id_jabatan_fungsional ? 'selected' : ''}}>{{$j->jabatan_fungsional}}</option>
                                 @endforeach
                             @endif
                         </select>
@@ -471,7 +475,7 @@ $("#profile_image").change(function() {
                         @if(count($dosen->tmtpangkat)>0)
                             <input type="date" class="form-control" id="TmtPangkatGolongan" name="tmtpangkatgolongan" value="{{$errors->any() ? old('tmtpangkatgolongan') : $dosen->tmtpangkat[0]->tmt_pangkat_golongan}}">
                         @else
-                            <input type="date" class="form-control" id="TmtPangkatGolongan" name="tmtpangkatgolongan">
+                            <input type="date" class="form-control" id="TmtPangkatGolongan" name="tmtpangkatgolongan" value="{{$errors->any() ? old('tmtpangkatgolongan') : ''}}">
                         @endif
                         <small style="color: red">
                             @error('tmtpangkatgolongan')
@@ -484,7 +488,7 @@ $("#profile_image").change(function() {
                         @if(count($dosen->tmtjabatan)>0)
                             <input type="date" class="form-control" id="TmtJabatan" name="tmtjabatan" value="{{$errors->any() ? old('tmtjabatan') : $dosen->tmtjabatan[0]->tmt_jabatan_fungsional}}">
                         @else
-                            <input type="date" class="form-control" id="TmtJabatan" name="tmtjabatan">
+                            <input type="date" class="form-control" id="TmtJabatan" name="tmtjabatan" value="{{$errors->any() ? old('tmtjabatan') : ''}}">
                         @endif
                         <small style="color: red">
                             @error('tmtjabatan')
@@ -505,7 +509,7 @@ $("#profile_image").change(function() {
                             @else
                                 <option value="" selected>Pilih Unit</option>
                                 @foreach($unit as $u)
-                                    <option value="{{$u->id_fakultas}}">{{$u->fakultas}}</option>
+                                    <option value="{{$u->id_fakultas}}" {{old('unit')==$u->id_fakultas ? 'selected' : ''}}>{{$u->fakultas}}</option>
                                 @endforeach
                             @endif
                         </select>
@@ -519,9 +523,15 @@ $("#profile_image").change(function() {
                         <label for="Subunit" class="font-weight-bold text-dark">Sub-Unit</label>
                         <select class="form-control" id="Subunit" name="subunit">
                             <option value="" {{ $dosen->id_prodi==NULL ? 'selected' : '' }}>Pilih Sub-Unit</option>
-                            @foreach($subunit as $u)
-                                <option value="{{$u->id_prodi}}" {{ $dosen->id_prodi == $u->id_prodi  ? 'selected' : '' }}>{{$u->prodi}}</option>
-                            @endforeach
+                            @if($dosen->id_prodi!=NULL)
+                                @foreach($subunit as $u)
+                                    <option value="{{$u->id_prodi}}" {{ $dosen->id_prodi == $u->id_prodi  ? 'selected' : '' }}>{{$u->prodi}}</option>
+                                @endforeach
+                            @else
+                                @foreach($subunit as $u)
+                                    <option value="{{$u->id_prodi}}" {{old('subunit')==$u->id_prodi ? 'selected' : ''}}>{{$u->prodi}}</option>
+                                @endforeach
+                            @endif
                         </select>
                         <small style="color: red">
                             @error('subunit')
@@ -654,7 +664,7 @@ $("#profile_image").change(function() {
                             @else
                                 <option value="" selected>Pilih Status Keaktifan</option>
                                 @foreach($statusaktif as $s)
-                                    <option value="{{$s->id_status_keaktifan}}">{{$s->status_keaktifan}}</option>
+                                    <option value="{{$s->id_status_keaktifan}}" {{old('statusaktif')==$s->id_status_keaktifan ? 'selected' : ''}}>{{$s->status_keaktifan}}</option>
                                 @endforeach
                             @endif
                         </select>
@@ -669,7 +679,7 @@ $("#profile_image").change(function() {
                         @if(count($dosen->tmtkeaktifan)>0)
                             <input type="date" class="form-control" id="TmtAktif" name="tmtaktif" value="{{$errors->any() ? old('tmtaktif') : $dosen->tmtkeaktifan[0]->tmt_keaktifan}}">
                         @else
-                            <input type="date" class="form-control" id="TmtAktif" name="tmtaktif">
+                            <input type="date" class="form-control" id="TmtAktif" name="tmtaktif" value="{{$errors->any() ? old('tmtaktif') : ''}}">
                         @endif
                         <small style="color: red">
                             @error('tmtaktif')

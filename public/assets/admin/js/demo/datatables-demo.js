@@ -1,6 +1,11 @@
 // Call the dataTables jQuery plugin
 $(document).ready(function () {
-  $('#dataTable').DataTable();
+  $('#dataTable').DataTable({
+    scrollY: 200,
+    scrollCollapse: true,
+    paging: true,
+    autoWidth: false,
+  });
 
   // var table1 = $('#dataTableRev').DataTable({
   //   searchPanes: {
