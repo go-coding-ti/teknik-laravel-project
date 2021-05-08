@@ -44,7 +44,8 @@ class PenelitianController extends Controller
             $kategori = KategoriPenelitian::all();
             $datapenelitian = Penelitian::where('id_penelitian', $request->id)->first();
             $idpenulis = DetailPenelitian::where('id_penelitian', $request->id)->get();
-            $tahunajaran = MasterTahunAjaran::where('id', $datapenelitian->tahun_ajaran)->first(); 
+            $tahunajaran = MasterTahunAjaran::where('id', $datapenelitian->tahun_ajaran)->first();
+            $alltahun = MasterTahunAjaran::all(); 
             if($idpenulis != null){
                 foreach($idpenulis as $i){
                     if(Penulis::where('id_penulis', $i->id_penulis)->first()->penulis_ke != null){
@@ -58,7 +59,7 @@ class PenelitianController extends Controller
             $user = $request->session()->get('admin.data');
             $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
             $data = Dosen::get();
-            return view('admin.penelitian.penelitian-detail', compact('kategori', 'penulis', 'datapenelitian', 'data', 'profiledata', 'tahunajaran'));
+            return view('admin.penelitian.penelitian-detail', compact('kategori', 'penulis', 'datapenelitian', 'data', 'profiledata', 'tahunajaran', 'alltahun'));
         }
     }
 

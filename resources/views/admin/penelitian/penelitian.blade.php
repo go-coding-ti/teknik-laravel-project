@@ -51,12 +51,17 @@
                             <a style="margin-right:7px" class="btn btn-danger btn-sm" href="" onclick="return confirm('Apakah Anda Yakin ?')"><i class="fas fa-trash"></i></a>
                           </td>
                           <td>{{$d->judul}}</td>
-                          @foreach($tahunajaran as $t)
-                            @if($t->id == $d->tahun_ajaran)
-                              <td>{{$t->semester}} {{$t->tahun_ajaran}}</td>
-                            @else
-                            @endif
-                          @endforeach
+                          @if($d->tahun_ajaran != null)
+                            @foreach($tahunajaran as $t)
+                              @if($t->id == $d->tahun_ajaran)
+                                <td>{{$t->semester}} {{$t->tahun_ajaran}}</td>
+                              @else
+                                @continue
+                              @endif
+                            @endforeach
+                          @else
+                            <td>Data Tidak Tersedia</td>
+                          @endif
                           <td>{{$d->tahun_publikasi}}</td>
                           <td>{{$d->kategori}}</td>
                         </tr>
