@@ -12,6 +12,7 @@ use App\Dosen;
 use App\Penelitian;
 use App\Penulis;
 use App\DetailPenelitian;
+use App\MasterTahunAjaran;
 
 class ImportPenelitianController extends Controller
 {
@@ -53,11 +54,58 @@ class ImportPenelitianController extends Controller
                 $storePenelitian->judul = $request->row_judul[$count];
                 $storePenelitian->tahun_publikasi = $request->row_tahunpub[$count];
                 $storePenelitian->kategori = $request->row_kategori[$count];
-                $storePenelitian->tahun_ajaran = $request->row_tahunajar[$count];
                 $storePenelitian->unit = $request->row_unit[$count];
                 $storePenelitian->sunit = $request->row_sunit[$count];
                 $storePenelitian->file_1 = $request->row_file1[$count];
                 $storePenelitian->file_2 = $request->row_file2[$count];
+
+                $tahunajaran = explode(' ', $request->row_tahunajar[$count]);
+                if(count($tahunajaran) > 2){
+                    $checkTahun = MasterTahunAjaran::all();
+                    foreach($checkTahun as $c){
+                        if(strtolower($c->semester) == strtolower($tahunajaran[0]) and $c->tahun_ajaran == $tahunajaran[2]){
+                            $status = $c->id;
+                            // check data tahun ajaran
+                            // dd($status);
+                        }else{
+                            $status = null;
+                            // dd($status);
+                        }
+                    }
+                    if($status != null){
+                        $storePenelitian->tahun_ajaran = $status;
+                    }else{
+                        $createTahunAjaran = new MasterTahunAjaran;
+                        $createTahunAjaran->semester = ucfirst($tahunajaran[0]);
+                        $createTahunAjaran->tahun_ajaran = $tahunajaran[2];
+                        $createTahunAjaran->save();
+
+                        $tahun = MasterTahunAjaran::where('semester', '=' ,ucfirst($tahunajaran[0]), 'and', 'tahun_ajaran', '=', $tahunajaran[2])->first();
+                        dd($tahun);
+                        $storePenelitian->tahun_ajaran = $tahun->id;
+                    }
+                }elseif(count($tahunajaran) == 2){
+                    $checkTahun = MasterTahunAjaran::all();
+                    foreach($checkTahun as $c){
+                        if(strtolower($c->semester) == strtolower($tahunajaran[0]) and $c->tahun_ajaran == $tahunajaran[1]){
+                            $status = $c->id;
+                        }else{
+                            $status = null;
+                        }
+                    }
+                    if($status != null){
+                        $storePenelitian->tahun_ajaran = $status;
+                    }else{
+                        $createTahunAjaran = new MasterTahunAjaran;
+                        $createTahunAjaran->semester = ucfirst($tahunajaran[0]);
+                        $createTahunAjaran->tahun_ajaran = $tahunajaran[1];
+                        $createTahunAjaran->save;
+
+                        $tahun = MasterTahunAjaran::where('semester', '=' ,ucfirst($tahunajaran[0]), 'and', 'tahun_ajaran', '=', $tahunajaran[1]);
+                        $storePenelitian->tahun_ajaran = $tahun->id;
+                    }  
+                }
+                
                 $storePenelitian->save();
                 
                 $dosen= Dosen::where('nip', '=' , $request->row_nip[$count], 'OR', 'nama', '=', $request->row_nama[$count])->first();

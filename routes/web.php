@@ -123,6 +123,7 @@ Route::prefix('admin')->group(function () {
     // Operasi Penelitian
     Route::get('/penelitian', 'admin\PenelitianController@index')->name('penelitian-list');
     route::get('/penelitian/detail/{id}', 'admin\PenelitianController@detail')->name('penelitian-detail');
+    route::post('/penelitian/detail/update/{id}', 'admin\PenelitianController@update')->name('penelitian-update');
     Route::get('/import/penelitian-show', 'import\ImportPenelitianController@show')->name('show-import-penelitian');
     Route::Post('/import/penelitian-review', 'import\ImportPenelitianController@view')->name('show-review-penelitian');
     Route::Post('/import/penelitian-save', 'import\ImportPenelitianController@save')->name('save-penelitian');

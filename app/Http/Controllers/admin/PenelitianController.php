@@ -10,6 +10,7 @@ use App\Pegawai;
 use App\Penelitian;
 use App\Penulis;
 use App\DetailPenelitian;
+use App\MasterTahunAjaran;
 
 class PenelitianController extends Controller
 {
@@ -25,10 +26,11 @@ class PenelitianController extends Controller
         }else{
             $kategori = KategoriPenelitian::all();
             $datapenelitian = Penelitian::all();
+            $tahunajaran = MasterTahunAjaran::all();
             $user = $request->session()->get('admin.data');
             $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
             $data = Dosen::get();
-            return view('admin.penelitian.penelitian', compact('kategori', 'datapenelitian', 'data', 'profiledata'));
+            return view('admin.penelitian.penelitian', compact('kategori', 'datapenelitian', 'tahunajaran', 'data', 'profiledata'));
         }
         
         // $id = $kategori->id_kategori_penelitian;
@@ -40,17 +42,23 @@ class PenelitianController extends Controller
             return redirect('/login')->with('expired','Session Telah Berakhir');
         }else{
             $kategori = KategoriPenelitian::all();
-            $datapenelitian = Penelitian::where('id_penelitian', $request->id)->get();
+            $datapenelitian = Penelitian::where('id_penelitian', $request->id)->first();
             $idpenulis = DetailPenelitian::where('id_penelitian', $request->id)->get();
+            $tahunajaran = MasterTahunAjaran::where('id', $datapenelitian->tahun_ajaran)->first(); 
             if($idpenulis != null){
                 foreach($idpenulis as $i){
-                    $penulis[] = Penulis::where('id_penulis', $i->id_penulis)->first();
+                    if(Penulis::where('id_penulis', $i->id_penulis)->first()->penulis_ke != null){
+                        $penulis[] = Penulis::where('id_penulis', $i->id_penulis)->orderBy('penulis_ke', 'asc')->first();
+                    }
+                    else{
+                        $penulis[] = Penulis::where('id_penulis', $i->id_penulis)->first();
+                    }
                 }
             }
             $user = $request->session()->get('admin.data');
             $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
             $data = Dosen::get();
-            return view('admin.penelitian.penelitian-detail', compact('kategori', 'penulis', 'datapenelitian', 'data', 'profiledata'));
+            return view('admin.penelitian.penelitian-detail', compact('kategori', 'penulis', 'datapenelitian', 'data', 'profiledata', 'tahunajaran'));
         }
     }
 
@@ -106,7 +114,8 @@ class PenelitianController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //update data penelitian
+
     }
 
     /**
