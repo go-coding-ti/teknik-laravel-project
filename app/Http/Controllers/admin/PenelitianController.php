@@ -43,17 +43,21 @@ class PenelitianController extends Controller
         }else{
             $kategori = KategoriPenelitian::all();
             $datapenelitian = Penelitian::where('id_penelitian', $request->id)->first();
-            $idpenulis = DetailPenelitian::where('id_penelitian', $request->id)->get();
+            $idpenulis = DetailPenelitian::where('id_penelitian', $request->id)->orderBy('penulis_ke', 'asc')->get();
             $tahunajaran = MasterTahunAjaran::where('id', $datapenelitian->tahun_ajaran)->first();
-            $alltahun = MasterTahunAjaran::all(); 
+            $alltahun = MasterTahunAjaran::all();
+            $num = 0; 
             if($idpenulis != null){
                 foreach($idpenulis as $i){
-                    if(Penulis::where('id_penulis', $i->id_penulis)->first()->penulis_ke != null){
-                        $penulis[] = Penulis::where('id_penulis', $i->id_penulis)->orderBy('penulis_ke', 'asc')->first();
+                    if($i->penulis_ke != null){
+                        $penulis[$num] = Penulis::where('id_penulis', $i->id_penulis)->first();
+                        $penulis[$num]->setPenulis_ke($i->penulis_ke);
                     }
                     else{
-                        $penulis[] = Penulis::where('id_penulis', $i->id_penulis)->first();
+                        $penulis[$num] = Penulis::where('id_penulis', $i->id_penulis)->first();
                     }
+                    // dd($num);
+                    $num+=1;
                 }
             }
             $user = $request->session()->get('admin.data');
@@ -113,10 +117,32 @@ class PenelitianController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         //update data penelitian
-
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $kategori = KategoriPenelitian::all();
+            $datapenelitian = Penelitian::where('id_penelitian', $request->id)->first();
+            $idpenulis = DetailPenelitian::where('id_penelitian', $request->id)->get();
+            $tahunajaran = MasterTahunAjaran::where('id', $datapenelitian->tahun_ajaran)->first();
+            $alltahun = MasterTahunAjaran::all(); 
+            if($idpenulis != null){
+                foreach($idpenulis as $i){
+                    if(Penulis::where('id_penulis', $i->id_penulis)->first()->penulis_ke != null){
+                        $penulis[] = Penulis::where('id_penulis', $i->id_penulis)->orderBy('penulis_ke', 'asc')->first();
+                    }
+                    else{
+                        $penulis[] = Penulis::where('id_penulis', $i->id_penulis)->first();
+                    }
+                }
+            }
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            $data = Dosen::get();
+            return view('admin.penelitian.penelitian-detail', compact('kategori', 'penulis', 'datapenelitian', 'data', 'profiledata', 'tahunajaran', 'alltahun'));
+        }
     }
 
     /**
