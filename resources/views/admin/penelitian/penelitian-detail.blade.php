@@ -55,7 +55,7 @@
                                 <select class="form-control" id="tahunajaran" name="tahunajaran">
                                 <option value="" >Pilih Tahun Ajaran</option>
                                 @foreach($alltahun as $tahun)
-                                    <option value="$tahun->id" >{{$tahun->semester}} {{$tahun->tahun_ajaran}}</option>
+                                    <option value="{{$tahun->id}}" >{{$tahun->semester}} {{$tahun->tahun_ajaran}}</option>
                                 @endforeach
                             </select>
                             @else 
@@ -205,7 +205,7 @@
                                     </div>
                                     <div class="col col-4">
                                         <label for="nip{{$p->getPenulis_ke()}}" class="font-weight-bold text-dark">NIP</label>
-                                        <input type="text" class="form-control" id="nip{{$p->getPenulis_ke()}}" name="nip{{$p->getPenulis_ke()}}" placeholder="Masukan nama Penulis" value="{{$p->nama_penulis}}">
+                                        <input type="text" class="form-control" id="nip{{$p->getPenulis_ke()}}" name="nip{{$p->getPenulis_ke()}}" placeholder="Masukan nama Penulis" value="{{$p->id_dosen}}">
                                     </div>
                                     <div class="col col-2">
                                         <a href="{{route('dosen-detail', $p->id_dosen)}}" class="btn btn-primary"><i class="fas fa-user"></i> Lihat Dosen</a>
@@ -217,7 +217,7 @@
                                     </div>
                                     <div class="col col-6">
                                         <label for="nip{{$p->getPenulis_ke()}}" class="font-weight-bold text-dark">ID Penulis</label>
-                                        <input type="text" class="form-control" id="nip{{$p->getPenulis_ke()}}" name="nip{{$p->getPenulis_ke()}}" placeholder="Masukan nama Penulis" value="{{$p->nama_penulis}}">
+                                        <input type="text" class="form-control" id="nip{{$p->getPenulis_ke()}}" name="nip{{$p->getPenulis_ke()}}" placeholder="Masukan nama Penulis" value="{{$p->id_dosen}}">
                                     </div>
                                 @endif
                             @else

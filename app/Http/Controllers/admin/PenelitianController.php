@@ -125,23 +125,26 @@ class PenelitianController extends Controller
         }else{
             $kategori = KategoriPenelitian::all();
             $datapenelitian = Penelitian::where('id_penelitian', $request->id)->first();
-            $idpenulis = DetailPenelitian::where('id_penelitian', $request->id)->get();
-            $tahunajaran = MasterTahunAjaran::where('id', $datapenelitian->tahun_ajaran)->first();
-            $alltahun = MasterTahunAjaran::all(); 
-            if($idpenulis != null){
-                foreach($idpenulis as $i){
-                    if(Penulis::where('id_penulis', $i->id_penulis)->first()->penulis_ke != null){
-                        $penulis[] = Penulis::where('id_penulis', $i->id_penulis)->orderBy('penulis_ke', 'asc')->first();
-                    }
-                    else{
-                        $penulis[] = Penulis::where('id_penulis', $i->id_penulis)->first();
-                    }
-                }
-            }
-            $user = $request->session()->get('admin.data');
-            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
-            $data = Dosen::get();
-            return view('admin.penelitian.penelitian-detail', compact('kategori', 'penulis', 'datapenelitian', 'data', 'profiledata', 'tahunajaran', 'alltahun'));
+            $datapenelitian->judul = $request->judul;
+            $datapenelitian->tahun_ajaran = $request->tahunajaran;
+            $datapenelitian->edisi = $request->edisi;
+            $datapenelitian->penerbit = $request->penerbit;
+            $datapenelitian->tahun_publikasi = $request->tahun;
+            $datapenelitian->bulan_publikasi = $request->bulan;
+            $datapenelitian->keterangan = $request->keterangan;
+            $datapenelitian->status_validitas = $request->statval;
+            $datapenelitian->jumlah_halaman = $request->jumhal;
+            $datapenelitian->isbn = $request->isbn;
+            $datapenelitian->file_sk_tugas = $request->filesktugas;
+            $datapenelitian->file_bukti_kerja = $request->filebuktikerja;
+            $datapenelitian->file_1 = $request->file1;
+            $datapenelitian->file_2 = $request->file2;
+            $datapenelitian->save();
+            return redirect()->route('penelitian-detail', $request->id)->with('success','Berhasil Menambah Data Dosen!');
+            // $user = $request->session()->get('admin.data');
+            // $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            // $data = Dosen::get();
+            // return view('admin.penelitian.penelitian-detail', compact('kategori', 'penulis', 'datapenelitian', 'data', 'profiledata', 'tahunajaran', 'alltahun'));
         }
     }
 
