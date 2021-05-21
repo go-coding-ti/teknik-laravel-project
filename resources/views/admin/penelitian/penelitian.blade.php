@@ -48,7 +48,7 @@
                         <tr>
                           <td align="center">
                             <a href="{{Route('penelitian-detail', $d->id_penelitian)}}" class="btn btn-warning btn-sm"><i class="fas fa-eye"></i></a>
-                            <a style="margin-right:7px" class="btn btn-danger btn-sm" href="" onclick="return confirm('Apakah Anda Yakin ?')"><i class="fas fa-trash"></i></a>
+                            <a style="margin-right:7px" class="btn btn-danger btn-sm" href="{{Route('penelitian-delete', $d->id_penelitian)}}" onclick="return confirm('Apakah Anda Yakin ?')"><i class="fas fa-trash"></i></a>
                           </td>
                           <td>{{$d->judul}}</td>
                           @if($d->tahun_ajaran != null)

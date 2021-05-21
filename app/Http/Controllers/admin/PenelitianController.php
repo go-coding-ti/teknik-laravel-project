@@ -157,5 +157,8 @@ class PenelitianController extends Controller
     public function destroy($id)
     {
         //
+        $penelitian = Penelitian::where('id_penelitian', '=', $id);
+        $penelitian->delete();
+        return redirect()->route('penelitian-list')->with('success','Berhasil Menghapus Data Fakultas!');
     }
 }
