@@ -13,4 +13,8 @@ class TmtStatusKepegawaianDosen extends Model
     public function dosen(){
         return $this->belongsTo(Dosen::class, 'nip');
     }
+
+    public function statuskepeg(){
+        return $this->belongsTo(MasterStatusKepegawaian::class, 'id_status_kepegawaian');
+    }
 }

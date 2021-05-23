@@ -13,5 +13,9 @@ class TmtStatusDosen extends Model
     public function dosen(){
         return $this->belongsTo(Dosen::class, 'nip');
     }
+
+    public function status(){
+        return $this->hasMany(MasterStatusDosen::class, 'id_status_dosen');
+    }
 }
 
