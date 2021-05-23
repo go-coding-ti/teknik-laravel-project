@@ -21,6 +21,7 @@ function myFunction() {
     $(document).ready(function() {
     $('#sub').click( function() {
         var data = $('input').serialize();
+        var head = $('input[type="checkbox"]').serialize();
         $.ajaxSetup({
             header:$('meta[name="_token"]').attr('content')
         })e.preventDefault(e);
@@ -28,7 +29,7 @@ function myFunction() {
         $.ajax({
             type:"POST",
             url:'/admin/datauser/dosen/export/dosen/submit',
-            data:data,
+            data:data,head,
             success: function(data){
                 console.log(data);
             },error: function(data){
@@ -39,16 +40,16 @@ function myFunction() {
     
 });
 </script>
-{{-- <script>
+<script>
     $(document).ready(function() {
     var dt = $('#example').DataTable({
-        scrollY:        200,
-        scrollCollapse: true,
+        // scrollY:        200,
+        // scrollCollapse: true,
         paging:         true,
         searchPanes: {
             clear: false,
             viewTotal: true,
-            columns: [0, 3, 11]
+            columns: [37, 28]
         },
         dom: 'Plfrtip',
         columnDefs: [
@@ -57,21 +58,17 @@ function myFunction() {
                 searchPanes: {
                     show: true,
                     options: [
+                        @foreach ($statusaktif as $aktif)
                         {
-                            label: 'Checked',
-                            value: function(rowData,rowIdx) {
-                                return this.row(rowIdx, {selected: true}).any();
+                            label: '{{$aktif->status_keaktifan}}',
+                            value: function(rowData, rowIdx) {
+                                return rowData[37].match('{{$aktif->status_keaktifan}}');
                             }
                         },
-                        {
-                            label: 'Un-Checked',
-                            value: function(rowData, rowIdx) {
-                                return this.row(rowIdx, {selected: true}).any() === false;
-                            }
-                        }
+                        @endforeach
                     ]
                 },
-                targets: [0]
+                targets: [37]
             },
             {
                 searchPanes: {
@@ -81,35 +78,14 @@ function myFunction() {
                         {
                             label: '{{$prodis->prodi}}',
                             value: function(rowData, rowIdx) {
-                                return rowData[11].match('{{$prodis->prodi}}');
+                                return rowData[28].match('{{$prodis->prodi}}');
                             }
                         },
                         @endforeach
                     ]
                 },
-                targets: [11]
+                targets: [28]
             },
-            {
-                searchPanes: {
-                    show: true,
-                    options: [
-                        {
-                            label: 'Not Edinburgh',
-                            value: function(rowData, rowIdx) {
-                                return rowData[3] !== 'Edinburgh';
-                            }
-                        },
-                        {
-                            label: 'Not London',
-                            value: function(rowData, rowIdx) {
-                                return rowData[3] !== 'London';
-                            }
-                        }
-                    ],
-                    combiner: 'and'
-                },
-                targets: [3]
-            }
         ],
         
         order: [[ 1, 'desc' ]]
@@ -120,15 +96,15 @@ function myFunction() {
     $('#toggle').on('click', function () {
         dt.searchPanes.container().toggle();
     });
-    $("input.planned_checked").change(function(e) {
-        e.preventDefault();
-        // Get the column API object
-        var column = dt.column( $(this).attr('data-column') );
-        // Toggle the visibility
-        column.visible( ! column.visible() );
-    } );
+    // $("input.planned_checked").change(function(e) {
+    //     e.preventDefault();
+    //     // Get the column API object
+    //     var column = dt.column( $(this).attr('data-column') );
+    //     // Toggle the visibility
+    //     column.visible( ! column.visible() );
+    // } );
 });
-</script> --}}
+</script>
 @endsection
     <!-- Begin Page Content -->
     <div class="container-fluid">
@@ -196,7 +172,7 @@ function myFunction() {
                                 <tr>
                                     @foreach ($header as $head)
                                     <td style="width: 30%">
-                                        <label><input type="checkbox" name="planned_checked" class="planned_checked" data-column="{{$loop->iteration}}"><br>{{$head->heading}}</label> 
+                                        <label><input type="checkbox" value="{{$head->heading}}" name="planned_checked[]" class="planned_checked" data-column="{{$loop->iteration}}"><br>{{$head->heading}}</label> 
                                     </td>
                                     @endforeach
                                 </tr>
@@ -205,30 +181,13 @@ function myFunction() {
                     </div>
                 </div>
                 <br>
-                <table class="table table-bordered" id="dataTable" cellspacing="0">
+                <table class="table table-bordered" id="example" cellspacing="0">
                     <thead>
                     <tr>
                         <th>Action</th>
-                        <th>Nama</th>
-                        <th>Tahun Ajaran</th>
-                        {{-- <th>NIDN</th>
-                        <th>Nama</th>
-                        <th>Alamat</th>
-                        <th>Jenis Kelamin</th>
-                        <th>Tanggal Lahir</th>
-                        <th>Status Pegawai</th>
-                        <th>Kepangkatan</th>
-                        <th>Unit</th>
-                        <th>Sub Unit</th>
-                        <th>Keaktifan</th>
-                        <th>Jabatan Fungsional</th>
-                        <th>Pendidikan</th>
-                        <th>Email</th>
-                        <th>Telepon</th>
-                        <th>TMT Keaktifan</th>
-                        <th>Status Serdos</th>
-                        <th>Tahun Serdos</th>
-                        <th>Tahun Ajaran</th> --}}
+                        @foreach($header as $head)
+                        <th>{{$head->heading}}</th>
+                        @endforeach
                     </tr>
                     </thead>
                     <tbody>
@@ -236,13 +195,9 @@ function myFunction() {
                         @foreach($dosen as $data)
                         <tr>
                         <td align="center">
-                            <a class="btn btn-danger btn-sm" id='del' onclick="var table = $('#dataTable').DataTable();table.row($(this).parents('tr')).remove().draw();">
+                            <a class="btn btn-danger btn-sm" id='del' onclick="var table = $('#example').DataTable();table.row($(this).parents('tr')).remove().draw();">
                                 <i style="color:#fff" class="fas fa-trash"></i>
                             </a>
-                            </td>
-                            <td>
-                                {{$data->nama}}
-                                <input type="hidden" id="row-1-tahun" name="row_nama[]" value="{{$data->nama}}">
                             </td>
                             <td>
                                 @foreach ($data->tahunajaran as $index=>$tahunajarandosen)
@@ -250,7 +205,6 @@ function myFunction() {
                                         {{ $tahunajarandosen->ta->semester}} - {{ $tahunajarandosen->ta->tahun_ajaran}}
                                     @endif
                                 @endforeach
-                                
                                 <input type="hidden" id="row-1-nip" name="row_ta[]" 
                                 @foreach ($data->tahunajaran as $index=>$tahunajarandosen)
                                     @if ($loop->last)
@@ -259,60 +213,343 @@ function myFunction() {
                                     @endif
                                 @endforeach>
                             </td>
-                            {{-- <td>
-                                <input type="hidden" id="row-1-nidn" name="row_nidn[]" value="{{$data}}">
+                            <td>
+                                @foreach ($data->masteridpendidik as $index=>$serdos)
+                                    @if ($loop->last)
+                                        {{ $serdos->jenis_id}}
+                                    @endif
+                                @endforeach
+                                <input type="hidden" id="row-1-serdos" name="row_serdos[]" 
+                                @foreach ($data->masteridpendidik as $index=>$serdos)
+                                    @if ($loop->last)
+                                    @php $test = $serdos->jenis_id @endphp
+                                        value="{{$test}}"
+                                    @endif
+                                @endforeach>
                             </td>
                             <td>
-                                <input type="hidden" id="row-1-nama" name="row_nama[]" value="{{$data}} ">
+                                @foreach ($data->masteridpendidik as $index=>$nidn)
+                                    @if ($loop->last)
+                                        {{ $nidn->nidn_nidk_nup}}
+                                    @endif
+                                @endforeach
+                                <input type="hidden" id="row-1-nidn" name="row_nidn[]" 
+                                @foreach ($data->masteridpendidik as $index=>$serdos)
+                                    @if ($loop->last)
+                                    @php $test = $serdos->nidn_nidk_nup @endphp
+                                        value="{{$test}}"
+                                    @endif
+                                @endforeach>
                             </td>
                             <td>
-                                <input type="hidden" id="row-1-alamat" name="row_alamat[]" value="{{$data}} ">
+                                {{$data->nip}}
+                                <input type="hidden" id="row-1-nip" name="row_nip[]" value="{{$data->nip}}">
                             </td>
                             <td>
-                                <input type="hidden" id="row-1-jeniskelamin" name="row_jeniskelamin[]" value="{{$data}} ">
+                                {{$data->email_aktif}}
+                                <input type="hidden" id="row-1-email" name="row_email[]" value="{{$data->email_aktif}}">
                             </td>
                             <td>
-                                <input type="hidden" id="row-1-tanggallahir" name="row_tanggallahir[]" value="{{$data}} "></td>
-                            <td>
-                                <input type="hidden" id="row-1-status" name="row_status[]" value=" {{$data}}">
+                                {{$data->telp_rumah}}
+                                <input type="hidden" id="row-1-telprmh" name="row_telprmh[]" value="{{$data->telp_rumah}}">
                             </td>
                             <td>
-                                <input type="hidden" id="row-1-kepangkatan" name="row_kepangkatan[]" value="{{$data}} ">
+                                {{$data->no_hp}}
+                                <input type="hidden" id="row-1-nohp" name="row_nohp[]" value="{{$data->no_hp}}">
                             </td>
                             <td>
-                                <input type="hidden" id="row-1-unit" name="row_unit[]" value=" {{$data}}">
+                                {{$data->nama}}
+                                <input type="hidden" id="row-1-nama" name="row_nama[]" value="{{$data->nama}}">
+                            </td>
+                            <td>
+                                @if(is_null($data->gelar_belakang))
+                                    {{$data->gelar_depan}}. {{$data->nama}}
+                                    @php $test = $data->gelar_depan.".".$data->nama @endphp
+                                @elseif(is_null($data->gelar_depan))
+                                    {{$data->nama}}, {{$data->gelar_belakang}}
+                                    @php $test = $data->nama.",".$data->gelar_belakang @endphp
+                                @else
+                                    {{$data->gelar_depan}}. {{$data->nama}}, {{$data->gelar_belakang}}
+                                    @php $test = $data->gelar_depan.".".$data->nama.",".$data->gelar_belakang @endphp
+                                @endif
+                                <input type="hidden" id="row-1-namagelar" name="row_namagelar[]" value="{{$test}}">
+                            </td>
+                            <td>
+                                {{$data->tempat_lahir}}
+                                <input type="hidden" id="row-1-tempatlahir" name="row_tempatlahir[]" value="{{$data->tempat_lahir}}">
+                            </td>
+                            <td>
+                                {{$data->tanggal_lahir}}
+                                <input type="hidden" id="row-1-tanggallahir" name="row_tanggallahir[]" value="{{$data->tanggal_lahir}}">
+                            </td>
+                            <td>
+                                {{$data->jenis_kelamin}}
+                                <input type="hidden" id="row-1-jeniskelamin" name="row_jeniskelamin[]" value="{{$data->jenis_kelamin}}">
+                            </td>
+                            <td>
+                                @foreach ($data->tmtstatus as $index=>$status)
+                                    @foreach ($status->status as $index=>$s)
+                                        @if ($loop->last)
+                                            {{ $s->status_dosen}}
+                                        @endif
+                                    @endforeach
+                                @endforeach
+                                <input type="hidden" id="row-1-status" name="row_status[]" 
+                                @foreach ($data->tmtstatus as $index=>$status)
+                                    @foreach ($status->status as $index=>$s)
+                                        @if ($loop->last)
+                                            @php $t = $s->status_dosen @endphp
+                                        @endif
+                                    @endforeach
+                                @endforeach
+                                value="{{$t}}">
+                            </td>
+                            <td>
+                                @foreach ($data->tmtstatus as $index=>$tmtstatus)
+                                    @if ($loop->last)
+                                        {{ $tmtstatus->tmt_status_dosen}}
+                                    @endif
+                                @endforeach
+                                <input type="hidden" id="row-1-tmtstatus" name="row_tmtstatus[]" 
+                                @foreach ($data->tmtstatus as $index=>$tmtstatus)
+                                    @if ($loop->last)
+                                        @php $test = $tmtstatus->tmt_status_dosen @endphp
+                                    @endif
+                                @endforeach
+                                value="{{$test}}">
+                            </td>
+                            <td>
+                                @foreach ($data->tmtkepegawaian as $index=>$kepeg)
+                                    @if ($loop->last)
+                                        {{$kepeg->statuskepeg->status_kepegawaian}}
+                                    @endif
+                                @endforeach
+                                <input type="hidden" id="row-1-statuskepeg" name="row_statuskepeg[]" 
+                                @foreach ($data->tmtkepegawaian as $index=>$kepeg)
+                                    @if ($loop->last)
+                                        @php $test = $kepeg->statuskepeg->status_kepegawaian @endphp
+                                    @endif
+                                @endforeach
+                                value="{{$test}}">
+                            </td>
+                            <td>
+                                @foreach ($data->tmtkepegawaian as $index=>$kepeg)
+                                    @if ($loop->last)
+                                        {{$kepeg->tmt_status_kepegawaian_dosen}}
+                                    @endif
+                                @endforeach
+                                <input type="hidden" id="row-1-tmtkepeg" name="row_tmtkepeg[]" 
+                                @foreach ($data->tmtkepegawaian as $index=>$kepeg)
+                                    @if ($loop->last)
+                                        @php $test = $kepeg->tmt_status_kepegawaian_dosen @endphp
+                                    @endif
+                                @endforeach
+                                value="{{$test}}">
+                            </td>
+                            <td>
+                                {{$data->alamat_domisili}}
+                                <input type="hidden" id="row-1-alamatdomisili" name="row_alamatdomisili[]" value="{{$data->alamat_domisili}}">
+                            </td>
+                            <td>
+                                {{$data->alamat_rumah}}
+                                <input type="hidden" id="row-1-alamatrumah" name="row_alamatrumah[]" value="{{$data->alamat_rumah}}">
+                            </td>
+                            <td>
+                                @foreach ($data->pendidikan as $index=>$pendidikan)
+                                    @if ($loop->last)
+                                        {{$pendidikan->jenjang_pendidikan_terakhir}}
+                                    @endif
+                                @endforeach
+                                <input type="hidden" id="row-1-pendidikanterakhir" name="row_pendidikanterakhir[]" 
+                                @foreach ($data->pendidikan as $index=>$pendidikan)
+                                    @if ($loop->last)
+                                        @php $test = $pendidikan->jenjang_pendidikan_terakhir @endphp
+                                    @endif
+                                @endforeach
+                                value="{{$test}}">
+                            </td>
+                            <td>
+                                @foreach ($data->pendidikan as $index=>$pendidikan)
+                                    @if ($loop->last)
+                                        {{$pendidikan->nama_institusi}}
+                                    @endif
+                                @endforeach
+                                <input type="hidden" id="row-1-namainstitusi" name="row_namainstitusi[]" 
+                                @foreach ($data->pendidikan as $index=>$pendidikan)
+                                    @if ($loop->last)
+                                        @php $test = $pendidikan->nama_institusi @endphp
+                                    @endif
+                                @endforeach
+                                value="{{$test}}">
+                            </td>
+                            <td>
+                                @foreach ($data->pendidikan as $index=>$pendidikan)
+                                    @if ($loop->last)
+                                        {{$pendidikan->bidang_ilmu}}
+                                    @endif
+                                @endforeach
+                                <input type="hidden" id="row-1-bidangilmu" name="row_bidangilmu[]" 
+                                @foreach ($data->pendidikan as $index=>$pendidikan)
+                                    @if ($loop->last)
+                                        @php $test = $pendidikan->bidang_ilmu @endphp
+                                    @endif
+                                @endforeach
+                                value="{{$test}}">
+                            </td>
+                            <td>
+                                @foreach ($data->pendidikan as $index=>$pendidikan)
+                                    @if ($loop->last)
+                                        {{$pendidikan->tanggal_selesai_studi}}
+                                    @endif
+                                @endforeach
+                                <input type="hidden" id="row-1-selesaistudi" name="row_selesaistudi[]" 
+                                @foreach ($data->pendidikan as $index=>$pendidikan)
+                                    @if ($loop->last)
+                                        @php $test = $pendidikan->tanggal_selesai_studi @endphp
+                                    @endif
+                                @endforeach
+                                value="{{$test}}">
+                            </td>
+                            <td>
+                                @foreach ($data->tmtpangkat as $index=>$pangkat)
+                                    @if ($loop->last)
+                                        {{$pangkat->pangkat->pangkat}}
+                                    @endif
+                                @endforeach
+                                <input type="hidden" id="row-1-pangkatpns" name="row_pangkatpns[]" 
+                                @foreach ($data->tmtpangkat as $index=>$pangkat)
+                                    @if ($loop->last)
+                                        @php $test = $pangkat->pangkat->pangkat @endphp
+                                    @endif
+                                @endforeach
+                                value="{{$test}}">
+                            </td>
+                            <td>
+                                @foreach ($data->tmtjabatan as $index=>$jabatan)
+                                    @if ($loop->last)
+                                        {{$jabatan->pangkat->jabatan_fungsional}}
+                                    @endif
+                                @endforeach
+                                <input type="hidden" id="row-1-jabatanfungsional" name="row_jabatanfungsional[]" 
+                                @foreach ($data->tmtjabatan as $index=>$jabatan)
+                                    @if ($loop->last)
+                                        @php $test = $jabatan->pangkat->jabatan_fungsional @endphp
+                                    @endif
+                                @endforeach
+                                value="{{$test}}">
+                            </td>
+                            <td>
+                                @foreach ($data->tmtpangkat as $index=>$pangkat)
+                                    @if ($loop->last)
+                                        {{$pangkat->tmt_pangkat_golongan}}
+                                    @endif
+                                @endforeach
+                                <input type="hidden" id="row-1-tmtpangkatpns" name="row_tmtpangkatpns[]" 
+                                @foreach ($data->tmtpangkat as $index=>$pangkat)
+                                    @if ($loop->last)
+                                        @php $test = $pangkat->tmt_pangkat_golongan @endphp
+                                    @endif
+                                @endforeach
+                                value="{{$test}}">
+                            </td>
+                            <td>
+                                @foreach ($data->tmtjabatan as $index=>$jabatan)
+                                    @if ($loop->last)
+                                        {{$jabatan->tmt_jabatan_fungsional}}
+                                    @endif
+                                @endforeach
+                                <input type="hidden" id="row-1-tmtjabatanfungsional" name="row_tmtjabatanfungsional[]" 
+                                @foreach ($data->tmtjabatan as $index=>$jabatan)
+                                    @if ($loop->last)
+                                        @php $test = $jabatan->tmt_jabatan_fungsional @endphp
+                                    @endif
+                                @endforeach
+                                value="{{$test}}">
+                            </td>
+                            <td>
+                                {{$data->prodi->fakultas->fakultas}}
+                                <input type="hidden" id="row-1-fakultas" name="row_fakultas[]" value="{{$data->prodi->fakultas->fakultas}}">
                             </td>
                             <td>
                                 {{$data->prodi->prodi}}
-                                <input type="hidden" id="row-1-subunit" name="row_subunit[]" value=" {{$data}}">
+                                <input type="hidden" id="row-1-prodi" name="row_prodi[]" value="{{$data->prodi->prodi}}">
                             </td>
                             <td>
-                                <input type="hidden" id="row-1-keaktifan" name="row_keaktifan[]" value="{{$data}} ">
+                                {{$data->no_karpeg}}
+                                <input type="hidden" id="row-1-nokarpeg" name="row_nokarpeg[]" value="{{$data->nokarpeg}}">
                             </td>
                             <td>
-                                <input type="hidden" id="row-1-jabatan" name="row_jabatan[]" value=" {{$data}}">
+                                <a href="/admin/file/karpeg/{{$data->file_karpeg}}">FILE KARPEG</a>
+                                @php
+                                    $d = $data->file_karpeg 
+                                @endphp
+                                <input type="hidden" id="row-1-filekarpeg" name="row_filekarpeg[]" 
+                                value='=HYPERLINK("http://127.0.0.1:8000/admin/file/karpeg/{{$d}}","FILE KARPEG")'>
                             </td>
                             <td>
-                                <input type="hidden" id="row-1-pendidikan" name="row_pendidikan[]" value=" {{$data}}">
+                                {{$data->no_npwp}}
+                                <input type="hidden" id="row-1-npwp" name="row_npwp[]" value="{{$data->no_npwp}}">
                             </td>
                             <td>
-                                <input type="hidden" id="row-1-email" name="row_email[]" value="{{$data}} ">
+                                <a href="/admin/file/npwp/{{$data->file_npwp}}">FILE NPWP</a>
+                                @php
+                                    $d = $data->file_npwp 
+                                @endphp
+                                <input type="hidden" id="row-1-filenpwp" name="row_filenpwp[]" 
+                                value='=HYPERLINK("http://127.0.0.1:8000/admin/file/npwp/{{$d}}","FILE NPWP")'>
                             </td>
                             <td>
-                                <input type="hidden" id="row-1-telepon" name="row_telepon[]" value=" {{$data}}">
+                                {{$data->no_karis_karsu}}
+                                <input type="hidden" id="row-1-kariskarsu" name="row_kariskarsu[]" value="{{$data->no_karis_karsu}}">
                             </td>
                             <td>
-                                <input type="hidden" id="row-1-tmtkeaktifan" name="row_tmt_keaktifan[]" value="{{$data}} ">
+                                <a href="/admin/file/kariskarsu/{{$data->file_karis_karsu}}">FILE KARIS/KARSU</a>
+                                @php
+                                    $d = $data->file_karis_karsu 
+                                @endphp
+                                <input type="hidden" id="row-1-filekariskarsu" name="row_filekariskarsu[]" 
+                                value='=HYPERLINK("http://127.0.0.1:8000/admin/file/kariskarsu/{{$d}}","FILE KARIS/KARSU")'>
                             </td>
                             <td>
-                                <input type="hidden" id="row-1-statusserdos" name="row_status_serdos[]" value="{{$data}} ">
+                                {{$data->no_ktp}}
+                                <input type="hidden" id="row-1-ktp" name="row_ktp[]" value="{{$data->no_ktp}}">
                             </td>
                             <td>
-                                <input type="hidden" id="row-1-tahunserdos" name="row_tahun_serdos[]" value="{{$data}} ">
+                                <a href="/admin/file/ktp/{{$data->file_ktp}}">FILE KTP</a>
+                                @php
+                                    $d = $data->file_ktp
+                                @endphp
+                                <input type="hidden" id="row-1-filektp" name="row_filektp[]" 
+                                value='=HYPERLINK("http://127.0.0.1:8000/admin/file/ktp/{{$d}}","FILE KTP")'>
                             </td>
                             <td>
-                                <input type="hidden" id="row-1-tahunajaran" name="row_tahun_ajaran[]" value="{{$data}} ">
-                            </td> --}}
+                                @foreach ($data->tmtkeaktifan as $index=>$keaktifan)
+                                    @if ($loop->last)
+                                        {{$keaktifan->statusKeaktifan->status_keaktifan}}
+                                    @endif
+                                @endforeach
+                                <input type="hidden" id="row-1-statuskeaktifan" name="row_statuskeaktifan[]" 
+                                @foreach ($data->tmtkeaktifan as $index=>$keaktifan)
+                                    @if ($loop->last)
+                                        @php $test = $keaktifan->statusKeaktifan->status_keaktifan @endphp
+                                    @endif
+                                @endforeach
+                                value="{{$test}}">
+                            </td>
+                            <td>
+                                @foreach ($data->tmtkeaktifan as $index=>$keaktifan)
+                                    @if ($loop->last)
+                                        {{$keaktifan->tmt_keaktifan}}
+                                    @endif
+                                @endforeach
+                                <input type="hidden" id="row-1-tmtkeaktifan" name="row_tmtkeaktifan[]" 
+                                @foreach ($data->tmtkeaktifan as $index=>$keaktifan)
+                                    @if ($loop->last)
+                                        @php $test = $keaktifan->tmt_keaktifan @endphp
+                                    @endif
+                                @endforeach
+                                value="{{$test}}">
+                            </td>
                         </tr>
                         @endforeach
                     @else

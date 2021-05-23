@@ -20,6 +20,6 @@ class MasterKeaktifan extends Model
     }
 
     public function statusKeaktifan(){
-        return $this->hasMany('App/MasterStatusKeaktifan', 'id_keaktifan', 'id_status_keaktifan');
+        return $this->belongsTo(MasterStatusKeaktifan::class,'id_status_keaktifan');
     }
 }
