@@ -141,4 +141,8 @@ Route::prefix('user')->group(function () {
     Route::get('/file/kariskarsu/{file}', 'user\HomeController@downloadKariskarsu')->name('user-download-kariskarsu-dosen');
     Route::get('/file/npwp/{file}', 'user\HomeController@downloadNpwp')->name('user-download-npwp-dosen');
     Route::get('/file/ktp/{file}', 'user\HomeController@downloadKtp')->name('user-download-ktp-dosen');
+    Route::get('/penelitian', 'user\HomeController@penelitian')->name('user-penelitian');
+    Route::get('/penelitian-detail/{id}', 'user\HomeController@penelitianDetail')->name('user-penelitian-detail');
+    Route::post('/penelitian-update/{id}', 'user\HomeController@penelitianUpdate')->name('user-penelitian-update');
+    Route::get('/penelitian-delete/{id}', 'user\HomeController@penelitianDestroy')->name('user-penelitian-delete');
 });

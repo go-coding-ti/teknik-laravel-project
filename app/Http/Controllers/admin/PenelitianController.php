@@ -140,7 +140,7 @@ class PenelitianController extends Controller
             $datapenelitian->file_1 = $request->file1;
             $datapenelitian->file_2 = $request->file2;
             $datapenelitian->save();
-            return redirect()->route('penelitian-detail', $request->id)->with('success','Berhasil Menambah Data Dosen!');
+            return redirect()->route('penelitian-detail', $request->id)->with('success','Berhasil Merubah Data Penelitian !');
             // $user = $request->session()->get('admin.data');
             // $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
             // $data = Dosen::get();
@@ -157,6 +157,8 @@ class PenelitianController extends Controller
     public function destroy($id)
     {
         //
+        $detailpenelitian = DetailPenelitian::where('id_penelitian', $id);
+        $detailpenelitian->delete();
         $penelitian = Penelitian::where('id_penelitian', '=', $id);
         $penelitian->delete();
         return redirect()->route('penelitian-list')->with('success','Berhasil Menghapus Data Fakultas!');

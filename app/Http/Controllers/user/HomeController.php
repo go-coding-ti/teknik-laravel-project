@@ -31,6 +31,11 @@ use App\TmtStatusKepegawaianDosen;
 use App\KategoriPenelitian;
 use App\Pengabdian;
 use App\KategoriPengabdian;
+use App\Penelitian;
+use App\DetailPenelitian;
+use App\Penulis;
+use App\MasterTahunAjaran;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -398,5 +403,101 @@ class HomeController extends Controller
         }else{
             return redirect()->route('user-data')->with('error','Gagal Mengupdate Data Dosen!');
         }
+    }
+
+    public function penelitian(Request $request)
+    {
+        if(!$request->session()->has('dosen')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $kategori = KategoriPenelitian::all();
+            $user = $request->session()->get('dosen.data');
+            // dd($user);
+            $penulis = Penulis::where('id_dosen', $user->nip)->first();
+            // dd($penulis);
+            $listpenelitian = DetailPenelitian::where('id_penulis', $penulis->id_penulis)->get();
+            foreach($listpenelitian as $list){
+                $datapenelitian[] = Penelitian::where('id_penelitian', $list->id_penelitian)->first();
+            }
+            // dd($datapenelitian);
+            $tahunajaran = MasterTahunAjaran::all();
+            $user = $request->session()->get('dosen.data');
+            $profiledata = Dosen::where('nip','=', $user["nip"])->first();
+            $data = Dosen::get();
+            return view('user.penelitian.penelitian', compact('kategori', 'datapenelitian', 'tahunajaran', 'data', 'profiledata'));
+        }
+        // $id = $kategori->id_kategori_penelitian;
+        // dd($kategori->id_kategori_penelitian);
+    }
+
+    public function penelitianDetail(Request $request){
+        if(!$request->session()->has('dosen')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $kategori = KategoriPenelitian::all();
+            $datapenelitian = Penelitian::where('id_penelitian', $request->id)->first();
+            $idpenulis = DetailPenelitian::where('id_penelitian', $request->id)->orderBy('penulis_ke', 'asc')->get();
+            $tahunajaran = MasterTahunAjaran::where('id', $datapenelitian->tahun_ajaran)->first();
+            $alltahun = MasterTahunAjaran::all();
+            $num = 0; 
+            if($idpenulis != null){
+                foreach($idpenulis as $i){
+                    if($i->penulis_ke != null){
+                        $penulis[$num] = Penulis::where('id_penulis', $i->id_penulis)->first();
+                        $penulis[$num]->setPenulis_ke($i->penulis_ke);
+                    }
+                    else{
+                        $penulis[$num] = Penulis::where('id_penulis', $i->id_penulis)->first();
+                    }
+                    // dd($num);
+                    $num+=1;
+                }
+            }
+            $user = $request->session()->get('dosen.data');
+            $profiledata = Dosen::where('nip','=', $user["nip"])->first();
+            $data = Dosen::get();
+            return view('user.penelitian.penelitian-detail', compact('kategori', 'penulis', 'datapenelitian', 'data', 'profiledata', 'tahunajaran', 'alltahun'));
+        }
+    }
+
+    public function penelitianUpdate(Request $request)
+    {
+        //update data penelitian
+        if(!$request->session()->has('dosen')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $kategori = KategoriPenelitian::all();
+            $datapenelitian = Penelitian::where('id_penelitian', $request->id)->first();
+            $datapenelitian->judul = $request->judul;
+            $datapenelitian->tahun_ajaran = $request->tahunajaran;
+            $datapenelitian->edisi = $request->edisi;
+            $datapenelitian->penerbit = $request->penerbit;
+            $datapenelitian->tahun_publikasi = $request->tahun;
+            $datapenelitian->bulan_publikasi = $request->bulan;
+            $datapenelitian->keterangan = $request->keterangan;
+            $datapenelitian->status_validitas = $request->statval;
+            $datapenelitian->jumlah_halaman = $request->jumhal;
+            $datapenelitian->isbn = $request->isbn;
+            $datapenelitian->file_sk_tugas = $request->filesktugas;
+            $datapenelitian->file_bukti_kerja = $request->filebuktikerja;
+            $datapenelitian->file_1 = $request->file1;
+            $datapenelitian->file_2 = $request->file2;
+            $datapenelitian->save();
+            return redirect()->route('user-penelitian-detail', $request->id)->with('success','Berhasil Merubah Data Penelitian !');
+            // $user = $request->session()->get('admin.data');
+            // $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            // $data = Dosen::get();
+            // return view('admin.penelitian.penelitian-detail', compact('kategori', 'penulis', 'datapenelitian', 'data', 'profiledata', 'tahunajaran', 'alltahun'));
+        }
+    }
+
+    public function penelitianDestroy($id)
+    {
+        //
+        $detailpenelitian = DetailPenelitian::where('id_penelitian', $id);
+        $detailpenelitian->delete();
+        $penelitian = Penelitian::where('id_penelitian', '=', $id);
+        $penelitian->delete();
+        return redirect()->route('user-penelitian-detail')->with('success','Berhasil Menghapus Data Fakultas!');
     }
 }
