@@ -65,11 +65,19 @@ class ExportDosenController extends Controller
         $dosenArray = array();
         $dosenHead = array();
         $dosenArr = array();
+        $headings = HeadingExcel::get();
+        $default = array('NIDN', 'NIP', 'Nama dengan Gelar', 'Homebase');
+        $condition = array_diff($request->planned_checked, $default);
+        // dd($condition);
+        // dd($heading->map->heading);
+        $heading = $headings->map->heading->toArray(); //take all heading data from objects and make it into an array
+        // dd($heading);
         if(is_null($request->row_nama)){
             return redirect()->back()->with('error', 'Tidak ada data yang dicetak!');
         }else{
             $countnip = count($request->row_nama);
-            if(is_null($request->planned_checked)){
+            if($condition == []){
+                // dd($request->planned_checked);
                 for ($nips = 0; $nips < $countnip; $nips++) {
                     $dosenArray[] = array(
                         "Tahun Ajaran"=>$request->row_ta[$nips],
@@ -166,15 +174,17 @@ class ExportDosenController extends Controller
                     );
                     
                 }
+                $exportHead = array_diff($heading, $request->planned_checked); //selecting a value from array heading thats not in array request->planned_checked
+                // dd($exportHead);
                 $rows = $dosenArray;
-                $head = $dosenHead;
+                // $head = $dosenHead;
                 $countdos = count($rows);
-                $t = array();
-                $t = $head; 
-                foreach($t as $key=>$val){
+                // $t = array();
+                // $t = $head; 
+                foreach($exportHead as $key=>$val){
                     self::delete_col($dosenArray, $val);
                 }
-                return Excel::download(new DosenExports($dosenArray,$head), 'Dosen.xlsx');
+                return Excel::download(new DosenExports($dosenArray,$exportHead), 'Dosen.xlsx');
             }
         }
         

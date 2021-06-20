@@ -165,16 +165,44 @@ function myFunction() {
                         <table class="table table-bordered" id="dataTables" cellspacing="0">
                             <thead>
                                 <tr>
-                                    <th colspan="{{count($header)}}">Centang Opsi Dibawah untuk Menghilangkan Kolom yang Tidak Ingin Dicetak</th>
+                                    <th colspan="{{count($header)}}">Centang Opsi Dibawah untuk Memilih Kolom yang Ingin Dicetak</th>
                                 </tr>
                             </thead> 
                             <tbody>
-                                <tr>
-                                    @foreach ($header as $head)
-                                    <td style="width: 30%">
-                                        <label><input type="checkbox" value="{{$head->heading}}" name="planned_checked[]" class="planned_checked" data-column="{{$loop->iteration}}"><br>{{$head->heading}}</label> 
-                                    </td>
-                                    @endforeach
+                                <?php
+                                 $i = 0;
+                                 $j = $i;
+                                ?>
+                                <tr class="row">
+                                @foreach ($header as $head)
+                                    @if ($i == $j+7)
+                                        @if($i == 2 || $i == 3 || $i == 8 || $i == 27)
+                                            <tr class="row">
+                                                <td class="col pl-4">
+                                                    <label><input type="checkbox" value="{{$head->heading}}" name="planned_checked[]" class="planned_checked" data-column="{{$loop->iteration}}" checked><br>{{$head->heading}}</label> 
+                                                </td>
+                                        @else
+                                            <tr class="row">
+                                                <td class="col pl-4">
+                                                    <label><input type="checkbox" value="{{$head->heading}}" name="planned_checked[]" class="planned_checked" data-column="{{$loop->iteration}}"><br>{{$head->heading}}</label> 
+                                                </td>
+                                        @endif
+                                                <?php
+                                                $j = $i;
+                                                $i++ ;?>
+                                    @else
+                                        @if($i == 2 || $i == 3 || $i == 8 || $i == 27)
+                                            <td class="col pl-4">
+                                                <label><input type="checkbox" value="{{$head->heading}}" name="planned_checked[]" class="planned_checked" data-column="{{$loop->iteration}}" checked><br>{{$head->heading}}</label> 
+                                            </td>
+                                        @else
+                                            <td class="col pl-4">
+                                                <label><input type="checkbox" value="{{$head->heading}}" name="planned_checked[]" class="planned_checked" data-column="{{$loop->iteration}}"><br>{{$head->heading}}</label> 
+                                            </td>
+                                        @endif
+                                        <?php $i++; ?>
+                                    @endif  
+                                @endforeach
                                 </tr>
                             </tbody>
                         </table>
