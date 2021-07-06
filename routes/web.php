@@ -137,6 +137,9 @@ Route::prefix('user')->group(function () {
     Route::get('/logout','auth\AuthController@logout')->name('user-logout');
     Route::get('/datadiridosen','user\HomeController@dataDosen')->name('user-data');
     Route::post('/datadiridosen/update/{id}', 'user\HomeController@updatedataDosen')->name('user-data-update');
+    Route::get('/masa-studi/index','user\MasaStudiController@index')->name('masa-studi-index');
+    Route::post('/masa-studi/create','user\MasaStudiController@create')->name('masa-studi-create');
+    Route::get('/masa-studi/delete/{id}','user\MasaStudiController@destroy')->name('masa-studi-delete');
     Route::get('/file/karpeg/{file}', 'user\HomeController@downloadKarpeg')->name('user-download-karpeg-dosen');
     Route::get('/file/kariskarsu/{file}', 'user\HomeController@downloadKariskarsu')->name('user-download-kariskarsu-dosen');
     Route::get('/file/npwp/{file}', 'user\HomeController@downloadNpwp')->name('user-download-npwp-dosen');

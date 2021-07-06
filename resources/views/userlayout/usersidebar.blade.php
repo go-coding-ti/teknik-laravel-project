@@ -35,11 +35,10 @@
             <span>Data Diri</span></a>
         </li>
 
-        <!-- Nav Item - Dashboard -->
-        <li class="nav-item {{ Request::is('user/datadiridosen') ? 'active' : '' }}">
-          <a class="nav-link" href="#">
-            <i class="fas fa-fw fa-user"></i>
-            <span>Submit Progress Masa Studi</span></a>
+        <li class="nav-item {{ Request::is('user/masa-studi') ? 'active' : '' }}">
+          <a class="nav-link" href="/user/masa-studi/index">
+            <i class="fas fa-fw fa-graduation-cap"></i>
+            <span>Progress Masa Studi</span></a>
         </li>
   
         <!-- Divider -->
