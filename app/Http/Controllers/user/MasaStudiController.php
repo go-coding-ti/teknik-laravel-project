@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Pegawai;
 use App\Dosen;
 use App\ProgressStudi;
+use App\MasterKeaktifan;
 
 
 class MasaStudiController extends Controller
@@ -25,10 +26,11 @@ class MasaStudiController extends Controller
             $user = $request->session()->get('dosen.data');
             // dd($user);
             $profiledata = Dosen::where('nip','=', $user["nip"])->first();
+            $statuskeaktifan = MasterKeaktifan::where('nip', $user['nip'])->orderBy('tmt_keaktifan', 'DESC')->first();
             // $data = Dosen::get();
             $attachment = ProgressStudi::where('id_dosen', $user["nip"])->orderBy('created_at')->get();
             // dd($attachment);
-            return view('user.masa-studi.index',compact( 'profiledata', 'attachment'));
+            return view('user.masa-studi.index',compact( 'profiledata', 'attachment', 'statuskeaktifan'));
         }
     }
 
@@ -127,6 +129,7 @@ class MasaStudiController extends Controller
         }else{
             $user = $request->session()->get('dosen.data');
             $profiledata = Dosen::where('nip', '=', $user['nip'])->first();
+            $statuskeaktifan = MasterKeaktifan::where('nip', $user['nip'])->orderBy('tmt_keaktifan', 'DESC')->first();
             $id = decrypt($id);
             
             $att = ProgressStudi::where('id', $id)->first();

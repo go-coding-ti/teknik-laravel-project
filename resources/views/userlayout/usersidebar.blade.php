@@ -34,12 +34,15 @@
             <i class="fas fa-fw fa-user"></i>
             <span>Data Diri</span></a>
         </li>
-
-        <li class="nav-item {{ Request::is('user/masa-studi') ? 'active' : '' }}">
-          <a class="nav-link" href="/user/masa-studi/index">
-            <i class="fas fa-fw fa-graduation-cap"></i>
-            <span>Progress Masa Studi</span></a>
-        </li>
+        @if(isset($statuskeaktifan))
+          @if($statuskeaktifan->id_status_keaktifan == 4)
+            <li class="nav-item {{ Request::is('user/masa-studi') ? 'active' : '' }}">
+              <a class="nav-link" href="/user/masa-studi/index">
+                <i class="fas fa-fw fa-graduation-cap"></i>
+                <span>Progress Masa Studi</span></a>
+            </li>
+          @endif
+        @endif
   
         <!-- Divider -->
         <!--<hr class="sidebar-divider">-->

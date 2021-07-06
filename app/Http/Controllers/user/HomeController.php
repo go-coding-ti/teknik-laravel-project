@@ -45,7 +45,8 @@ class HomeController extends Controller
         }else{
             $user = $request->session()->get('dosen.data');
             $profiledata = Dosen::where('nip','=', $user["nip"])->first();
-            return view('user.changepass', compact('profiledata'));
+            $statuskeaktifan = MasterKeaktifan::where('nip', $user['nip'])->orderBy('created_at', 'DESC')->first();
+            return view('user.changepass', compact('profiledata', 'statuskeaktifan'));
         }
     }
 
@@ -65,6 +66,7 @@ class HomeController extends Controller
 
         $user = $request->session()->get('dosen.data');
         $profiledata = Dosen::where('nip','=', $user["nip"])->first();
+        $statuskeaktifan = MasterKeaktifan::where('nip', $user['nip'])->orderBy('created_at', 'DESC')->first();
         if(Hash::check($request->oldpass, $profiledata->password)){
             $password = Hash::make($request->newpass);
             $dos = Dosen::find($profiledata->nip);
@@ -84,11 +86,12 @@ class HomeController extends Controller
         }else{
             $user = $request->session()->get('dosen.data');
             $profiledata = Dosen::where('nip','=', $user["nip"])->first();
+            $statuskeaktifan = MasterKeaktifan::where('nip', $user['nip'])->orderBy('created_at', 'DESC')->first();
             if($profiledata->change_password != 1){
                 return view('user.changepass', compact('profiledata'));
             }else{
                 $data = Dosen::get();
-                return view('user.dashboard', compact('data','profiledata'));
+                return view('user.dashboard', compact('data','profiledata', 'statuskeaktifan'));
             }
         }
     }
@@ -100,6 +103,7 @@ class HomeController extends Controller
             $user = $request->session()->get('dosen.data');
             $dosen = Dosen::where('nip','=',$user["nip"])->first();
             $profiledata = Dosen::where('nip','=', $user["nip"])->first();
+            $statuskeaktifan = MasterKeaktifan::where('nip', $user['nip'])->orderBy('created_at', 'DESC')->first();
             if($profiledata->change_password != 1){
                 return view('user.changepass', compact('profiledata'));
             }else{
@@ -110,7 +114,7 @@ class HomeController extends Controller
                 $statusKepegawaian = MasterStatusKepegawaian::all();
                 $unit = Fakultas::all();
                 $subunit = Prodi::all();
-                return view('user.datadosen',compact('statusDosen', 'pangkatDosen', 'jabatanDosen', 'unit','subunit','statusaktif','statusKepegawaian','profiledata','dosen'));
+                return view('user.datadosen',compact('statusDosen', 'pangkatDosen', 'jabatanDosen', 'unit','subunit','statusaktif','statusKepegawaian','profiledata','dosen', 'statuskeaktifan'));
             }
         }
     }
@@ -423,8 +427,9 @@ class HomeController extends Controller
             $tahunajaran = MasterTahunAjaran::all();
             $user = $request->session()->get('dosen.data');
             $profiledata = Dosen::where('nip','=', $user["nip"])->first();
+            $statuskeaktifan = MasterKeaktifan::where('nip', $user['nip'])->orderBy('created_at', 'DESC')->first();
             $data = Dosen::get();
-            return view('user.penelitian.penelitian', compact('kategori', 'datapenelitian', 'tahunajaran', 'data', 'profiledata'));
+            return view('user.penelitian.penelitian', compact('kategori', 'datapenelitian', 'tahunajaran', 'data', 'profiledata', 'statuskeaktifan'));
         }
         // $id = $kategori->id_kategori_penelitian;
         // dd($kategori->id_kategori_penelitian);
@@ -455,8 +460,9 @@ class HomeController extends Controller
             }
             $user = $request->session()->get('dosen.data');
             $profiledata = Dosen::where('nip','=', $user["nip"])->first();
+            $statuskeaktifan = MasterKeaktifan::where('nip', $user['nip'])->orderBy('created_at', 'DESC')->first();
             $data = Dosen::get();
-            return view('user.penelitian.penelitian-detail', compact('kategori', 'penulis', 'datapenelitian', 'data', 'profiledata', 'tahunajaran', 'alltahun'));
+            return view('user.penelitian.penelitian-detail', compact('kategori', 'penulis', 'datapenelitian', 'data', 'profiledata', 'tahunajaran', 'alltahun', 'statuskeaktifan'));
         }
     }
 
