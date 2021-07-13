@@ -8,7 +8,7 @@ class ProgressStudi extends Model
 {
     //
     protected $table = 'tb_progress_Studi';
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = ['attachment', 'id_dosen'];
 
