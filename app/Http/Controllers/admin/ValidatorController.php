@@ -34,6 +34,7 @@ use App\Pengabdian;
 use App\KategoriPengabdian;
 use App\MasterTahunAjaran;
 use App\TahunAjaranDosen;
+use App\ProgressStudi;
 
 class ValidatorController extends Controller
 {
@@ -78,6 +79,7 @@ class ValidatorController extends Controller
             $statusKepegawaian = MasterStatusKepegawaian::all();
             $unit = Fakultas::all();
             $subunit = Prodi::all();
+            // $data = Dosen::get();
             $tahun = MasterTahunAjaran::where('status','=','Aktif')->get();
             return view('admin.dosen.formdosen', compact('tahun','statusDosen', 'pangkatDosen', 'jabatanDosen', 'unit','subunit','statusaktif','statusKepegawaian','profiledata'));
         }
@@ -575,10 +577,13 @@ class ValidatorController extends Controller
             $pangkatDosen = MasterPangkatPns::all();
             $jabatanDosen = MasterJabatanFungsional::all();
             $statusKepegawaian = MasterStatusKepegawaian::all();
+            $statuskeaktifan = MasterKeaktifan::where('nip', $dosen->nip)->orderBy('tmt_keaktifan', 'DESC')->first();
+            // $data = Dosen::get();
+            $attachment = ProgressStudi::where('id_dosen', $dosen->nip)->orderBy('created_at')->get();
             $unit = Fakultas::all();
             $subunit = Prodi::all();
             $tahun = MasterTahunAjaran::where('status','=','Aktif')->get();
-            return view('admin.dosen.formdosenedit',compact('tahun','statusDosen', 'pangkatDosen', 'jabatanDosen', 'unit','subunit','statusaktif','statusKepegawaian','profiledata','dosen'));
+            return view('admin.dosen.formdosenedit',compact('tahun','statusDosen', 'pangkatDosen', 'jabatanDosen', 'unit','subunit','statusaktif','statusKepegawaian','profiledata','dosen', 'statuskeaktifan', 'attachment'));
         }
     }
 
@@ -1354,5 +1359,68 @@ class ValidatorController extends Controller
         $ta = MasterTahunAjaran::where('id', '=', $id);
         $ta->delete();
         return redirect()->route('masterdata-tahunajaran-index')->with('success','Berhasil Menghapus Data Tahun Ajaran!');
+    }
+
+    public function attCreate(Request $request, $id)
+    {
+        //
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $dosen = Dosen::with('tmtpangkat')->where('nip','=',$id)->first();
+            $check = $request->session()->get('admin.id');
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            // $user = $request->session()->get('dosen.data');
+            // $profiledata = Dosen::where('nip', '=', $user['nip'])->first();
+            // dd($request->attachments);
+            if ($request->hasfile('attachments')) {
+                foreach ($request->file('attachments') as $file) {
+                    $name = $dosen->nip.'-'.$file->getClientOriginalName();
+                    $folder = 'progress-studi';
+                    $file->move($folder, $name);
+                    $data[] = $name;
+                    $att = new ProgressStudi;
+                    $att->file_name = $name;
+                    $att->attachment = '/progress-studi/'.$name;
+                    $att->id_dosen = $dosen->nip;
+                    $att->save();
+                }
+            
+                // dd($id);
+                $attachment = ProgressStudi::where('id_dosen', $id)->get();
+                return redirect()->route('dosen-detail', $id)->withSuccess('Data Berhasil ditambahkan !');
+
+            // return view('admin.portofolio.show', compact('portofolio', 'attachment', 'profiledata'))->with('Success!','attachment Added!');
+            }
+        }
+    }
+
+    public function attDestroy(Request $request, $id)
+    {
+        //
+        if(!$request->session()->has('admin')){
+            return redirect('/login')->with('expired','Session Telah Berakhir');
+        }else{
+            $id = decrypt($id);
+            $check = $request->session()->get('admin.id');
+            $user = $request->session()->get('admin.data');
+            $profiledata = Pegawai::where('nip','=', $user["nip"])->first();
+            // $user = $request->session()->get('dosen.data');
+            // $profiledata = Dosen::where('nip', '=', $user['nip'])->first();
+            $statuskeaktifan = MasterKeaktifan::where('nip', $user['nip'])->orderBy('tmt_keaktifan', 'DESC')->first();
+            
+            $att = ProgressStudi::where('id', $id)->first();
+            $dosen = Dosen::with('tmtpangkat')->where('nip','=',$att->id_dosen)->first();
+            if(isset($att)){
+            $att->delete();
+            $attachment = ProgressStudi::where('id_dosen', $dosen->nip)->get();
+            return redirect()->route('dosen-detail', $dosen->nip)->withSuccess('Data Dosen (Progress Studi) Berhasil di Hapus');
+
+            // return view('admin.portofolio.show', compact('portofolio', 'attachment', 'profiledata'))->with('Success!','attachment Delete !');
+            }else{
+                return redirect()->route('dosen-detail', $dosen->nip)->withErrors('Attachment Tidak ditemukan !');
+            }
+        }
     }
 }

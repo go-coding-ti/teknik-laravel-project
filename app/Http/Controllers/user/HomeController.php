@@ -45,7 +45,7 @@ class HomeController extends Controller
         }else{
             $user = $request->session()->get('dosen.data');
             $profiledata = Dosen::where('nip','=', $user["nip"])->first();
-            $statuskeaktifan = MasterKeaktifan::where('nip', $user['nip'])->orderBy('created_at', 'DESC')->first();
+            $statuskeaktifan = MasterKeaktifan::where('nip', $user['nip'])->orderBy('tmt_keaktifan', 'DESC')->first();
             return view('user.changepass', compact('profiledata', 'statuskeaktifan'));
         }
     }
@@ -66,7 +66,7 @@ class HomeController extends Controller
 
         $user = $request->session()->get('dosen.data');
         $profiledata = Dosen::where('nip','=', $user["nip"])->first();
-        $statuskeaktifan = MasterKeaktifan::where('nip', $user['nip'])->orderBy('created_at', 'DESC')->first();
+        $statuskeaktifan = MasterKeaktifan::where('nip', $user['nip'])->orderBy('tmt_keaktifan', 'DESC')->first();
         if(Hash::check($request->oldpass, $profiledata->password)){
             $password = Hash::make($request->newpass);
             $dos = Dosen::find($profiledata->nip);
@@ -86,7 +86,7 @@ class HomeController extends Controller
         }else{
             $user = $request->session()->get('dosen.data');
             $profiledata = Dosen::where('nip','=', $user["nip"])->first();
-            $statuskeaktifan = MasterKeaktifan::where('nip', $user['nip'])->orderBy('created_at', 'DESC')->first();
+            $statuskeaktifan = MasterKeaktifan::where('nip', $user['nip'])->orderBy('tmt_keaktifan', 'DESC')->first();
             if($profiledata->change_password != 1){
                 return view('user.changepass', compact('profiledata'));
             }else{
@@ -103,7 +103,7 @@ class HomeController extends Controller
             $user = $request->session()->get('dosen.data');
             $dosen = Dosen::where('nip','=',$user["nip"])->first();
             $profiledata = Dosen::where('nip','=', $user["nip"])->first();
-            $statuskeaktifan = MasterKeaktifan::where('nip', $user['nip'])->orderBy('created_at', 'DESC')->first();
+            $statuskeaktifan = MasterKeaktifan::where('nip', $user['nip'])->orderBy('tmt_keaktifan', 'DESC')->first();
             if($profiledata->change_password != 1){
                 return view('user.changepass', compact('profiledata'));
             }else{
@@ -427,7 +427,7 @@ class HomeController extends Controller
             $tahunajaran = MasterTahunAjaran::all();
             $user = $request->session()->get('dosen.data');
             $profiledata = Dosen::where('nip','=', $user["nip"])->first();
-            $statuskeaktifan = MasterKeaktifan::where('nip', $user['nip'])->orderBy('created_at', 'DESC')->first();
+            $statuskeaktifan = MasterKeaktifan::where('nip', $user['nip'])->orderBy('tmt_keaktifan', 'DESC')->first();
             $data = Dosen::get();
             return view('user.penelitian.penelitian', compact('kategori', 'datapenelitian', 'tahunajaran', 'data', 'profiledata', 'statuskeaktifan'));
         }
@@ -460,7 +460,7 @@ class HomeController extends Controller
             }
             $user = $request->session()->get('dosen.data');
             $profiledata = Dosen::where('nip','=', $user["nip"])->first();
-            $statuskeaktifan = MasterKeaktifan::where('nip', $user['nip'])->orderBy('created_at', 'DESC')->first();
+            $statuskeaktifan = MasterKeaktifan::where('nip', $user['nip'])->orderBy('tmt_keaktifan', 'DESC')->first();
             $data = Dosen::get();
             return view('user.penelitian.penelitian-detail', compact('kategori', 'penulis', 'datapenelitian', 'data', 'profiledata', 'tahunajaran', 'alltahun', 'statuskeaktifan'));
         }

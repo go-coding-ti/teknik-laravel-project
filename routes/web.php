@@ -30,6 +30,9 @@ Route::prefix('admin')->group(function () {
     Route::post('/datauser/dosen/updatedetaildosen/{id}', 'admin\ValidatorController@update')->name('dosen-detail-update');
     Route::get('/datauser/dosen/{id}/delete', 'admin\ValidatorController@destroy')->name('dosen-delete');
 
+    Route::post('/datauser/dosen/masa-studi/create/{id}','admin\ValidatorController@attCreate')->name('admin-masa-studi-create');
+    Route::get('/datauser/dosen/masa-studi/delete/{id}','admin\ValidatorController@attDestroy')->name('admin-masa-studi-delete');
+
     Route::get('/datauser/dosen/import/dosen','import\ImportDosenController@importDosen')->name('admin-import-dosen');
     Route::post('/datauser/dosen/import/dosen/submit','import\ImportDosenController@storeImportDosen')->name('import-dosen');
     Route::post('/submit/import/dosen','import\ImportDosenController@storeDosenFromImport')->name('upload-import-dosen');
